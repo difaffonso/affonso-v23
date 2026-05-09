@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+Gimport { useState, useEffect } from "react";
 
 const G = {
 bg:"#EEF3F0",card:"#FFF",primary:"#1B5E4A",accent:"#E3EFE9",accentDark:"#A8D5C0",
