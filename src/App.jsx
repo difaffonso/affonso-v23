@@ -60,7 +60,7 @@ items:[
 {id:"admin",         label:"Acessar Administrativo",             val:true, fixed:true},
 ]},
 };
-const MOTIVOS_REM=["Desistiu do tratamento","Mudou de clínica","Problema financeiro","Sem retorno (não responde),"Outros"];
+const MOTIVOS_REM=["Desistiu do tratamento","Mudou de clínica","Problema financeiro","Sem retorno (não responde)","Outros"
 const WA_TOKEN="EAASoAO9Ee4ABRTNwUDnXlghZCcevkhVNHyiAqhGerNbze52YXkqvBONwFF6cd99nMZBxg5BNicySfOl0ejRR6948F0EVyIMsZCmceUQwksoGtOLQqD6So8CoD9fCC6CU4AnBw7LCFmQkDmPQ7ONukHChhKYrVrogIeAi8cnLfrlpxVU3hgOnY0zhVQmAX9gaVKe0AysKqrSooV209UDHQTyoaO1k49j4m0pph6VTW4KlkyziYhfX8nxGaNVkd7qkxZARtEkgaeQaXzpV3kXsucHF";
 const WA_PHONE_ID="1149169951604986";
 const WA_API=async function(to,msg){
