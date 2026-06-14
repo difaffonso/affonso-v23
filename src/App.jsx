@@ -15,9 +15,9 @@ async fetchAnam(token){if(!SUPA_URL)return null;try{const r=await fetch(SUPA_URL
 ,async fetchAnamRecent(){if(!SUPA_URL)return [];try{var since=new Date(Date.now()-7*864e5).toISOString();const r=await fetch(SUPA_URL+"/rest/v1/anamnese_subs?created_at=gte."+encodeURIComponent(since)+"&select=token,payload,created_at&order=created_at.desc&limit=200",{headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY}});var rows=await r.json();return Array.isArray(rows)?rows:[];}catch(e){return [];}}
 };
 const G = {
-bg:"#EEF3F0",card:"#FFF",primary:"#1B5E4A",accent:"#E3EFE9",accentDark:"#A8D5C0",
-text:"#162420",muted:"#6B8880",red:"#C0392B",yellow:"#D68910",blue:"#1A5276",
-purple:"#6C3483",border:"#D5E8DF",success:"#1E8449",orange:"#CA6F1E",gold:"#B7950B",
+bg:"#F3F1EA",card:"#FFF",primary:"#1B5E4A",accent:"#E9F0EC",accentDark:"#A8D5C0",
+text:"#1C2622",muted:"#6E7E77",red:"#C0392B",yellow:"#D68910",blue:"#1A5276",
+purple:"#6C3483",border:"#E6E1D5",success:"#1E8449",orange:"#CA6F1E",gold:"#A6884F",
 };
 
 const PERMS0={
@@ -75,9 +75,10 @@ items:[
 ]},
 };
 const MOTIVOS_REM=["Desistiu do tratamento","Mudou de clínica","Problema financeiro","Sem retorno (não responde)","Outros"];
-const WA_TOKEN="EAASoAO9Ee4ABRTNwUDnXlghZCcevkhVNHyiAqhGerNbze52YXkqvBONwFF6cd99nMZBxg5BNicySfOl0ejRR6948F0EVyIMsZCmceUQwksoGtOLQqD6So8CoD9fCC6CU4AnBw7LCFmQkDmPQ7ONukHChhKYrVrogIeAi8cnLfrlpxVU3hgOnY0zhVQmAX9gaVKe0AysKqrSooV209UDHQTyoaO1k49j4m0pph6VTW4KlkyziYhfX8nxGaNVkd7qkxZARtEkgaeQaXzpV3kXsucHF";
-const WA_PHONE_ID="1149169951604986";
+var WA_TOKEN="";        // CONFIGURE: token Meta do cliente (aba WhatsApp)
+var WA_PHONE_ID="";     // CONFIGURE: phone number ID do cliente (aba WhatsApp)
 const WA_API=async function(to,msg){
+if(!WA_TOKEN||!WA_PHONE_ID)return false;
 var phone=to.replace(/[^0-9]/g,"");
 if(phone.length===11)phone="55"+phone;
 else if(phone.length===10)phone="5511"+phone;
@@ -92,8 +93,10 @@ if(d.error){console.error("WA error:",d.error.message);return false;}
 return true;
 }catch(e){console.error("WA fetch error:",e);return false;}
 };
-const ANAM_LINK="https://claude.ai/public/artifacts/134f3434-6997-4396-ab62-3d37bae9d44e";
+var ANAM_LINK="";       // CONFIGURE: link da anamnese do cliente (aba WhatsApp)
 var CLINICA_INFO={nome:"Clínica Modelo",endereco:"Rua das Flores, 100 - Centro, São Paulo - SP",telefone:"(11) 3000-0000",whatsapp:"(11) 90000-0000"};
+var SUPPORT_WA="";       // CONFIGURE: seu WhatsApp de SUPORTE (vendedor) - so numeros com DDI/DDD, ex: 5511999998888
+var SUPPORT_MSG="Olá! Preciso de ajuda com o sistema.";  // mensagem inicial ao abrir o suporte
 const ANAM_CONDS=[["hypertension","Pressao alta"],["diabetes","Diabetes"],["heartDisease","Problema no coracao"],["rheumaticFever","Febre reumatica / valvula"],["bleeding","Problema de coagulacao"],["anticoagulant","Usa anticoagulante"],["osteoporosis","Osteoporose"],["bisphosphonate","Usa/usou bifosfonato"],["kidneyDisease","Doenca renal"],["liverDisease","Doenca no figado"],["hepatitis","Hepatite (B ou C)"],["hiv","HIV"],["infectious","Doenca infectocontagiosa"],["thyroid","Tireoide"],["epilepsy","Epilepsia / convulsoes"],["cancer","Cancer / quimioterapia"],["pregnant","Gestante"],["smoking","Fumante"]];
 const ANAM_ALERT=["heartDisease","rheumaticFever","bleeding","anticoagulant","bisphosphonate","hepatitis","hiv","infectious","cancer"];
 const UCOLS=["#1B5E4A","#6C3483","#1A5276","#CA6F1E","#C0392B","#148F77","#D68910"];
@@ -118,7 +121,7 @@ const getWA=(templates,key,vars)=>{
 };
 const IMPL_DATA_SEED=[{"id": 1, "mes": "Jan/26", "mesKey": "JANEIRO 26", "paciente": "Ana Beatriz Souza", "cirurgia": "IMPLANTE", "protese": "", "controle": "", "data": "2026-01-15", "obs": "PEDIR TOMO", "extra": "", "status": "pending"}, {"id": 2, "mes": "Jan/26", "mesKey": "JANEIRO 26", "paciente": "Carlos Eduardo Lima", "cirurgia": "ENXERTO", "protese": "PRÓTESE", "controle": "", "data": "2026-02-10", "obs": "LEVOU PEDIDO TOMO", "extra": "", "status": "pending"}, {"id": 3, "mes": "Jan/26", "mesKey": "JANEIRO 26", "paciente": "Mariana Alves Pereira", "cirurgia": "IMPLANTE SUP", "protese": "PROTOCOLO", "controle": "CONTROLE", "data": "", "obs": "PEDIR PAN", "extra": "", "status": "pending"}, {"id": 4, "mes": "Jan/26", "mesKey": "JANEIRO 26", "paciente": "Pedro Henrique Costa", "cirurgia": "IMPLANTE INF", "protese": "PRÓTESE SUP", "controle": "", "data": "2026-03-05", "obs": "AGUARDANDO RETORNO", "extra": "", "status": "scheduled"}, {"id": 5, "mes": "Fev/26", "mesKey": "FEVEREIRO 26", "paciente": "Juliana Ribeiro", "cirurgia": "ENXERTO + IMPLANTE", "protese": "PRÓTESE INF", "controle": "", "data": "2026-01-22", "obs": "FEZ A TOMO", "extra": "", "status": "info"}, {"id": 6, "mes": "Fev/26", "mesKey": "FEVEREIRO 26", "paciente": "Roberto Carvalho", "cirurgia": "IMPLANTE", "protese": "", "controle": "", "data": "", "obs": "AGENDADA", "extra": "", "status": "pending"}, {"id": 7, "mes": "Fev/26", "mesKey": "FEVEREIRO 26", "paciente": "Fernanda Dias", "cirurgia": "IMPLANTE", "protese": "", "controle": "CONTROLE", "data": "2026-04-18", "obs": "RETORNO EM 6 MESES", "extra": "", "status": "pending"}, {"id": 8, "mes": "Fev/26", "mesKey": "FEVEREIRO 26", "paciente": "Lucas Martins", "cirurgia": "IMPLANTE", "protese": "PRÓTESE", "controle": "", "data": "", "obs": "", "extra": "", "status": "pending"}, {"id": 9, "mes": "Mar/26", "mesKey": "MARÇO 26", "paciente": "Patricia Gomes", "cirurgia": "ENXERTO", "protese": "PROTOCOLO", "controle": "", "data": "2026-01-15", "obs": "PEDIR TOMO", "extra": "", "status": "scheduled"}, {"id": 10, "mes": "Mar/26", "mesKey": "MARÇO 26", "paciente": "Rafael Oliveira", "cirurgia": "IMPLANTE SUP", "protese": "PRÓTESE SUP", "controle": "", "data": "2026-02-10", "obs": "LEVOU PEDIDO TOMO", "extra": "", "status": "info"}, {"id": 11, "mes": "Mar/26", "mesKey": "MARÇO 26", "paciente": "Camila Ferreira", "cirurgia": "IMPLANTE INF", "protese": "PRÓTESE INF", "controle": "CONTROLE", "data": "", "obs": "PEDIR PAN", "extra": "", "status": "pending"}, {"id": 12, "mes": "Mar/26", "mesKey": "MARÇO 26", "paciente": "Bruno Almeida", "cirurgia": "ENXERTO + IMPLANTE", "protese": "", "controle": "", "data": "2026-03-05", "obs": "AGUARDANDO RETORNO", "extra": "", "status": "pending"}, {"id": 13, "mes": "Abr/26", "mesKey": "ABRIL 26", "paciente": "Larissa Santos", "cirurgia": "IMPLANTE", "protese": "", "controle": "", "data": "2026-01-22", "obs": "FEZ A TOMO", "extra": "", "status": "pending"}, {"id": 14, "mes": "Abr/26", "mesKey": "ABRIL 26", "paciente": "Gabriel Rocha", "cirurgia": "", "protese": "PRÓTESE", "controle": "", "data": "", "obs": "AGENDADA", "extra": "", "status": "scheduled"}, {"id": 15, "mes": "Abr/26", "mesKey": "ABRIL 26", "paciente": "Beatriz Cardoso", "cirurgia": "IMPLANTE", "protese": "PROTOCOLO", "controle": "CONTROLE", "data": "2026-04-18", "obs": "RETORNO EM 6 MESES", "extra": "", "status": "info"}, {"id": 16, "mes": "Abr/26", "mesKey": "ABRIL 26", "paciente": "Thiago Barbosa", "cirurgia": "ENXERTO", "protese": "PRÓTESE SUP", "controle": "", "data": "", "obs": "", "extra": "", "status": "pending"}, {"id": 17, "mes": "Mai/26", "mesKey": "MAIO 26", "paciente": "Aline Moreira", "cirurgia": "IMPLANTE SUP", "protese": "PRÓTESE INF", "controle": "", "data": "2026-01-15", "obs": "PEDIR TOMO", "extra": "", "status": "pending"}, {"id": 18, "mes": "Mai/26", "mesKey": "MAIO 26", "paciente": "Marcelo Pinto", "cirurgia": "IMPLANTE INF", "protese": "", "controle": "", "data": "2026-02-10", "obs": "LEVOU PEDIDO TOMO", "extra": "", "status": "pending"}, {"id": 19, "mes": "Mai/26", "mesKey": "MAIO 26", "paciente": "Vanessa Araujo", "cirurgia": "ENXERTO + IMPLANTE", "protese": "", "controle": "CONTROLE", "data": "", "obs": "PEDIR PAN", "extra": "", "status": "scheduled"}, {"id": 20, "mes": "Mai/26", "mesKey": "MAIO 26", "paciente": "Eduardo Teixeira", "cirurgia": "", "protese": "PRÓTESE", "controle": "", "data": "2026-03-05", "obs": "AGUARDANDO RETORNO", "extra": "", "status": "info"}, {"id": 21, "mes": "Jun/26", "mesKey": "JUNHO 26", "paciente": "Renata Lopes", "cirurgia": "", "protese": "PROTOCOLO", "controle": "", "data": "2026-01-22", "obs": "FEZ A TOMO", "extra": "", "status": "pending"}, {"id": 22, "mes": "Jun/26", "mesKey": "JUNHO 26", "paciente": "Felipe Castro", "cirurgia": "IMPLANTE", "protese": "PRÓTESE SUP", "controle": "", "data": "", "obs": "AGENDADA", "extra": "", "status": "pending"}, {"id": 23, "mes": "Jun/26", "mesKey": "JUNHO 26", "paciente": "Tatiane Melo", "cirurgia": "ENXERTO", "protese": "PRÓTESE INF", "controle": "CONTROLE", "data": "2026-04-18", "obs": "RETORNO EM 6 MESES", "extra": "", "status": "pending"}, {"id": 24, "mes": "Jun/26", "mesKey": "JUNHO 26", "paciente": "Rodrigo Freitas", "cirurgia": "IMPLANTE SUP", "protese": "", "controle": "", "data": "", "obs": "", "extra": "", "status": "scheduled"}, {"id": 25, "mes": "Jul/26", "mesKey": "JULHO 26", "paciente": "Sandra Correia", "cirurgia": "IMPLANTE INF", "protese": "", "controle": "", "data": "2026-01-15", "obs": "PEDIR TOMO", "extra": "", "status": "info"}, {"id": 26, "mes": "Jul/26", "mesKey": "JULHO 26", "paciente": "Vinicius Ramos", "cirurgia": "ENXERTO + IMPLANTE", "protese": "PRÓTESE", "controle": "", "data": "2026-02-10", "obs": "LEVOU PEDIDO TOMO", "extra": "", "status": "pending"}, {"id": 27, "mes": "Jul/26", "mesKey": "JULHO 26", "paciente": "Debora Nascimento", "cirurgia": "", "protese": "PROTOCOLO", "controle": "CONTROLE", "data": "", "obs": "PEDIR PAN", "extra": "", "status": "pending"}, {"id": 28, "mes": "Jul/26", "mesKey": "JULHO 26", "paciente": "Andre Cunha", "cirurgia": "", "protese": "PRÓTESE SUP", "controle": "", "data": "2026-03-05", "obs": "AGUARDANDO RETORNO", "extra": "", "status": "pending"}, {"id": 29, "mes": "Ago/26", "mesKey": "AGOSTO 26", "paciente": "Priscila Monteiro", "cirurgia": "IMPLANTE", "protese": "PRÓTESE INF", "controle": "", "data": "2026-01-22", "obs": "FEZ A TOMO", "extra": "", "status": "scheduled"}, {"id": 30, "mes": "Ago/26", "mesKey": "AGOSTO 26", "paciente": "Leandro Azevedo", "cirurgia": "ENXERTO", "protese": "", "controle": "", "data": "", "obs": "AGENDADA", "extra": "", "status": "info"}, {"id": 31, "mes": "Ago/26", "mesKey": "AGOSTO 26", "paciente": "Claudia Batista", "cirurgia": "IMPLANTE SUP", "protese": "", "controle": "CONTROLE", "data": "2026-04-18", "obs": "RETORNO EM 6 MESES", "extra": "", "status": "pending"}, {"id": 32, "mes": "Ago/26", "mesKey": "AGOSTO 26", "paciente": "Marcos Vieira", "cirurgia": "IMPLANTE INF", "protese": "PRÓTESE", "controle": "", "data": "", "obs": "", "extra": "", "status": "pending"}, {"id": 33, "mes": "Set/26", "mesKey": "SETEMBRO 26", "paciente": "Simone Fonseca", "cirurgia": "ENXERTO + IMPLANTE", "protese": "PROTOCOLO", "controle": "", "data": "2026-01-15", "obs": "PEDIR TOMO", "extra": "", "status": "pending"}, {"id": 34, "mes": "Set/26", "mesKey": "SETEMBRO 26", "paciente": "Gustavo Nogueira", "cirurgia": "", "protese": "PRÓTESE SUP", "controle": "", "data": "2026-02-10", "obs": "LEVOU PEDIDO TOMO", "extra": "", "status": "scheduled"}, {"id": 35, "mes": "Set/26", "mesKey": "SETEMBRO 26", "paciente": "Leticia Campos", "cirurgia": "", "protese": "PRÓTESE INF", "controle": "CONTROLE", "data": "", "obs": "PEDIR PAN", "extra": "", "status": "info"}, {"id": 36, "mes": "Set/26", "mesKey": "SETEMBRO 26", "paciente": "Fabio Cardozo", "cirurgia": "IMPLANTE", "protese": "", "controle": "", "data": "2026-03-05", "obs": "AGUARDANDO RETORNO", "extra": "", "status": "pending"}, {"id": 37, "mes": "Out/26", "mesKey": "OUTUBRO 26", "paciente": "Daniela Pires", "cirurgia": "ENXERTO", "protese": "", "controle": "", "data": "2026-01-22", "obs": "FEZ A TOMO", "extra": "", "status": "pending"}, {"id": 38, "mes": "Out/26", "mesKey": "OUTUBRO 26", "paciente": "Henrique Soares", "cirurgia": "IMPLANTE SUP", "protese": "PRÓTESE", "controle": "", "data": "", "obs": "AGENDADA", "extra": "", "status": "pending"}, {"id": 39, "mes": "Out/26", "mesKey": "OUTUBRO 26", "paciente": "Adriana Reis", "cirurgia": "IMPLANTE INF", "protese": "PROTOCOLO", "controle": "CONTROLE", "data": "2026-04-18", "obs": "RETORNO EM 6 MESES", "extra": "", "status": "scheduled"}, {"id": 40, "mes": "Out/26", "mesKey": "OUTUBRO 26", "paciente": "Paulo Tavares", "cirurgia": "ENXERTO + IMPLANTE", "protese": "PRÓTESE SUP", "controle": "", "data": "", "obs": "", "extra": "", "status": "info"}];
 
-const CSS=`@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;600;700&display=swap'); *{box-sizing:border-box;margin:0;padding:0;} body{font-family:'DM Sans',sans-serif;background:${G.bg};color:${G.text};font-variant-numeric:lining-nums;} ::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-thumb{background:${G.accentDark};border-radius:3px;} input,select,textarea,button{font-family:'DM Sans',sans-serif;} @keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}} .fi{animation:fi .2s ease}`;
+const CSS=`@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;600;700&display=swap'); *{box-sizing:border-box;margin:0;padding:0;} body{font-family:'DM Sans',sans-serif;background:${G.bg};color:${G.text};font-variant-numeric:lining-nums;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;} ::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-thumb{background:${G.accentDark};border-radius:3px;} input,select,textarea,button{font-family:'DM Sans',sans-serif;} @keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}} .fi{animation:fi .2s ease}`;
 
 const PAY_BASE=["Dinheiro","PIX","Cartão Crédito","Cartão Débito","Convênio","Cheque"];
 const PAY=PAY_BASE; // backward compat
@@ -189,6 +192,44 @@ const SLOTS_ORTO=(()=>{const s=[];for(let h=8;h<=19;h++){for(let m=0;m<60;m+=20)
 s.push(`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`);}}return s;})();
 const MONTHS_PT=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 const EXPENSE_CATS=["Aluguel","Água","Luz","Internet","Telefone","Salários","Material","Equipamento","Manutenção","Contabilidade","Outros"];
+const FEATURES=[
+{icon:"📅",t:"Agenda",d:"Agendamento com confirmação automática, controle de faltas e remarcações."},
+{icon:"👥",t:"Pacientes",d:"Fichas completas, anamnese digital, histórico e documentos do paciente."},
+{icon:"🦷",t:"Tratamentos",d:"Planos de tratamento, evolução clínica e parcelamento."},
+{icon:"💰",t:"Orçamentos",d:"Propostas, aprovação e acompanhamento de pendências."},
+{icon:"🦿",t:"Implantes",d:"Controle de cirurgias, enxertos, próteses e retornos."},
+{icon:"💵",t:"Financeiro",d:"Recebimentos, despesas, comissões e fluxo de caixa."},
+{icon:"🤖",t:"WhatsApp",d:"Mensagens e lembretes automáticos para os pacientes."},
+{icon:"📄",t:"Documentos",d:"Receituário, atestado e orçamento com os dados da sua clínica."},
+{icon:"📊",t:"Relatórios",d:"Indicadores e desempenho da clínica num painel único."},
+{icon:"⚙️",t:"Administração",d:"Usuários, permissões, procedimentos, valores e configurações."},
+];
+const HELP_TIPS={
+dash:"Visão geral da clínica: pacientes, agenda de hoje e receita do mês. Os cartões coloridos avisam pendências.",
+agenda:"Agende, confirme e remarque consultas. Toque num horário livre para criar um novo agendamento.",
+pacs:"Cadastro de pacientes: ficha, anamnese, tratamentos e documentos. Use a busca para achar rápido.",
+pros:"Controle das próteses: o que está no laboratório, aguardando ou já instalado.",
+impl:"Acompanhe cirurgias de implante, enxertos, próteses e retornos, organizados por mês.",
+lems:"Lembretes e tarefas da equipe. O número em vermelho mostra quantas estão pendentes.",
+fin:"Financeiro: recebimentos, despesas e fluxo de caixa da clínica.",
+rel:"Relatórios e indicadores de desempenho da clínica.",
+desp:"Lançamento e acompanhamento dos gastos da clínica.",
+stk:"Controle do estoque de materiais.",
+pixdent:"Repasses (Pix) para os dentistas.",
+rec:"Emissão de receituário já com os dados da sua clínica.",
+orient:"Textos de orientação ao paciente (pós-operatório, cuidados, etc.). Escolha o paciente para personalizar com o nome e envie por WhatsApp ou imprima.",
+adm:"Área administrativa: usuários, procedimentos, valores, dados da clínica e configurações."
+};
+const ORIENT0=[{id:1001,title:"🦷 Pós-operatório de extração (geral)",text:"Olá, {nome}! Para uma boa recuperação após a extração:\n\n• Morda a gaze por 30 a 40 minutos. Se ainda sangrar, troque por uma gaze limpa e umedecida e morda de novo.\n• Nas primeiras 24h: não bocheche, não cuspa com força, não use canudo e não fume — isso pode deslocar o coágulo.\n• Faça compressas de gelo na face (20 min sim, 20 min não) nas primeiras horas para diminuir o inchaço.\n• No primeiro dia, prefira alimentos frios e pastosos. Evite comida quente e dura.\n• A partir do dia seguinte, faça bochechos suaves com água morna e sal após as refeições.\n• Tome a medicação conforme orientamos.\n\nSe tiver dor intensa, sangramento que não para ou inchaço aumentando, entre em contato com a gente.\n\nMelhoras! — Equipe {clinica}"},
+{id:1002,title:"⚠️ Pré-cirurgia de siso (com aviso de parestesia)",text:"Olá, {nome}! Orientações antes da sua cirurgia de siso:\n\n• Faça uma refeição leve antes do horário, salvo orientação contrária.\n• Tome a medicação pré-operatória, se foi prescrita.\n• Use roupas confortáveis e, se possível, venha acompanhado(a).\n\nSobre o risco de parestesia: por estarem próximos a nervos, a remoção de sisos tem um pequeno risco de parestesia — uma dormência ou formigamento temporário no lábio, língua ou queixo. Na grande maioria dos casos é passageiro e se resolve com o tempo. Estamos à disposição para esclarecer qualquer dúvida antes do procedimento.\n\nAtenciosamente, {clinica}"},
+{id:1003,title:"🔩 Cuidados após instalar implante",text:"Olá, {nome}! Cuidados após a colocação do implante:\n\n• Nas primeiras 24h, faça compressas de gelo na região para controlar o inchaço.\n• Evite alimentos quentes e duros; prefira comida fria e macia nos primeiros dias.\n• Higienize a boca com delicadeza, sem traumatizar a área operada.\n• Não fume — o cigarro prejudica a cicatrização e a osseointegração (a fixação do implante ao osso).\n• Tome a medicação conforme orientamos e não falte aos retornos: o acompanhamento é essencial para o sucesso do implante.\n\nQualquer dúvida ou desconforto fora do comum, fale com a gente.\n\n— Equipe {clinica}"},
+{id:1004,title:"😬 Orientações com aparelho ortodôntico",text:"Olá, {nome}! Para o seu tratamento com aparelho dar certo:\n\n• Escove os dentes após todas as refeições, com atenção redobrada ao redor dos bráquetes.\n• Use o fio dental diariamente (o passa-fio ajuda bastante).\n• Evite alimentos duros (gelo, castanhas, balas duras) e pegajosos (chicletes, caramelos): eles soltam ou entortam o aparelho.\n• Se soltar um bráquete ou um fio estiver machucando, use a cera ortodôntica e entre em contato para reagendar o ajuste.\n• Não falte às manutenções — elas mantêm o tratamento no ritmo certo.\n\nConte com a gente! — Equipe {clinica}"},
+{id:1005,title:"🦷 Uso da contenção (pós-aparelho)",text:"Olá, {nome}! Parabéns por concluir o aparelho! Agora a contenção é o que mantém o seu sorriso no lugar:\n\n• Use a contenção exatamente como orientamos — é ela que impede os dentes de voltarem à posição antiga.\n• Contenção removível: guarde sempre no estojo (nunca em guardanapo), limpe com escova e água e leve nas consultas.\n• Contenção fixa (atrás dos dentes): capriche na higiene e use o passa-fio para limpar embaixo do fio.\n• Compareça às revisões para conferirmos se está tudo certo.\n\nO resultado é seu — vamos preservá-lo juntos! — Equipe {clinica}"},
+{id:1006,title:"📅 Importância do controle semestral",text:"Olá, {nome}! Já faz um tempo da sua última visita?\n\nA revisão a cada 6 meses é a melhor forma de manter a saúde da sua boca:\n• Detectamos cáries e problemas na gengiva ainda no início, quando o tratamento é simples.\n• A limpeza profissional remove o tártaro que a escova não alcança.\n• Prevenir é sempre mais rápido, confortável e econômico do que tratar.\n\nVamos agendar a sua revisão? Estamos te esperando! — Equipe {clinica}"},
+{id:1007,title:"🪥 Escovação e fio dental",text:"Olá, {nome}! O básico bem feito é o que mantém o sorriso saudável:\n\n• Escove pelo menos 3 vezes ao dia, principalmente antes de dormir.\n• Use escova de cerdas macias e pasta do tamanho de um grão de ervilha.\n• Faça movimentos suaves, sem força excessiva, e não esqueça da língua.\n• Passe o fio dental todos os dias — ele limpa entre os dentes, onde a escova não chega.\n\nPequenos hábitos, grande diferença. — Equipe {clinica}"},
+{id:1008,title:"✨ Clareamento dental (o que evitar)",text:"Olá, {nome}! Para o seu clareamento render ao máximo, atenção nos primeiros dias:\n\n• Evite o que mancha: café, chá preto, vinho tinto, refrigerantes escuros, molhos (soja, tomate), beterraba e frutas vermelhas.\n• Nada de cigarro — é um dos que mais escurece os dentes.\n• Siga a 'dieta branca': prefira alimentos claros (arroz, frango, peixe, leite, banana).\n• Pode haver uma sensibilidade passageira — é normal e tende a passar em poucos dias.\n\nQualquer dúvida, é só chamar. — Equipe {clinica}"},
+{id:1009,title:"🩹 Após canal / restauração",text:"Olá, {nome}! Cuidados após o seu procedimento:\n\n• Espere a anestesia passar antes de comer, para não morder a bochecha ou a língua.\n• Evite mastigar do lado tratado nas primeiras horas.\n• Uma leve sensibilidade nos primeiros dias é normal.\n• Conclua o tratamento como combinamos: um dente tratado pode ficar mais frágil e muitas vezes precisa de proteção (coroa ou restauração definitiva).\n• Se a mordida ficar 'alta' ou desconfortável, entre em contato para um pequeno ajuste.\n\nMelhoras! — Equipe {clinica}"},
+{id:1010,title:"🩸 Sangramento gengival / gengivite",text:"Olá, {nome}! Notou a gengiva sangrando ao escovar?\n\nCostuma ser sinal de inflamação (gengivite) por acúmulo de placa — e a solução não é parar de escovar, é caprichar:\n• Continue escovando o local que sangra, com delicadeza e cerdas macias.\n• Use o fio dental diariamente: boa parte da inflamação fica entre os dentes.\n• Uma limpeza profissional remove o tártaro e ajuda a gengiva a se recuperar.\n\nSe o sangramento persistir, vamos agendar uma avaliação. — Equipe {clinica}"}];
 
 // ── Seeds ──────────────────────────────────────────────────
 const USERS0=[
@@ -294,8 +335,8 @@ const getFirstDayOfMonth=(y,m)=>new Date(y,m,1).getDay();
 // ── UI Atoms ───────────────────────────────────────────────
 const Bdg=({l,col,sm})=><span style={{background:col+"22",color:col,borderRadius:20,padding:sm?"2px 7px":"3px 10px",fontSize:sm?10:11,fontWeight:700,whiteSpace:"nowrap"}}>{l}</span>;
 const Btn=({ch,onClick,v="p",sm,style,dis})=>{
-const b={cursor:dis?"not-allowed":"pointer",opacity:dis?.5:1,border:"none",borderRadius:8,fontFamily:"'DM Sans'",fontWeight:600,transition:"all .15s",display:"inline-flex",alignItems:"center",gap:5,whiteSpace:"nowrap"};
-const vs={p:{background:G.primary,color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},g:{background:"transparent",color:G.primary,border:`1.5px solid ${G.primary}`,padding:sm?"4px 10px":"8px 16px",fontSize:sm?12:14},r:{background:G.red,color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},y:{background:G.yellow,color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},w:{background:"#25D366",color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},f:{background:G.accent,color:G.primary,padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14}};
+const b={cursor:dis?"not-allowed":"pointer",opacity:dis?.5:1,border:"none",borderRadius:9,fontFamily:"'DM Sans'",fontWeight:600,transition:"all .15s",display:"inline-flex",alignItems:"center",gap:5,whiteSpace:"nowrap"};
+const vs={p:{background:G.primary,color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14,boxShadow:"0 2px 7px rgba(27,94,74,.20)"},g:{background:"transparent",color:G.primary,border:`1.5px solid ${G.primary}`,padding:sm?"4px 10px":"8px 16px",fontSize:sm?12:14},r:{background:G.red,color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},y:{background:G.yellow,color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},w:{background:"#25D366",color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},f:{background:G.accent,color:G.primary,padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14}};
 return <button style={{...b,...vs[v],...style}} onClick={onClick} disabled={dis}>{ch}</button>;
 };
 const Inp=({lb,val,set,type="text",ph,ro,style,min,max})=>(
@@ -531,8 +572,9 @@ function AnamForm({patientName,initial,onSubmit,onCancel,submitting}){
 }
 
 async function avisarAnamnese(token,a){
-  var RAILWAY="https://whatsapp-webhook-production-d5be.up.railway.app";
-  var KEY="orbe2025";
+  var RAILWAY=RAILWAY_URL;
+  var KEY=WA_DISPARO_KEY;
+  if(!RAILWAY)return;
   var pid="";
   try{var dec=atob(token);pid=dec.replace("orbe:","");}catch(e){pid="";}
   var nome="";
@@ -4957,7 +4999,7 @@ function ImportWizard({pats,setPats}){
 }
 
 
-function Admin({users,setUsers,procs,setProcs,dents,setDents,labs,setLabs,perms,setPerms,logs,setLogs,user,pats,setPats,appts,setAppts,recs,setRecs,treats,setTreats,budgets,setBudgets,pros,setPros,rems,setRems,stock,setStock,expenses,setExpenses,impl,setImpl,waAuto,setWaAuto,waAutoLog,clinica,setClinica}){
+function Admin({users,setUsers,procs,setProcs,dents,setDents,labs,setLabs,perms,setPerms,logs,setLogs,user,pats,setPats,appts,setAppts,recs,setRecs,treats,setTreats,budgets,setBudgets,pros,setPros,rems,setRems,stock,setStock,expenses,setExpenses,impl,setImpl,waAuto,setWaAuto,waAutoLog,clinica,setClinica,waCfg,setWaCfg,helpHints,setHelpHints}){
 const [tab,setTab]=useState("users");const [lfUser,setLfUser]=useState("all");const [lfPat,setLfPat]=useState("");const [lfData,setLfData]=useState("");const [lfTipo,setLfTipo]=useState("all");
 const TIPOS_LOG=["all","agenda","paciente","financeiro","estoque","protese","lembrete","remarcar","admin"];
 const TIPO_L_LOG={all:"Todos",agenda:"Agenda",paciente:"Paciente",financeiro:"Financeiro",estoque:"Estoque",protese:"Protese",lembrete:"Lembrete",remarcar:"Remarcar",admin:"Admin"};
@@ -5010,7 +5052,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 <div style={{display:"flex",gap:0,borderBottom:"2px solid "+G.border,overflowX:"auto"}}>
 {[["clinica","Dados da Clínica"],["users","Usuarios"],["import","Importar Dados"],["dents","Dentistas"],["procs","Procedimentos"],["labs","Laboratorios"],["agenda","Horarios"],["access","Acessos"],["wa","🤖 WhatsApp"],["log","Log"],["backup","Backup"]].map(([k,l])=><button key={k} onClick={()=>setTab(k)} style={{border:"none",background:"none",padding:"9px 13px",fontFamily:"'DM Sans'",fontWeight:700,fontSize:12,cursor:"pointer",color:tab===k?G.primary:G.muted,borderBottom:"3px solid "+(tab===k?G.primary:"transparent"),marginBottom:-2,whiteSpace:"nowrap"}}>{l}</button>)}
 </div>
-{tab==="clinica"&&<div style={{display:"flex",flexDirection:"column",gap:14,maxWidth:560}} className="fi"><div style={{background:G.accent,borderRadius:10,padding:"10px 13px",fontSize:12,color:G.primary}}>Estes dados aparecem nos documentos da clínica (orçamento, atestado, receituário) e no topo do sistema. Preencha com os dados da sua clínica.</div><Inp lb="Nome da Clínica" val={clinica.nome} set={v=>setClinica(p=>({...p,nome:v}))} ph="Ex: Clínica Sorriso"/><Inp lb="Endereço completo" val={clinica.endereco} set={v=>setClinica(p=>({...p,endereco:v}))} ph="Rua, número - bairro, cidade - UF"/><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:11}}><Inp lb="Telefone" val={clinica.telefone} set={v=>setClinica(p=>({...p,telefone:v}))} ph="(11) 0000-0000"/><Inp lb="WhatsApp" val={clinica.whatsapp} set={v=>setClinica(p=>({...p,whatsapp:v}))} ph="(11) 90000-0000"/></div><div style={{background:G.card,border:"1px solid "+G.border,borderRadius:12,padding:"14px 16px"}}><div style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px",marginBottom:8}}>Pré-visualização</div><div style={{fontFamily:"'Cormorant Garamond'",fontSize:20,color:G.primary}}>{clinica.nome||"—"}</div><div style={{fontSize:13,color:G.muted,marginTop:3}}>{clinica.endereco||"—"}</div><div style={{fontSize:13,color:G.muted}}>{[clinica.telefone&&("Tel. "+clinica.telefone),clinica.whatsapp&&("WhatsApp "+clinica.whatsapp)].filter(Boolean).join("  ·  ")}</div></div></div>}
+{tab==="clinica"&&<div style={{display:"flex",flexDirection:"column",gap:14,maxWidth:560}} className="fi"><div style={{background:G.accent,borderRadius:10,padding:"10px 13px",fontSize:12,color:G.primary}}>Estes dados aparecem nos documentos da clínica (orçamento, atestado, receituário) e no topo do sistema. Preencha com os dados da sua clínica.</div><Inp lb="Nome da Clínica" val={clinica.nome} set={v=>setClinica(p=>({...p,nome:v}))} ph="Ex: Clínica Sorriso"/><Inp lb="Endereço completo" val={clinica.endereco} set={v=>setClinica(p=>({...p,endereco:v}))} ph="Rua, número - bairro, cidade - UF"/><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:11}}><Inp lb="Telefone" val={clinica.telefone} set={v=>setClinica(p=>({...p,telefone:v}))} ph="(11) 0000-0000"/><Inp lb="WhatsApp" val={clinica.whatsapp} set={v=>setClinica(p=>({...p,whatsapp:v}))} ph="(11) 90000-0000"/></div><div style={{background:G.card,border:"1px solid "+G.border,borderRadius:12,padding:"14px 16px"}}><div style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px",marginBottom:8}}>Pré-visualização</div><div style={{fontFamily:"'Cormorant Garamond'",fontSize:20,color:G.primary}}>{clinica.nome||"—"}</div><div style={{fontSize:13,color:G.muted,marginTop:3}}>{clinica.endereco||"—"}</div><div style={{fontSize:13,color:G.muted}}>{[clinica.telefone&&("Tel. "+clinica.telefone),clinica.whatsapp&&("WhatsApp "+clinica.whatsapp)].filter(Boolean).join("  ·  ")}</div></div><div style={{background:G.card,border:"1px solid "+G.border,borderRadius:12,padding:"14px 16px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}><div><div style={{fontSize:13,fontWeight:700,color:G.text}}>💡 Dicas de ajuda nas telas</div><div style={{fontSize:11,color:G.muted,marginTop:2}}>Mostra uma dica explicativa no topo de cada tela. Desligue quando a equipe já conhecer o sistema.</div></div><label style={{cursor:"pointer",flexShrink:0}}><input type="checkbox" checked={helpHints} onChange={function(e){setHelpHints(e.target.checked);}}/></label></div></div>}
 {tab==="import"&&<ImportWizard pats={pats} setPats={setPats}/>}
 {tab==="users"&&<div style={{display:"flex",flexDirection:"column",gap:9}}>
 <div style={{background:G.accent,borderRadius:10,padding:"9px 12px",fontSize:12,color:G.primary}}>
@@ -5184,7 +5226,7 @@ return novo;
 })}
 </div>}
 
-{tab==="wa"&&<WaAutoTab waAuto={waAuto} setWaAuto={setWaAuto} waAutoLog={waAutoLog}/>}
+{tab==="wa"&&<WaAutoTab waAuto={waAuto} setWaAuto={setWaAuto} waAutoLog={waAutoLog} waCfg={waCfg} setWaCfg={setWaCfg}/>}
 
 {tab==="log"&&
 
@@ -5683,6 +5725,107 @@ var MEDS_BASE=[
 {id:"listerine",cat:"Antisséptico",name:"Listerine Cool Blue",pos:"Bochechar após a escovação",qty:"1 frasco"},
 ];
 
+function Orientacoes({orient,setOrient,pats,user}){
+var [patId,setPatId]=useState("");
+var [open,setOpen]=useState(null);
+var [editId,setEditId]=useState(null);
+var [ef,setEf]=useState({title:"",text:""});
+var [novo,setNovo]=useState(false);
+var [nf,setNf]=useState({title:"",text:""});
+var pat=pats.find(function(p){return String(p.id)===String(patId);});
+var nome=pat?((pat.name||"").split(" ")[0]||"paciente"):"paciente";
+var fill=function(t){return (t||"").replace(/\{nome\}/g,nome).replace(/\{clinica\}/g,CLINICA_INFO.nome||"nossa clínica");};
+var startEdit=function(o){setEditId(o.id);setEf({title:o.title,text:o.text});setOpen(o.id);};
+var saveEdit=function(){if(!ef.title.trim()||!ef.text.trim()){alert("Preencha título e texto.");return;}setOrient(function(prev){return prev.map(function(o){return o.id===editId?Object.assign({},o,{title:ef.title,text:ef.text}):o;});});setEditId(null);};
+var del=function(o){if(!confirm("Excluir a orientação \""+o.title+"\"?"))return;setOrient(function(prev){return prev.filter(function(x){return x.id!==o.id;});});if(open===o.id)setOpen(null);};
+var addNovo=function(){if(!nf.title.trim()||!nf.text.trim()){alert("Preencha título e texto.");return;}var item={id:nid(),title:nf.title,text:nf.text};setOrient(function(prev){return prev.concat([item]);});setNovo(false);setNf({title:"",text:""});};
+var sendWA=function(o){if(!pat){alert("Selecione um paciente primeiro (no topo da tela).");return;}if(!pat.phone){alert("Este paciente não tem telefone cadastrado.");return;}wa(pat.phone,o.title+"\n\n"+fill(o.text));};
+var doPrint=function(o){
+var hoje=new Date().toLocaleDateString("pt-BR",{day:"2-digit",month:"long",year:"numeric"});
+var nomePac=pat?pat.name:"";
+var texto=fill(o.text);
+var h="<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width'><style>";
+h+="@page{size:A4 portrait;margin:15mm 20mm}";
+h+="*{box-sizing:border-box;margin:0;padding:0}";
+h+="body{font-family:Georgia,serif;background:#fff;color:#222;-webkit-print-color-adjust:exact}";
+h+="@media print{.noprint{display:none!important}}";
+h+=".page{width:100%;min-height:227mm;display:flex;flex-direction:column}";
+h+=".header{text-align:center;margin-bottom:22px}";
+h+=".header h1{font-size:14pt;letter-spacing:4px;color:#1B5E4A;text-transform:uppercase;font-weight:normal;margin-bottom:4px}";
+h+=".header h2{font-size:9pt;letter-spacing:3px;color:#999;text-transform:uppercase;font-weight:normal}";
+h+=".header hr{border:none;border-top:1.5px solid #1B5E4A;margin:12px 0}";
+h+=".dtitle{font-size:16pt;font-weight:700;color:#1B5E4A;margin:6px 0 18px;text-align:center}";
+h+=".para{font-size:12pt;margin-bottom:14px}";
+h+=".btext{font-size:12pt;line-height:1.7;color:#333;white-space:pre-wrap;margin-bottom:20px}";
+h+=".footer{margin-top:auto;padding-top:50px;text-align:center;border-top:1.5px solid #1B5E4A}";
+h+=".footer .date{font-size:12pt;color:#666;font-style:italic;margin-bottom:6px}";
+h+=".footer .clinic{font-size:13pt;font-weight:700;color:#222;margin-bottom:4px}";
+h+=".footer .addr{font-size:10pt;color:#aaa}";
+h+="</style></head><body><div class='page'>";
+h+="<div class='header'><h1>"+(CLINICA_INFO.nome||"")+"</h1><h2>Orientações ao Paciente</h2><hr/></div>";
+if(nomePac)h+="<div class='para'>Para: <strong>"+nomePac+"</strong></div>";
+h+="<div class='dtitle'>"+o.title+"</div>";
+h+="<div class='btext'>"+texto.replace(/</g,"&lt;")+"</div>";
+h+="<div class='footer'><div class='date'>"+hoje+"</div><div class='clinic'>"+(CLINICA_INFO.nome||"")+"</div><div class='addr'>"+(CLINICA_INFO.endereco||"")+(CLINICA_INFO.telefone?(" | Tel. "+CLINICA_INFO.telefone):"")+"</div></div>";
+h+="<div class='noprint' style='text-align:center;margin-top:34px'><button onclick='window.print()' style='padding:10px 22px;font-size:14px;background:#1B5E4A;color:#fff;border:none;border-radius:8px;cursor:pointer'>&#128424; Imprimir / Salvar PDF</button></div>";
+h+="</div></body></html>";
+var blob=new Blob([h],{type:"text/html"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noreferrer";document.body.appendChild(a);a.click();setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},1500);
+};
+return (
+<div style={{display:"flex",flexDirection:"column",gap:14}} className="fi">
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}}>
+<h2 style={{fontFamily:"'Cormorant Garamond'",fontSize:26,margin:0}}>Orientações</h2>
+<Btn ch="+ Nova Orientação" sm onClick={function(){setNf({title:"",text:""});setNovo(true);}}/>
+</div>
+<PatSearch lb="Paciente (opcional — personaliza com o nome)" val={patId} set={setPatId} pats={pats} optional/>
+{pat&&<div style={{fontSize:12,color:G.muted,marginTop:-6}}>{"Os textos serão personalizados para "+nome+"."}</div>}
+{novo&&<div style={{background:G.card,border:"1.5px solid "+G.primary,borderRadius:12,padding:"14px 16px",display:"flex",flexDirection:"column",gap:10}}>
+<div style={{fontWeight:700,fontSize:14,color:G.primary}}>Nova Orientação</div>
+<Inp lb="Título" val={nf.title} set={function(v){setNf(function(pp){return Object.assign({},pp,{title:v});});}} ph="Ex: 🦷 Cuidados pós-extração"/>
+<div style={{display:"flex",flexDirection:"column",gap:4}}>
+<label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Texto</label>
+<textarea value={nf.text} onChange={function(e){setNf(function(pp){return Object.assign({},pp,{text:e.target.value});});}} rows={6} placeholder="Escreva a orientação. Use {nome} para o nome do paciente e {clinica} para o nome da clínica." style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"8px 11px",fontSize:13,outline:"none",resize:"vertical",fontFamily:"'DM Sans'"}}/>
+</div>
+<div style={{display:"flex",gap:8,justifyContent:"flex-end"}}>
+<Btn ch="Cancelar" v="g" onClick={function(){setNovo(false);}}/>
+<Btn ch="Salvar" onClick={addNovo}/>
+</div>
+</div>}
+<div style={{display:"flex",flexDirection:"column",gap:8}}>
+{orient.map(function(o){
+var isOpen=open===o.id;var isEdit=editId===o.id;
+return <div key={o.id} style={{background:G.card,border:"1.5px solid "+(isOpen?G.primary:G.border),borderRadius:12,overflow:"hidden"}}>
+<div onClick={function(){setOpen(isOpen?null:o.id);if(isEdit)setEditId(null);}} style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,padding:"13px 15px",cursor:"pointer"}}>
+<span style={{fontWeight:700,fontSize:14,color:isOpen?G.primary:G.text}}>{o.title}</span>
+<span style={{color:G.muted,fontSize:16,fontWeight:700,transform:isOpen?"rotate(90deg)":"none",transition:"transform .15s",flexShrink:0}}>{"›"}</span>
+</div>
+{isOpen&&<div style={{padding:"0 15px 15px"}}>
+{isEdit?<div style={{display:"flex",flexDirection:"column",gap:10}}>
+<Inp lb="Título" val={ef.title} set={function(v){setEf(function(pp){return Object.assign({},pp,{title:v});});}}/>
+<div style={{display:"flex",flexDirection:"column",gap:4}}>
+<label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Texto</label>
+<textarea value={ef.text} onChange={function(e){setEf(function(pp){return Object.assign({},pp,{text:e.target.value});});}} rows={9} style={{border:"1.5px solid "+G.primary,borderRadius:8,padding:"8px 11px",fontSize:13,outline:"none",resize:"vertical",fontFamily:"'DM Sans'"}}/>
+</div>
+<div style={{display:"flex",gap:8,justifyContent:"flex-end"}}>
+<Btn ch="Cancelar" v="g" sm onClick={function(){setEditId(null);}}/>
+<Btn ch="Salvar" sm onClick={saveEdit}/>
+</div>
+</div>:<div>
+<div style={{fontSize:13,lineHeight:1.65,color:G.text,whiteSpace:"pre-wrap",margin:"4px 0 12px"}}>{fill(o.text)}</div>
+<div style={{display:"flex",gap:7,flexWrap:"wrap"}}>
+<Btn ch="📱 WhatsApp" v="w" sm onClick={function(){sendWA(o);}}/>
+<Btn ch="🖨️ Imprimir" v="g" sm onClick={function(){doPrint(o);}}/>
+<Btn ch="✏️ Editar" v="g" sm onClick={function(){startEdit(o);}}/>
+<Btn ch="🗑️ Excluir" v="r" sm onClick={function(){del(o);}}/>
+</div>
+</div>}
+</div>}
+</div>;
+})}
+</div>
+</div>
+);
+}
 function Receituario({pats,dents,user}){
 var [patId,setPatId]=useState("");
 var [dentId,setDentId]=useState(String(user.level===1&&user.dentistId?user.dentistId:dents[0]&&dents[0].id||""));
@@ -6630,8 +6773,8 @@ return out;
 }
 
 function _newerWa(a,b){if(!b)return a;if(!a)return b;return ((b._ts||0)>((a._ts)||0))?b:a;}
-const RAILWAY_URL="https://whatsapp-webhook-production-d5be.up.railway.app";
-const WA_DISPARO_KEY="orbe2025";
+var RAILWAY_URL="";     // CONFIGURE: servidor de disparo do cliente (aba WhatsApp)
+var WA_DISPARO_KEY="";  // CONFIGURE: chave do servidor do cliente (aba WhatsApp)
 const PCIR_WA=["extra","exodont","cirurg","implante","enxerto","sinus","frenectomia","apicectomia","biopsia","gengivo"];
 const WA_TPL=[
 {k:"confirmacao",tpl:"confirmacao_consulta",label:"Confirmação ao agendar",quando:"Na hora em que a consulta é criada na Agenda",sample:["Maria Silva","Dr. Ricardo Mendes","15/06/2026","14:00"]},
@@ -6644,6 +6787,7 @@ const WA_TPL=[
 {k:"orcamento",tpl:"orcamento_pendente",label:"Orçamento pendente",quando:"3 dias após criar um orçamento que continua Em espera",sample:["Maria Silva","Dr. Ricardo Mendes"]},
 ];
 async function dispararWA(template,fone,params){
+if(!RAILWAY_URL)return{ok:false,err:"WhatsApp nao configurado"};
 try{
 var n=String(fone||"").replace(/\D/g,"");
 if(n.length===11||n.length===10)n="55"+n;
@@ -6653,7 +6797,7 @@ if(d&&d.ok)return{ok:true};
 return{ok:false,err:(d&&(d.error||d.err))||("HTTP "+r.status)};
 }catch(e){return{ok:false,err:"sem conexão com o servidor"};}
 }
-function WaAutoTab({waAuto,setWaAuto,waAutoLog}){
+function WaAutoTab({waAuto,setWaAuto,waAutoLog,waCfg,setWaCfg}){
 var cfg=waAuto||{};
 var [testStatus,setTestStatus]=useState("");
 var [testFone,setTestFone]=useState("");
@@ -6679,6 +6823,7 @@ return <button onClick={props.onClick} style={{border:"none",width:46,height:26,
 </button>;
 };
 return <div style={{display:"flex",flexDirection:"column",gap:14}}>
+<div style={{background:G.card,border:"1px solid "+G.border,borderRadius:12,padding:"13px 15px",display:"flex",flexDirection:"column",gap:10}}><div style={{fontSize:13,fontWeight:700,color:G.primary}}>{"\ud83d\udd0c Integra\u00e7\u00e3o WhatsApp"}</div><div style={{fontSize:11,color:G.muted,lineHeight:1.5}}>{"Para enviar mensagens, conecte a conta WhatsApp Business (Meta) e o servidor de disparo da cl\u00ednica. Sem isso, as automa\u00e7\u00f5es abaixo ficam indispon\u00edveis. Cada cl\u00ednica usa as pr\u00f3prias credenciais."}</div><Inp lb="Token da API (Meta)" val={waCfg.token} set={function(v){setWaCfg(function(pp){return Object.assign({},pp,{token:v});});}} ph="EAA..."/><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}><Inp lb="ID do n\u00famero (Phone Number ID)" val={waCfg.phoneId} set={function(v){setWaCfg(function(pp){return Object.assign({},pp,{phoneId:v});});}} ph="1234567890"/><Inp lb="Link da anamnese" val={waCfg.anamLink} set={function(v){setWaCfg(function(pp){return Object.assign({},pp,{anamLink:v});});}} ph="https://..."/></div><Inp lb="URL do servidor de disparo" val={waCfg.backendUrl} set={function(v){setWaCfg(function(pp){return Object.assign({},pp,{backendUrl:v});});}} ph="https://seu-servidor.up.railway.app"/><Inp lb="Chave do servidor (x-api-key)" val={waCfg.backendKey} set={function(v){setWaCfg(function(pp){return Object.assign({},pp,{backendKey:v});});}} ph="sua-chave"/><div style={{fontSize:11,fontWeight:700,color:(waCfg.token&&waCfg.phoneId&&waCfg.backendUrl)?G.success:G.muted}}>{(waCfg.token&&waCfg.phoneId&&waCfg.backendUrl)?"\u2713 WhatsApp configurado":"\u25cb WhatsApp n\u00e3o configurado"}</div></div>
 <div style={{background:G.accent,borderRadius:12,padding:"12px 14px",fontSize:12,color:G.primary,lineHeight:1.5}}>
 {"🤖 Mensagens automáticas pelo WhatsApp oficial da clínica ("+CLINICA_INFO.telefone+"). Tudo começa DESLIGADO — o sistema continua como está até você ligar. Ligue o interruptor geral e depois só os tipos que quiser automatizar."}
 </div>
@@ -6744,37 +6889,34 @@ const [l,sl]=useState("");const [p,sp]=useState("");const [e,se]=useState("");
 const go=function(){var u=users.find(function(u){return u.login===l&&u.pass===p&&u.active;});u?onLogin(u):se("Login ou senha inválidos");};
 return(
 
-<div style={{minHeight:"100vh",background:"linear-gradient(160deg,#1B5E4A 0%,#0a2e1e 60%,#051a10 100%)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
-<div style={{width:"100%",maxWidth:380,display:"flex",flexDirection:"column",alignItems:"center"}}>
-<div style={{textAlign:"center",marginBottom:32}}>
-<div style={{fontSize:64,marginBottom:12}}>{"🦷"}</div>
-<div style={{fontFamily:"'Cormorant Garamond'",fontSize:34,color:"#fff",fontWeight:700,lineHeight:1.1}}>Orbe</div>
-<div style={{fontSize:12,color:"rgba(255,255,255,.5)",marginTop:6,letterSpacing:"2px",textTransform:"uppercase"}}>Sistema de Gestão</div>
-<div style={{width:40,height:2,background:"rgba(255,255,255,.2)",margin:"14px auto 0",borderRadius:2}}/>
+<div style={{minHeight:"100vh",background:"radial-gradient(circle at 50% 28%,#206b54 0%,#123f2f 48%,#08251a 100%)",display:"flex",alignItems:"center",justifyContent:"center",padding:20,position:"relative",overflow:"hidden"}}>
+<style>{`@keyframes orbit{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} .orbe-li::placeholder{color:rgba(255,255,255,.32)} .orbe-li:focus{border-color:rgba(240,236,225,.5)!important;background:rgba(255,255,255,.1)!important}`}</style>
+<div style={{position:"absolute",top:"20%",left:"50%",transform:"translateX(-50%)",width:360,height:360,borderRadius:"50%",background:"radial-gradient(circle,rgba(240,236,225,.12),transparent 70%)",pointerEvents:"none"}}/>
+<div style={{width:"100%",maxWidth:400,display:"flex",flexDirection:"column",alignItems:"center",position:"relative"}}>
+<div style={{position:"relative",width:110,height:110,marginBottom:22,display:"flex",alignItems:"center",justifyContent:"center"}}>
+<div style={{position:"absolute",inset:0,borderRadius:"50%",border:"1.5px solid rgba(240,236,225,.42)"}}/>
+<div style={{position:"absolute",inset:11,borderRadius:"50%",border:"1px solid rgba(240,236,225,.18)"}}/>
+<div style={{position:"absolute",inset:0,animation:"orbit 9s linear infinite"}}><div style={{position:"absolute",top:-3,left:"50%",marginLeft:-3,width:6,height:6,borderRadius:"50%",background:"#EFEADD",boxShadow:"0 0 8px rgba(240,236,225,.7)"}}/></div>
+<div style={{fontSize:46,lineHeight:1}}>🦷</div>
 </div>
-<div style={{background:"rgba(255,255,255,.07)",borderRadius:20,padding:"32px 28px",width:"100%",boxShadow:"0 24px 64px rgba(0,0,0,.4)",border:"1px solid rgba(255,255,255,.1)",boxSizing:"border-box"}}>
-<div style={{display:"flex",flexDirection:"column",gap:14}}>
+<div style={{fontFamily:"'Cormorant Garamond'",fontSize:48,color:"#fff",fontWeight:700,lineHeight:1,letterSpacing:"1px"}}>Orbe</div>
+<div style={{fontSize:11,color:"rgba(240,236,225,.88)",marginTop:9,letterSpacing:"4px",textTransform:"uppercase",fontWeight:600}}>Gestão Odontológica</div>
+<div style={{width:50,height:1,background:"linear-gradient(90deg,transparent,rgba(240,236,225,.5),transparent)",margin:"22px auto 26px"}}/>
+<div style={{background:"rgba(255,255,255,.05)",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",borderRadius:18,padding:"30px 26px",width:"100%",boxShadow:"0 24px 60px rgba(0,0,0,.45)",border:"1px solid rgba(255,255,255,.08)",borderTop:"1px solid rgba(240,236,225,.25)",boxSizing:"border-box"}}>
+<div style={{display:"flex",flexDirection:"column",gap:16}}>
 <div>
-<label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.5)",textTransform:"uppercase",letterSpacing:"1px",display:"block",marginBottom:6}}>Usuário</label>
-<input value={l} onChange={function(ev){sl(ev.target.value);}} onKeyDown={function(ev){if(ev.key==="Enter")go();}}
-placeholder="Digite seu usuário"
-style={{width:"100%",background:"rgba(255,255,255,.1)",border:"1.5px solid rgba(255,255,255,.15)",borderRadius:10,padding:"12px 14px",fontSize:14,color:"#fff",outline:"none",boxSizing:"border-box"}}/>
+<label style={{fontSize:10.5,fontWeight:700,color:"rgba(255,255,255,.55)",textTransform:"uppercase",letterSpacing:"1.5px",display:"block",marginBottom:7}}>Usuário</label>
+<input className="orbe-li" value={l} onChange={function(ev){sl(ev.target.value);}} onKeyDown={function(ev){if(ev.key==="Enter")go();}} placeholder="Digite seu usuário" style={{width:"100%",background:"rgba(255,255,255,.07)",border:"1.5px solid rgba(255,255,255,.14)",borderRadius:11,padding:"12px 14px",fontSize:14,color:"#fff",outline:"none",boxSizing:"border-box",transition:"border-color .15s,background .15s"}}/>
 </div>
 <div>
-<label style={{fontSize:11,fontWeight:700,color:"rgba(255,255,255,.5)",textTransform:"uppercase",letterSpacing:"1px",display:"block",marginBottom:6}}>Senha</label>
-<input value={p} onChange={function(ev){sp(ev.target.value);}} onKeyDown={function(ev){if(ev.key==="Enter")go();}}
-type="password" placeholder="••••••••"
-style={{width:"100%",background:"rgba(255,255,255,.1)",border:"1.5px solid rgba(255,255,255,.15)",borderRadius:10,padding:"12px 14px",fontSize:14,color:"#fff",outline:"none",boxSizing:"border-box"}}/>
+<label style={{fontSize:10.5,fontWeight:700,color:"rgba(255,255,255,.55)",textTransform:"uppercase",letterSpacing:"1.5px",display:"block",marginBottom:7}}>Senha</label>
+<input className="orbe-li" value={p} onChange={function(ev){sp(ev.target.value);}} onKeyDown={function(ev){if(ev.key==="Enter")go();}} type="password" placeholder="••••••••" style={{width:"100%",background:"rgba(255,255,255,.07)",border:"1.5px solid rgba(255,255,255,.14)",borderRadius:11,padding:"12px 14px",fontSize:14,color:"#fff",outline:"none",boxSizing:"border-box",transition:"border-color .15s,background .15s"}}/>
 </div>
-{e&&<div style={{background:"rgba(244,67,54,.15)",border:"1px solid rgba(244,67,54,.3)",color:"#ff8a80",borderRadius:8,padding:"8px 12px",fontSize:12,textAlign:"center"}}>{e}</div>}
-<button onClick={go} style={{background:"linear-gradient(135deg,#2E7D5A,#1B5E4A)",border:"none",borderRadius:12,padding:"14px",fontSize:15,fontWeight:700,cursor:"pointer",color:"#fff",marginTop:4,boxShadow:"0 4px 16px rgba(0,0,0,.3)"}}>
-Entrar
-</button>
+{e&&<div style={{background:"rgba(192,57,43,.18)",border:"1px solid rgba(192,57,43,.35)",color:"#ffb3a8",borderRadius:9,padding:"9px 12px",fontSize:12,textAlign:"center"}}>{e}</div>}
+<button onClick={go} style={{background:"linear-gradient(135deg,#F4F0E7 0%,#E7DFCD 100%)",border:"none",borderRadius:11,padding:"14px",fontSize:14.5,fontWeight:700,cursor:"pointer",color:"#0a2a1e",marginTop:6,boxShadow:"0 8px 22px rgba(0,0,0,.28)",letterSpacing:".4px"}}>Entrar</button>
 </div>
 </div>
-<div style={{marginTop:20,fontSize:11,color:"rgba(255,255,255,.2)",textAlign:"center"}}>
-{"Orbe © 2025"}
-</div>
+<div style={{marginTop:22,fontSize:10.5,color:"rgba(255,255,255,.3)",textAlign:"center",letterSpacing:".5px"}}>{"Orbe · Gestão Odontológica"}</div>
 </div>
 </div>
 );
@@ -6898,6 +7040,10 @@ export default function App(){
 const [user,setUser]=useState(null);const [view,setView]=useState("dash");
 const [clinica,setClinica]=useState(CLINICA_INFO);
 useEffect(function(){CLINICA_INFO=clinica;},[clinica]); // espelha config nos documentos
+const [waCfg,setWaCfg]=useState({token:"",phoneId:"",backendUrl:"",backendKey:"",anamLink:""});
+useEffect(function(){WA_TOKEN=waCfg.token;WA_PHONE_ID=waCfg.phoneId;RAILWAY_URL=waCfg.backendUrl;WA_DISPARO_KEY=waCfg.backendKey;ANAM_LINK=waCfg.anamLink;},[waCfg]); // espelha credenciais WhatsApp
+const [showWelcome,setShowWelcome]=useState(false);const [welcomeSeenBy,setWelcomeSeenBy]=useState(null);const [welcomeDontShow,setWelcomeDontShow]=useState(false);const [helpHints,setHelpHints]=useState(true);const [orient,setOrient]=useState(ORIENT0);
+useEffect(function(){if(welcomeSeenBy&&user&&welcomeSeenBy.indexOf(user.id)===-1)setShowWelcome(true);},[user,welcomeSeenBy]); // boas-vindas por usuario (cada novo ve no 1o acesso)
 const [agendaSelDate,setAgendaSelDate]=useState(today());
 const [pats,setPats]=useState(PATS0);const [appts,setAppts]=useState(APPTS0);const [remarcar,setRemarcar]=useState([]);const [showRemModal,setShowRemModal]=useState(null);const [espera,setEspera]=useState([]);const [logs,setLogs]=useState([]);
 const [waTemplates,setWaTemplates]=useState({});
@@ -7015,6 +7161,7 @@ useEffect(()=>{
 supabase.loadFull().then(full=>{
 const data=full?full.data:null;
 if(full)lastServerTs.current=full.updated_at;
+setWelcomeSeenBy((data&&Array.isArray(data.welcomeSeenBy))?data.welcomeSeenBy:[]); // por usuario: cada login novo que ainda nao dispensou ve as boas-vindas
 if(data){
 try{
 if(data.appts?.length)setAppts(data.appts.map(function(a){return a&&a.time?Object.assign({},a,{time:pad2(a.time)}):a;}));
@@ -7041,6 +7188,9 @@ if(data.users?.length)setUsers(data.users);
 if(data.dents?.length)setDents(data.dents);
 if(data.perms)setPerms(data.perms);
 if(data.clinica)setClinica(data.clinica);
+if(data.waCfg)setWaCfg(data.waCfg);
+if(typeof data.helpHints==="boolean")setHelpHints(data.helpHints);
+if(data.orient)setOrient(data.orient);
 if(data.labs?.length)setLabs(data.labs);
 if(data.procs?.length)setProcs(data.procs);
 if(data.stock?.length)setStock(data.stock);
@@ -7139,7 +7289,7 @@ useEffect(function(){
         }
       }
     }catch(e){}
-    const payload={appts,recs,treats,pros,rems,budgets,users,dents,perms,labs,procs,stock,impl,expenses,logs,remarcar,espera,prosProcs,implCat,implMov,semTicks,anivTicks,waTemplates,pacsTicks,waAuto:_newerWa(waAuto,waAutoSrvRef.current),waSent,waAutoLog,gastos,clinica,delApts:delAptsRef.current};
+    const payload={appts,recs,treats,pros,rems,budgets,users,dents,perms,labs,procs,stock,impl,expenses,logs,remarcar,espera,prosProcs,implCat,implMov,semTicks,anivTicks,waTemplates,pacsTicks,waAuto:_newerWa(waAuto,waAutoSrvRef.current),waSent,waAutoLog,gastos,clinica,waCfg,welcomeSeenBy,helpHints,orient,delApts:delAptsRef.current};
     if(!patTableOk.current)payload.pats=pats;
     var ok=false;
     for(var i=0;i<3&&!ok;i++){
@@ -7187,7 +7337,7 @@ useEffect(function(){
       isSaving.current=false;
     }
   },800);
-},[pats,appts,recs,treats,pros,rems,budgets,users,dents,perms,labs,procs,stock,impl,expenses,logs,remarcar,espera,prosProcs,implCat,implMov,semTicks,anivTicks,waTemplates,pacsTicks,gastos,waAuto,waSent,waAutoLog,clinica]);
+},[pats,appts,recs,treats,pros,rems,budgets,users,dents,perms,labs,procs,stock,impl,expenses,logs,remarcar,espera,prosProcs,implCat,implMov,semTicks,anivTicks,waTemplates,pacsTicks,gastos,waAuto,waSent,waAutoLog,clinica,waCfg,welcomeSeenBy,helpHints,orient]);
 
 // ── SALVAR PACIENTES na tabela propria (apenas os que mudaram) ──
 patsRef.current=pats;
@@ -7447,7 +7597,7 @@ const ALL_NAV=[
 {id:"impl",l:"🔩 Implantes",lv:2},{id:"lems",l:"📌 Lembretes",lv:1,b:remBadge},
 {id:"fin",l:"💰 Financeiro",lv:3},{id:"pixdent",l:"💸 Pix Dentistas",lv:1},{id:"rel",l:"📊 Relatórios",lv:2},
 {id:"desp",l:"💸 Gastos",lv:3},{id:"stk",l:"📦 Estoque",lv:2},
-{id:"rec",l:"📋 Receituário",lv:1},{id:"pdent",l:"💰 Recebimentos",lv:1},{id:"adm",l:"⚙️ Administrativo",lv:3},
+{id:"orient",l:"📖 Orientações",lv:1},{id:"rec",l:"📋 Receituário",lv:1},{id:"pdent",l:"💰 Recebimentos",lv:1},{id:"adm",l:"⚙️ Administrativo",lv:3},
 ];
 const NAV=ALL_NAV.filter(n=>n.lv<=user.level);
 const go=v=>{
@@ -7477,7 +7627,7 @@ return <>
 
 <div style={{display:"flex",minHeight:"100vh"}}>
   {/* Sidebar */}
-  <div className={`sidebar${sideOpen?"":" closed"}`} style={{background:`linear-gradient(180deg,${G.primary},#0a2e1e)`,display:"flex",flexDirection:"column",padding:"14px 10px",gap:2,flexShrink:0}}>
+  <div className={`sidebar${sideOpen?"":" closed"}`} style={{background:`linear-gradient(180deg,${G.primary},#0a2e1e)`,display:"flex",flexDirection:"column",padding:"14px 10px",gap:2,flexShrink:0,overflowY:"auto"}}>
     {/* Header with close button on mobile */}
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",padding:"6px 4px 14px"}}>
       <div>
@@ -7493,6 +7643,7 @@ return <>
     <div style={{marginTop:"auto",borderTop:"1px solid rgba(255,255,255,.12)",paddingTop:10}}>
       <div style={{fontSize:10,color:"rgba(255,255,255,.5)",marginBottom:4,paddingLeft:3}}>{user.name}</div>
       <div style={{fontSize:9,color:"rgba(255,255,255,.3)",paddingLeft:3,marginBottom:6}}>{["","Básico","Intermediário","Total"][user.level]}</div>
+      <button onClick={function(){setWelcomeDontShow(false);setShowWelcome(true);}} style={{border:"none",background:"rgba(255,255,255,.1)",borderRadius:8,padding:"6px 11px",color:"rgba(255,255,255,.7)",fontSize:11,fontWeight:600,cursor:"pointer",width:"100%",textAlign:"left",marginBottom:6}}>❓ Ajuda / Tour</button>{user.level>=3&&<button onClick={function(){if(!SUPPORT_WA){alert("Suporte ainda não configurado.");return;}window.open("https://wa.me/"+SUPPORT_WA.replace(/\D/g,"")+"?text="+encodeURIComponent(SUPPORT_MSG),"_blank");}} style={{border:"none",background:"rgba(255,255,255,.1)",borderRadius:8,padding:"6px 11px",color:"rgba(255,255,255,.7)",fontSize:11,fontWeight:600,cursor:"pointer",width:"100%",textAlign:"left",marginBottom:6}}>💬 Falar com suporte</button>}
       <button onClick={()=>setUser(null)} style={{border:"none",background:"rgba(255,255,255,.1)",borderRadius:8,padding:"6px 11px",color:"rgba(255,255,255,.7)",fontSize:11,fontWeight:600,cursor:"pointer",width:"100%",textAlign:"left"}}>🚪 Sair</button>
     </div>
   </div>
@@ -7508,7 +7659,7 @@ return <>
       </div>
       {remBadge>0&&<span style={{background:G.red,color:"#fff",borderRadius:10,padding:"2px 8px",fontSize:10,fontWeight:700}}>{remBadge}</span>}
     </div>
-    <div style={{padding:"16px",paddingTop:view==="agenda"?"84px":"16px"}}>
+    <div style={{padding:"16px",paddingTop:view==="agenda"?"84px":"16px"}}>{helpHints&&HELP_TIPS[view]&&<div style={{background:G.accent,border:"1px solid "+G.border,borderRadius:10,padding:"9px 13px",fontSize:12,color:G.primary,lineHeight:1.5,marginBottom:12,display:"flex",gap:8,alignItems:"flex-start"}}><span>💡</span><span>{HELP_TIPS[view]}</span></div>}
       {view==="dash"&&user.level>=3&&<Dashboard appts={appts} pats={pats} recs={recs} rems={rems} pros={pros} dents={dents} setView={go} user={user} gastos={gastos} stock={stock} labs={labs} pacsTicks={pacsTicks} setPacsTicks={setPacsTicks} espera={espera} waSent={waSent}/>}
       {view==="agenda"&&<Agenda appts={appts} setAppts={setAppts} {...cp} setPats={setPats} recs={recs} setRecs={setRecs} treats={treats} setTreats={setTreats} budgets={budgets} setBudgets={setBudgets} agendaSelDate={agendaSelDate} setAgendaSelDate={setAgendaSelDate}/>}
       {view==="pacs"&&<Pacientes pats={pats} setPats={setPats} recs={recs} setRecs={setRecs} treats={treats} setTreats={setTreats} budgets={budgets} setBudgets={setBudgets} appts={appts} dents={dents} procs={procs} user={user} addLog={function(tipo,desc,pat){mkLog(logs,setLogs,user,tipo,desc,pat);}}/>}
@@ -7522,8 +7673,9 @@ return <>
       {view==="stk"&&<Estoque stock={stock} setStock={setStock} implCat={implCat} setImplCat={setImplCat} implMov={implMov} setImplMov={setImplMov} pats={pats} dents={dents} addLog={cp.addLog}/>}
       {view==="pixdent"&&<PixDentistas recs={recs} setRecs={setRecs} dents={dents} pats={pats} user={user}/>}
       {view==="pdent"&&<PainelDentista pats={pats} dents={dents} treats={treats} setTreats={setTreats} user={user}/>}
+    {view==="orient"&&<Orientacoes orient={orient} setOrient={setOrient} pats={pats} user={user}/>}
     {view==="rec"&&<Receituario pats={pats} dents={dents} user={user}/>}
-    {view==="adm"&&<Admin users={users} setUsers={setUsers} procs={procs} setProcs={setProcs} dents={dents} setDents={setDents} labs={labs} setLabs={setLabs} perms={perms} setPerms={setPerms} logs={logs} setLogs={setLogs} user={user} pats={pats} setPats={setPats} appts={appts} setAppts={setAppts} recs={recs} setRecs={setRecs} treats={treats} setTreats={setTreats} budgets={budgets} setBudgets={setBudgets} pros={pros} setPros={setPros} rems={rems} setRems={setRems} stock={stock} setStock={setStock} expenses={expenses} setExpenses={setExpenses} impl={impl} setImpl={setImpl} waAuto={waAuto} setWaAuto={setWaAuto} waAutoLog={waAutoLog} clinica={clinica} setClinica={setClinica}/>}
+    {view==="adm"&&<Admin users={users} setUsers={setUsers} procs={procs} setProcs={setProcs} dents={dents} setDents={setDents} labs={labs} setLabs={setLabs} perms={perms} setPerms={setPerms} logs={logs} setLogs={setLogs} user={user} pats={pats} setPats={setPats} appts={appts} setAppts={setAppts} recs={recs} setRecs={setRecs} treats={treats} setTreats={setTreats} budgets={budgets} setBudgets={setBudgets} pros={pros} setPros={setPros} rems={rems} setRems={setRems} stock={stock} setStock={setStock} expenses={expenses} setExpenses={setExpenses} impl={impl} setImpl={setImpl} waAuto={waAuto} setWaAuto={setWaAuto} waAutoLog={waAutoLog} clinica={clinica} setClinica={setClinica} waCfg={waCfg} setWaCfg={setWaCfg} helpHints={helpHints} setHelpHints={setHelpHints}/>}
     </div>
   </div>
 </div>
@@ -7554,6 +7706,8 @@ return <>
     </button>;
   })}
 </div>
+
+{showWelcome&&<Modal open={showWelcome} close={function(){setShowWelcome(false);}} title={"👋 Bem-vindo ao "+clinica.nome} wide ch={<div style={{display:"flex",flexDirection:"column",gap:14}}><div style={{fontSize:13,color:G.muted,lineHeight:1.55}}>{"Este é o seu sistema de gestão odontológica completo. Veja abaixo o que ele faz — depois é só explorar. Você pode reabrir este guia quando quiser no botão ❓ Ajuda, no menu lateral."}</div><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(210px,1fr))",gap:10}}>{FEATURES.map(function(f){return <div key={f.t} style={{background:G.bg,border:"1px solid "+G.border,borderRadius:11,padding:"11px 13px"}}><div style={{fontSize:14,fontWeight:700,color:G.primary,marginBottom:3}}>{f.icon+" "+f.t}</div><div style={{fontSize:11.5,color:G.muted,lineHeight:1.45}}>{f.d}</div></div>;})}</div><label style={{display:"flex",alignItems:"center",gap:8,fontSize:12,color:G.text,cursor:"pointer",userSelect:"none"}}><input type="checkbox" checked={welcomeDontShow} onChange={function(e){setWelcomeDontShow(e.target.checked);}}/>{"Não mostrar novamente"}</label><div style={{display:"flex",gap:9,justifyContent:"flex-end"}}><Btn ch="Dispensar" v="g" onClick={function(){if(welcomeDontShow&&user)setWelcomeSeenBy(function(prev){var a=(prev||[]);return a.indexOf(user.id)===-1?a.concat([user.id]):a;});setShowWelcome(false);}}/><Btn ch="Explorar agora ✨" onClick={function(){if(welcomeDontShow&&user)setWelcomeSeenBy(function(prev){var a=(prev||[]);return a.indexOf(user.id)===-1?a.concat([user.id]):a;});setShowWelcome(false);}}/></div></div>}/>}
 
 </>;
 }
