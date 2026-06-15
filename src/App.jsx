@@ -121,7 +121,7 @@ const getWA=(templates,key,vars)=>{
 };
 const IMPL_DATA_SEED=[{"id": 1, "mes": "Jan/26", "mesKey": "JANEIRO 26", "paciente": "Ana Beatriz Souza", "cirurgia": "IMPLANTE", "protese": "", "controle": "", "data": "2026-01-15", "obs": "PEDIR TOMO", "extra": "", "status": "pending"}, {"id": 2, "mes": "Jan/26", "mesKey": "JANEIRO 26", "paciente": "Carlos Eduardo Lima", "cirurgia": "ENXERTO", "protese": "PRÓTESE", "controle": "", "data": "2026-02-10", "obs": "LEVOU PEDIDO TOMO", "extra": "", "status": "pending"}, {"id": 3, "mes": "Jan/26", "mesKey": "JANEIRO 26", "paciente": "Mariana Alves Pereira", "cirurgia": "IMPLANTE SUP", "protese": "PROTOCOLO", "controle": "CONTROLE", "data": "", "obs": "PEDIR PAN", "extra": "", "status": "pending"}, {"id": 4, "mes": "Jan/26", "mesKey": "JANEIRO 26", "paciente": "Pedro Henrique Costa", "cirurgia": "IMPLANTE INF", "protese": "PRÓTESE SUP", "controle": "", "data": "2026-03-05", "obs": "AGUARDANDO RETORNO", "extra": "", "status": "scheduled"}, {"id": 5, "mes": "Fev/26", "mesKey": "FEVEREIRO 26", "paciente": "Juliana Ribeiro", "cirurgia": "ENXERTO + IMPLANTE", "protese": "PRÓTESE INF", "controle": "", "data": "2026-01-22", "obs": "FEZ A TOMO", "extra": "", "status": "info"}, {"id": 6, "mes": "Fev/26", "mesKey": "FEVEREIRO 26", "paciente": "Roberto Carvalho", "cirurgia": "IMPLANTE", "protese": "", "controle": "", "data": "", "obs": "AGENDADA", "extra": "", "status": "pending"}, {"id": 7, "mes": "Fev/26", "mesKey": "FEVEREIRO 26", "paciente": "Fernanda Dias", "cirurgia": "IMPLANTE", "protese": "", "controle": "CONTROLE", "data": "2026-04-18", "obs": "RETORNO EM 6 MESES", "extra": "", "status": "pending"}, {"id": 8, "mes": "Fev/26", "mesKey": "FEVEREIRO 26", "paciente": "Lucas Martins", "cirurgia": "IMPLANTE", "protese": "PRÓTESE", "controle": "", "data": "", "obs": "", "extra": "", "status": "pending"}, {"id": 9, "mes": "Mar/26", "mesKey": "MARÇO 26", "paciente": "Patricia Gomes", "cirurgia": "ENXERTO", "protese": "PROTOCOLO", "controle": "", "data": "2026-01-15", "obs": "PEDIR TOMO", "extra": "", "status": "scheduled"}, {"id": 10, "mes": "Mar/26", "mesKey": "MARÇO 26", "paciente": "Rafael Oliveira", "cirurgia": "IMPLANTE SUP", "protese": "PRÓTESE SUP", "controle": "", "data": "2026-02-10", "obs": "LEVOU PEDIDO TOMO", "extra": "", "status": "info"}, {"id": 11, "mes": "Mar/26", "mesKey": "MARÇO 26", "paciente": "Camila Ferreira", "cirurgia": "IMPLANTE INF", "protese": "PRÓTESE INF", "controle": "CONTROLE", "data": "", "obs": "PEDIR PAN", "extra": "", "status": "pending"}, {"id": 12, "mes": "Mar/26", "mesKey": "MARÇO 26", "paciente": "Bruno Almeida", "cirurgia": "ENXERTO + IMPLANTE", "protese": "", "controle": "", "data": "2026-03-05", "obs": "AGUARDANDO RETORNO", "extra": "", "status": "pending"}, {"id": 13, "mes": "Abr/26", "mesKey": "ABRIL 26", "paciente": "Larissa Santos", "cirurgia": "IMPLANTE", "protese": "", "controle": "", "data": "2026-01-22", "obs": "FEZ A TOMO", "extra": "", "status": "pending"}, {"id": 14, "mes": "Abr/26", "mesKey": "ABRIL 26", "paciente": "Gabriel Rocha", "cirurgia": "", "protese": "PRÓTESE", "controle": "", "data": "", "obs": "AGENDADA", "extra": "", "status": "scheduled"}, {"id": 15, "mes": "Abr/26", "mesKey": "ABRIL 26", "paciente": "Beatriz Cardoso", "cirurgia": "IMPLANTE", "protese": "PROTOCOLO", "controle": "CONTROLE", "data": "2026-04-18", "obs": "RETORNO EM 6 MESES", "extra": "", "status": "info"}, {"id": 16, "mes": "Abr/26", "mesKey": "ABRIL 26", "paciente": "Thiago Barbosa", "cirurgia": "ENXERTO", "protese": "PRÓTESE SUP", "controle": "", "data": "", "obs": "", "extra": "", "status": "pending"}, {"id": 17, "mes": "Mai/26", "mesKey": "MAIO 26", "paciente": "Aline Moreira", "cirurgia": "IMPLANTE SUP", "protese": "PRÓTESE INF", "controle": "", "data": "2026-01-15", "obs": "PEDIR TOMO", "extra": "", "status": "pending"}, {"id": 18, "mes": "Mai/26", "mesKey": "MAIO 26", "paciente": "Marcelo Pinto", "cirurgia": "IMPLANTE INF", "protese": "", "controle": "", "data": "2026-02-10", "obs": "LEVOU PEDIDO TOMO", "extra": "", "status": "pending"}, {"id": 19, "mes": "Mai/26", "mesKey": "MAIO 26", "paciente": "Vanessa Araujo", "cirurgia": "ENXERTO + IMPLANTE", "protese": "", "controle": "CONTROLE", "data": "", "obs": "PEDIR PAN", "extra": "", "status": "scheduled"}, {"id": 20, "mes": "Mai/26", "mesKey": "MAIO 26", "paciente": "Eduardo Teixeira", "cirurgia": "", "protese": "PRÓTESE", "controle": "", "data": "2026-03-05", "obs": "AGUARDANDO RETORNO", "extra": "", "status": "info"}, {"id": 21, "mes": "Jun/26", "mesKey": "JUNHO 26", "paciente": "Renata Lopes", "cirurgia": "", "protese": "PROTOCOLO", "controle": "", "data": "2026-01-22", "obs": "FEZ A TOMO", "extra": "", "status": "pending"}, {"id": 22, "mes": "Jun/26", "mesKey": "JUNHO 26", "paciente": "Felipe Castro", "cirurgia": "IMPLANTE", "protese": "PRÓTESE SUP", "controle": "", "data": "", "obs": "AGENDADA", "extra": "", "status": "pending"}, {"id": 23, "mes": "Jun/26", "mesKey": "JUNHO 26", "paciente": "Tatiane Melo", "cirurgia": "ENXERTO", "protese": "PRÓTESE INF", "controle": "CONTROLE", "data": "2026-04-18", "obs": "RETORNO EM 6 MESES", "extra": "", "status": "pending"}, {"id": 24, "mes": "Jun/26", "mesKey": "JUNHO 26", "paciente": "Rodrigo Freitas", "cirurgia": "IMPLANTE SUP", "protese": "", "controle": "", "data": "", "obs": "", "extra": "", "status": "scheduled"}, {"id": 25, "mes": "Jul/26", "mesKey": "JULHO 26", "paciente": "Sandra Correia", "cirurgia": "IMPLANTE INF", "protese": "", "controle": "", "data": "2026-01-15", "obs": "PEDIR TOMO", "extra": "", "status": "info"}, {"id": 26, "mes": "Jul/26", "mesKey": "JULHO 26", "paciente": "Vinicius Ramos", "cirurgia": "ENXERTO + IMPLANTE", "protese": "PRÓTESE", "controle": "", "data": "2026-02-10", "obs": "LEVOU PEDIDO TOMO", "extra": "", "status": "pending"}, {"id": 27, "mes": "Jul/26", "mesKey": "JULHO 26", "paciente": "Debora Nascimento", "cirurgia": "", "protese": "PROTOCOLO", "controle": "CONTROLE", "data": "", "obs": "PEDIR PAN", "extra": "", "status": "pending"}, {"id": 28, "mes": "Jul/26", "mesKey": "JULHO 26", "paciente": "Andre Cunha", "cirurgia": "", "protese": "PRÓTESE SUP", "controle": "", "data": "2026-03-05", "obs": "AGUARDANDO RETORNO", "extra": "", "status": "pending"}, {"id": 29, "mes": "Ago/26", "mesKey": "AGOSTO 26", "paciente": "Priscila Monteiro", "cirurgia": "IMPLANTE", "protese": "PRÓTESE INF", "controle": "", "data": "2026-01-22", "obs": "FEZ A TOMO", "extra": "", "status": "scheduled"}, {"id": 30, "mes": "Ago/26", "mesKey": "AGOSTO 26", "paciente": "Leandro Azevedo", "cirurgia": "ENXERTO", "protese": "", "controle": "", "data": "", "obs": "AGENDADA", "extra": "", "status": "info"}, {"id": 31, "mes": "Ago/26", "mesKey": "AGOSTO 26", "paciente": "Claudia Batista", "cirurgia": "IMPLANTE SUP", "protese": "", "controle": "CONTROLE", "data": "2026-04-18", "obs": "RETORNO EM 6 MESES", "extra": "", "status": "pending"}, {"id": 32, "mes": "Ago/26", "mesKey": "AGOSTO 26", "paciente": "Marcos Vieira", "cirurgia": "IMPLANTE INF", "protese": "PRÓTESE", "controle": "", "data": "", "obs": "", "extra": "", "status": "pending"}, {"id": 33, "mes": "Set/26", "mesKey": "SETEMBRO 26", "paciente": "Simone Fonseca", "cirurgia": "ENXERTO + IMPLANTE", "protese": "PROTOCOLO", "controle": "", "data": "2026-01-15", "obs": "PEDIR TOMO", "extra": "", "status": "pending"}, {"id": 34, "mes": "Set/26", "mesKey": "SETEMBRO 26", "paciente": "Gustavo Nogueira", "cirurgia": "", "protese": "PRÓTESE SUP", "controle": "", "data": "2026-02-10", "obs": "LEVOU PEDIDO TOMO", "extra": "", "status": "scheduled"}, {"id": 35, "mes": "Set/26", "mesKey": "SETEMBRO 26", "paciente": "Leticia Campos", "cirurgia": "", "protese": "PRÓTESE INF", "controle": "CONTROLE", "data": "", "obs": "PEDIR PAN", "extra": "", "status": "info"}, {"id": 36, "mes": "Set/26", "mesKey": "SETEMBRO 26", "paciente": "Fabio Cardozo", "cirurgia": "IMPLANTE", "protese": "", "controle": "", "data": "2026-03-05", "obs": "AGUARDANDO RETORNO", "extra": "", "status": "pending"}, {"id": 37, "mes": "Out/26", "mesKey": "OUTUBRO 26", "paciente": "Daniela Pires", "cirurgia": "ENXERTO", "protese": "", "controle": "", "data": "2026-01-22", "obs": "FEZ A TOMO", "extra": "", "status": "pending"}, {"id": 38, "mes": "Out/26", "mesKey": "OUTUBRO 26", "paciente": "Henrique Soares", "cirurgia": "IMPLANTE SUP", "protese": "PRÓTESE", "controle": "", "data": "", "obs": "AGENDADA", "extra": "", "status": "pending"}, {"id": 39, "mes": "Out/26", "mesKey": "OUTUBRO 26", "paciente": "Adriana Reis", "cirurgia": "IMPLANTE INF", "protese": "PROTOCOLO", "controle": "CONTROLE", "data": "2026-04-18", "obs": "RETORNO EM 6 MESES", "extra": "", "status": "scheduled"}, {"id": 40, "mes": "Out/26", "mesKey": "OUTUBRO 26", "paciente": "Paulo Tavares", "cirurgia": "ENXERTO + IMPLANTE", "protese": "PRÓTESE SUP", "controle": "", "data": "", "obs": "", "extra": "", "status": "info"}];
 
-const CSS=`@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;600;700&display=swap'); *{box-sizing:border-box;margin:0;padding:0;} body{font-family:'DM Sans',sans-serif;background:${G.bg};color:${G.text};font-variant-numeric:lining-nums;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;} ::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-thumb{background:${G.accentDark};border-radius:3px;} input,select,textarea,button{font-family:'DM Sans',sans-serif;} @keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}} .fi{animation:fi .2s ease}`;
+const CSS=`@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@400;600;700&display=swap'); *{box-sizing:border-box;margin:0;padding:0;} body{font-family:'DM Sans',sans-serif;background:${G.bg};color:${G.text};font-variant-numeric:lining-nums;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;} ::-webkit-scrollbar{width:9px;height:9px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:#CFC8B6;border-radius:9px;border:2px solid ${G.bg};}::-webkit-scrollbar-thumb:hover{background:${G.gold};} input,select,textarea,button{font-family:'DM Sans',sans-serif;} input:focus,select:focus,textarea:focus{border-color:${G.primary} !important;box-shadow:0 0 0 3px ${G.primary}1f;} button{transition:box-shadow .16s ease,filter .16s ease,background-color .16s ease,transform .08s ease;} button:active{transform:scale(.985);} html{scroll-behavior:smooth;} @keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}} .fi{animation:fi .2s ease}`;
 
 const PAY_BASE=["Dinheiro","PIX","Cartão Crédito","Cartão Débito","Convênio","Cheque"];
 const PAY=PAY_BASE; // backward compat
@@ -206,6 +206,7 @@ const FEATURES=[
 ];
 const HELP_TIPS={
 dash:"Visão geral da clínica: pacientes, agenda de hoje e receita do mês. Os cartões coloridos avisam pendências.",
+audit:"Central de controle (só admin): mostra automaticamente tudo que ficou pendente — confirmações, baixas, próteses atrasadas, recados, etc. Serve para acompanhar e cobrar a equipe.",
 agenda:"Agende, confirme e remarque consultas. Toque num horário livre para criar um novo agendamento.",
 pacs:"Cadastro de pacientes: ficha, anamnese, tratamentos e documentos. Use a busca para achar rápido.",
 pros:"Controle das próteses: o que está no laboratório, aguardando ou já instalado.",
@@ -336,7 +337,7 @@ const getFirstDayOfMonth=(y,m)=>new Date(y,m,1).getDay();
 const Bdg=({l,col,sm})=><span style={{background:col+"22",color:col,borderRadius:20,padding:sm?"2px 7px":"3px 10px",fontSize:sm?10:11,fontWeight:700,whiteSpace:"nowrap"}}>{l}</span>;
 const Btn=({ch,onClick,v="p",sm,style,dis})=>{
 const b={cursor:dis?"not-allowed":"pointer",opacity:dis?.5:1,border:"none",borderRadius:9,fontFamily:"'DM Sans'",fontWeight:600,transition:"all .15s",display:"inline-flex",alignItems:"center",gap:5,whiteSpace:"nowrap"};
-const vs={p:{background:G.primary,color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14,boxShadow:"0 2px 7px rgba(27,94,74,.20)"},g:{background:"transparent",color:G.primary,border:`1.5px solid ${G.primary}`,padding:sm?"4px 10px":"8px 16px",fontSize:sm?12:14},r:{background:G.red,color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},y:{background:G.yellow,color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},w:{background:"#25D366",color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},f:{background:G.accent,color:G.primary,padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14}};
+const vs={p:{background:"linear-gradient(180deg,#23745D,"+G.primary+")",color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14,boxShadow:"0 1px 2px rgba(27,94,74,.25),0 4px 12px rgba(27,94,74,.20)"},g:{background:"transparent",color:G.primary,border:`1.5px solid ${G.primary}`,padding:sm?"4px 10px":"8px 16px",fontSize:sm?12:14},r:{background:G.red,color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},y:{background:G.yellow,color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},w:{background:"#25D366",color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},f:{background:G.accent,color:G.primary,padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14}};
 return <button style={{...b,...vs[v],...style}} onClick={onClick} disabled={dis}>{ch}</button>;
 };
 const Inp=({lb,val,set,type="text",ph,ro,style,min,max})=>(
@@ -369,9 +370,9 @@ const SC2=({save,cancel,lbl="Salvar"})=><div style={{display:"flex",gap:9,justif
 
 const Modal=({open,close,title,ch,wide,xl})=>{
 if(!open)return null;
-return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:12}}>
+return <div style={{position:"fixed",inset:0,background:"rgba(15,25,20,.5)",backdropFilter:"blur(4px)",WebkitBackdropFilter:"blur(4px)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:12}}>
 
-<div style={{background:G.card,borderRadius:18,width:"100%",maxWidth:xl?980:wide?720:520,maxHeight:"94vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+<div style={{background:G.card,borderRadius:18,width:"100%",maxWidth:xl?980:wide?720:520,maxHeight:"94vh",overflowY:"auto",boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`,position:"sticky",top:0,background:G.card,zIndex:1}}>
 <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>{title}</span>
 <button onClick={close} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -1120,7 +1121,7 @@ return <>
         <div style={{display:"flex",gap:6,alignItems:"center",flexWrap:"wrap"}}>
           <Bdg l={BSTATUS[b.status]} col={BCOLOR[b.status]} sm/><span style={{fontWeight:700,color:G.primary}}>{cur(tot)}</span>
           {b.attach&&<Bdg l={`📎 ${b.attach}`} col={G.blue} sm/>}
-          <Btn ch="📄 PDF" sm onClick={()=>{setPdfBudget(b);setPayCfg(defPayCfg());}}/>
+          <Btn ch="📄 PDF" sm onClick={()=>{setPdfBudget(b);setPayCfg(defPayCfg());setBudgets&&setBudgets(function(prev){return prev.map(function(x){return x.id===b.id?Object.assign({},x,{sentAt:today()}):x;});});}}/>
           <Btn ch="📱" v="w" sm onClick={()=>wa(pat.phone,`Olá ${pat.name}! Orçamento:\n${b.items.map(i=>`• ${i.d}: ${cur(i.v)}`).join("\n")}\nTotal: ${cur(tot)}`)}/> 
           {!isDentUser&&<Btn ch="Editar" v="g" sm onClick={()=>{setBudgEdit(b);setBf({...b,disc:b.disc||0});setBudgModal(true);}}/>}
         </div>
@@ -1220,7 +1221,7 @@ return <>
       {CATS.map(function(c){
         var lista=grupos[c[0]]||[];
         if(lista.length===0)return null;
-        return <div key={c[0]} style={{background:G.card,borderRadius:12,padding:"12px 14px",boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+        return <div key={c[0]} style={{background:G.card,borderRadius:12,padding:"12px 14px",boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
           <div style={{fontWeight:700,fontSize:13,color:G.primary,marginBottom:10}}>{c[1]+" ("+lista.length+")"}</div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(96px,1fr))",gap:9}}>
             {lista.map(function(im){
@@ -1538,7 +1539,7 @@ return <>
 </div>}
 {addProcModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3100,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:480,boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:480,boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>Adicionar Procedimento ao Plano</span>
       <button onClick={()=>setAddProcModal(null)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -1577,7 +1578,7 @@ var subtotal=pdfBudget.items.reduce(function(s,i){return s+i.v;},0);
 var desc0=pdfBudget.disc||0;
 var tot=subtotal-desc0;
 return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:540,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:540,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>Enviar Orçamento — {pat.name}</span>
       <button onClick={()=>setPdfBudget(null)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -1649,7 +1650,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
 
 {/* Evolução modal */}
 {evoModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:520,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:520,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>{evoEdit?"Editar Anotação":"Nova Anotação de Evolução"}</span>
       <button onClick={()=>{setEvoModal(false);setEvoEdit(null);}} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -1680,7 +1681,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
 {/* NF modal */}
 {nfModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:580,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:580,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>{nfEdit?"Editar Nota Fiscal":"Nova Nota Fiscal"}</span>
       <button onClick={()=>setNfModal(false)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -1735,7 +1736,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
 
 {recModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:580,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:580,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>{recEdit?"Editar Atendimento":"Registrar Atendimento"}</span>
       <button onClick={()=>setRecModal(false)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -1806,7 +1807,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
 
 {/* Treatment modal - inline to fix state closure issue */}
 {ortoModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:520,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:520,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
     <div style={{background:G.primary,borderRadius:"16px 16px 0 0",padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
       <span style={{fontWeight:700,color:"#fff",fontSize:16}}>{"🦷 Plano Ortodôntico"}</span>
       <button onClick={()=>setOrtoModal(false)} style={{border:"none",background:"rgba(255,255,255,.2)",borderRadius:8,color:"#fff",cursor:"pointer",padding:"5px 10px",fontSize:16}}>{"x"}</button>
@@ -1866,7 +1867,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
 
 {treatModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:520,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:520,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>Novo Plano de Tratamento</span>
       <button onClick={()=>setTreatModal(false)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -1946,7 +1947,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
 {/* Budget modal - inline render to avoid state closure bug */}
 {budgModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:560,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:560,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>Orçamento -- {pat.name}</span>
       <button onClick={()=>setBudgModal(false)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -2023,7 +2024,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
 </div>}
 
 {ortoPayModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex:3100,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:420,boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:420,boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
     <div style={{background:G.primary,borderRadius:"16px 16px 0 0",padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
       <div>
         <div style={{fontWeight:700,color:"#fff",fontSize:15}}>{"💳 Dar Baixa — Orto"}</div>
@@ -2083,7 +2084,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
 {/* Payment modal - inline render to avoid state closure bug */}
 {!!payModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:460,boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:460,boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>Registrar Pagamento</span>
       <button onClick={()=>setPayModal(null)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -2149,7 +2150,7 @@ const [openFolder,setOpenFolder]=useState(null);
 const [showCal,setShowCal]=useState(false);
 const [calY,setCalY]=useState(new Date().getFullYear());
 const [calM,setCalM]=useState(new Date().getMonth());
-const [denF,setDenF]=useState("all");
+const [denF,setDenF]=useState("all");const [agView,setAgView]=useState("dia");
 const [modal,setModal]=useState(false);
 const [viewA,setViewA]=useState(null);const [showCancel,setShowCancel]=useState(null);const [histTab,setHistTab]=useState("info");
 const [edit,setEdit]=useState(null);
@@ -2172,6 +2173,8 @@ return Array.from({length:7},(_,i)=>{const x=new Date(mon);x.setDate(mon.getDate
 const week=getWeek(selDate);
 const prevW=()=>{const d=new Date(week[0]+"T12:00");d.setDate(d.getDate()-7);setSelDate(d.toISOString().split("T")[0]);};
 const nextW=()=>{const d=new Date(week[6]+"T12:00");d.setDate(d.getDate()+1);setSelDate(d.toISOString().split("T")[0]);};
+const prevD=()=>{const d=new Date(selDate+"T12:00");d.setDate(d.getDate()-1);setSelDate(d.toISOString().split("T")[0]);};
+const nextD=()=>{const d=new Date(selDate+"T12:00");d.setDate(d.getDate()+1);setSelDate(d.toISOString().split("T")[0]);};
 const isOrto=function(d){var s=(d.specialty||"").toLowerCase();return s.indexOf("orto")>=0;};
 const selDayNum=new Date(selDate+"T12:00").getDay();
 const worksToday=function(d){return (d.dias||[1,2,3,4,5]).indexOf(selDayNum)>=0;};
@@ -2261,11 +2264,11 @@ return (
 
   <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
     <button onClick={()=>{setCalY(new Date().getFullYear());setCalM(new Date().getMonth());setShowCal(v=>!v);}} style={{background:showCal?G.primary:G.accent,border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 10px",cursor:"pointer",fontSize:16,color:showCal?"#fff":"inherit"}}>{"📅"}</button>
-    <button onClick={prevW} style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 12px",cursor:"pointer",color:G.primary,fontWeight:700}}>{"<"}</button>
-    <button onClick={nextW} style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 12px",cursor:"pointer",color:G.primary,fontWeight:700}}>{">"}</button>
-    <button onClick={()=>setSelDate(td)} style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 11px",cursor:"pointer",color:G.primary,fontWeight:600,fontSize:12}}>Hoje</button>
+    <button onClick={agView==="semana"?prevW:prevD} style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 12px",cursor:"pointer",color:G.primary,fontWeight:700}}>{"<"}</button>
+    <button onClick={agView==="semana"?nextW:nextD} style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 12px",cursor:"pointer",color:G.primary,fontWeight:700}}>{">"}</button>
+    <button onClick={()=>setSelDate(td)} style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 11px",cursor:"pointer",color:G.primary,fontWeight:600,fontSize:12}}>Hoje</button><div style={{display:"flex",border:"1.5px solid "+G.border,borderRadius:8,overflow:"hidden"}}><button onClick={function(){setAgView("dia");}} style={{border:"none",background:agView==="dia"?G.primary:"#fff",color:agView==="dia"?"#fff":G.primary,padding:"7px 13px",fontSize:12,fontWeight:700,cursor:"pointer"}}>Dia</button><button onClick={function(){if(!isDent&&denF==="all"&&dents[0])setDenF(String(dents[0].id));setAgView("semana");}} style={{border:"none",borderLeft:"1.5px solid "+G.border,background:agView==="semana"?G.primary:"#fff",color:agView==="semana"?"#fff":G.primary,padding:"7px 13px",fontSize:12,fontWeight:700,cursor:"pointer"}}>Semana</button></div>
     {!isDent&&<select value={denF} onChange={e=>setDenF(e.target.value)} style={{border:"1.5px solid "+G.border,borderRadius:20,padding:"6px 12px",fontSize:11,fontWeight:600,outline:"none",background:"#fff"}}>
-      <option value="all">Todos</option>
+      {agView!=="semana"&&<option value="all">Todos</option>}
       {dents.map(d=><option key={d.id} value={d.id}>{d.name}</option>)}
     </select>}
     {/* Quick orto buttons */}
@@ -2274,6 +2277,7 @@ return (
   </div>
   
 
+{agView==="dia"&&<>
   <div style={{display:"grid",gridTemplateColumns:"48px repeat(7,1fr)",gap:2}}>
     <div/>
     {week.map(ds=>{
@@ -2292,7 +2296,7 @@ return (
 
 {hiddenToday.length>0&&<div onClick={function(){var od=dents.find(function(d){return d.id===hiddenToday[0].dentistId;});if(od)setDenF(String(od.id));}} style={{background:"#FFF8E1",border:"1.5px solid #FFB300",borderRadius:10,padding:"9px 13px",fontSize:12,fontWeight:700,color:"#E65100",cursor:"pointer",display:"flex",alignItems:"center",gap:6,margin:"2px 0"}}>{"⚠ "+hiddenToday.length+" consulta(s) de Ortodontia neste dia não aparecem aqui. Toque para ver →"}</div>}
 
-{denF==="all"&&!isDent&&vd.length===0&&<div style={{background:G.card,borderRadius:12,padding:24,textAlign:"center",color:G.muted,fontSize:13,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>{"Nenhum dentista clínico trabalhando neste dia. Selecione um dentista no filtro para agendar."}</div>}
+{denF==="all"&&!isDent&&vd.length===0&&<div style={{background:G.card,borderRadius:12,padding:24,textAlign:"center",color:G.muted,fontSize:13,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>{"Nenhum dentista clínico trabalhando neste dia. Selecione um dentista no filtro para agendar."}</div>}
 
 {vd.length>1&&<div style={{display:"grid",gridTemplateColumns:"48px repeat("+vd.length+",1fr)",gap:2}}>
 
@@ -2492,6 +2496,8 @@ if(!a)a=appts.find(function(x){return x.date===selDate&&x.time===slot&&x.dentist
     </div>
   </div>}
 
+</>}
+{agView==="semana"&&(function(){var wdent=isDent?((dents||[]).find(function(d){return d.id===user.dentistId;})||dents[0]):((dents||[]).find(function(d){return String(d.id)===String(denF);})||dents[0]);if(!wdent)return <div style={{background:G.card,borderRadius:12,padding:24,textAlign:"center",color:G.muted,fontSize:13}}>{"Selecione um dentista para ver a semana."}</div>;var days6=week.slice(0,6);var baseSlots=((wdent.specialty||"").toLowerCase().indexOf("orto")>=0)?SLOTS_ORTO:SLOTS;var wkExtra=[];appts.forEach(function(x){if(x.dentistId===wdent.id&&days6.indexOf(x.date)>=0&&["cancelled","rescheduled","missed"].indexOf(x.status)<0){if(x.time&&baseSlots.indexOf(x.time)<0)wkExtra.push(x.time);(x.extraSlots||[]).forEach(function(es){if(baseSlots.indexOf(es)<0)wkExtra.push(es);});}});var wSlots=Array.from(new Set(baseSlots.concat(wkExtra))).sort(function(a,b){return t2m(a)-t2m(b);});return <div style={{display:"flex",flexDirection:"column",gap:8}}><div style={{fontSize:12,fontWeight:700,color:wdent.color||G.primary}}>{"🦷 "+wdent.name}</div><div style={{overflowX:"auto"}}><div style={{minWidth:660,display:"grid",gridTemplateColumns:"46px repeat(6,1fr)",gap:3}}><div/>{days6.map(function(ds){var dd=new Date(ds+"T12:00");var isTd=ds===td;var cnt=appts.filter(function(a){return a.date===ds&&a.dentistId===wdent.id&&["pending","confirmed","done"].indexOf(a.status)>=0;}).length;return <div key={"h"+ds} onClick={function(){setSelDate(ds);setAgView("dia");}} style={{textAlign:"center",cursor:"pointer",background:isTd?G.accent:G.bg,borderRadius:8,padding:"5px 2px",border:"1.5px solid "+(isTd?G.primary:G.border)}}><div style={{fontSize:9,fontWeight:700,color:G.muted}}>{DAY[dd.getDay()]}</div><div style={{fontSize:16,fontWeight:700,color:isTd?G.primary:G.text}}>{dd.getDate()}</div><div style={{fontSize:8,fontWeight:700,color:cnt>0?G.primary:"transparent"}}>{cnt+" cons."}</div></div>;})}{wSlots.map(function(slot){return [<div key={"t"+slot} style={{fontSize:9,color:G.muted,fontWeight:600,display:"flex",alignItems:"center",justifyContent:"flex-end",paddingRight:3}}>{slot}</div>].concat(days6.map(function(ds){var a=appts.find(function(x){return x.date===ds&&x.time===slot&&x.dentistId===wdent.id&&["cancelled","rescheduled","missed"].indexOf(x.status)<0;});var wd=new Date(ds+"T12:00").getDay();var isOff=(wdent.dias||[1,2,3,4,5]).indexOf(wd)<0;var alIni=(wdent.almoco&&wdent.almoco.ini)||"";var alFim=(wdent.almoco&&wdent.almoco.fim)||"";var isAlm=alIni&&alFim&&slot>=alIni&&slot<alFim;var isOut=slot<(wdent.entrada||"08:00")||slot>=(wdent.saida||"18:00");if(a){var pp=pats.find(function(x){return x.id===a.patientId;});return <div key={ds+slot} onClick={function(){setViewA(a);}} style={{background:SC_BG[a.status]||SC[a.status]+"15",border:"1.5px solid "+SC[a.status],borderRadius:6,padding:"3px 5px",cursor:"pointer",minHeight:34,overflow:"hidden"}}><div style={{fontSize:10,fontWeight:700,color:G.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{(pp&&pp.name)||a.patientName||"--"}</div><div style={{fontSize:8.5,color:SC[a.status],whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{a.procedureCustom||a.procedure}</div></div>;}if(isOff||isAlm||isOut)return <div key={ds+slot} style={{background:isOff?"#FFEBEE":isAlm?"#FFF8E1":"#F3E5F5",borderRadius:6,minHeight:34,opacity:.4}}/>;var isExtra=appts.some(function(a2){return a2.date===ds&&a2.dentistId===wdent.id&&(a2.extraSlots||[]).indexOf(slot)>=0&&["cancelled","rescheduled","missed"].indexOf(a2.status)<0;});if(isExtra)return <div key={ds+slot} style={{background:"#F3E5F5",border:"1px solid #CE93D8",borderRadius:6,minHeight:34,display:"flex",alignItems:"center",justifyContent:"center",padding:"3px 4px"}}><span style={{fontSize:8.5,color:"#6A1B9A",fontWeight:700,textAlign:"center",lineHeight:1.1}}>{"⏱️ em consulta"}</span></div>;return <div key={ds+slot} onClick={function(){if(isDent)return;setEdit(null);var _std=wSlots.indexOf(slot)>=0;setF(Object.assign({},blank,{date:ds,time:_std?slot:"",timeCustom:_std?"":slot,dentistId:wdent.id}));setModal(true);}} style={{background:"#f8fbf9",border:"1px dashed "+G.border,borderRadius:6,minHeight:34,cursor:isDent?"default":"pointer"}}/>;}));})}</div></div></div>;})()}
 {showCancel&&(()=>{const a=showCancel;const p=pats.find(x=>x.id===a.patientId);return p&&<CancelWA appt={a} pat={p} onCancel={function(id){setAppts(function(prev){return prev.filter(function(x){return x.id!==id;});});}} onClose={function(){setShowCancel(null);setViewA(null);}}/>;})()}
 {viewA&&(()=>{
 const a=viewA;const p=pats.find(x=>x.id===a.patientId);const d=dents.find(x=>x.id===a.dentistId)||dents[0];
@@ -2642,7 +2648,7 @@ setF(fdata);setViewA(null);setModal(true);}}/>}
 }/>
 {/* Modal de bloqueio de horário */}
 {blockModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-<div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:420,boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+<div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:420,boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
 <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>🔒 Bloquear Horário</span>
 <button onClick={()=>setBlockModal(null)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -2737,7 +2743,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 <Btn ch="+ Novo Paciente" onClick={()=>{setEp(null);setPf(b0);setPm(true);}}/>
 </div>
 <Inp val={srch} set={v=>{setSrch(v);setPPage(0);}} ph="🔍 Nome, CPF, telefone ou nº pasta"/>
-{pageItems.map(p=><div key={p.id} style={{background:G.card,borderRadius:13,boxShadow:"0 1px 5px rgba(0,0,0,.07)",padding:"12px 15px",display:"flex",alignItems:"center",gap:11}}>
+{pageItems.map(p=><div key={p.id} style={{background:G.card,borderRadius:13,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)",padding:"12px 15px",display:"flex",alignItems:"center",gap:11}}>
 <div style={{width:42,height:42,borderRadius:"50%",background:G.accent,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Cormorant Garamond'",fontSize:20,color:G.primary,flexShrink:0,cursor:"pointer"}} onClick={()=>setOpenFolder(p)}>{p.name[0]}</div>
 <div style={{flex:1,minWidth:0}}>
 <div style={{fontWeight:700,fontSize:13,cursor:"pointer"}} onClick={()=>setOpenFolder(p)}>{p.name}<span style={{fontSize:11,color:G.muted,fontWeight:400}}> · {age(p.dob)} · Ficha: {p.folder||"--"}</span></div>
@@ -2764,7 +2770,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 
 {dupModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-<div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:460,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+<div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:460,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
 <div style={{background:"#D68910",borderRadius:"16px 16px 0 0",padding:"14px 18px"}}><div style={{fontWeight:700,color:"#fff",fontSize:15}}>⚠️ Possível Duplicidade</div></div>
 <div style={{padding:20,display:"flex",flexDirection:"column",gap:12}}>
 <div style={{fontSize:13}}>Paciente(s) com dados similares encontrado(s):</div>
@@ -2778,7 +2784,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 <button onClick={dupModal.onConfirm} style={{background:"#D68910",color:"#fff",border:"none",borderRadius:8,padding:"9px 18px",fontSize:14,fontWeight:700,cursor:"pointer"}}>Cadastrar Mesmo Assim</button>
 </div></div></div></div>}
 {delModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-<div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:420,boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+<div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:420,boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
 <div style={{background:"#C0392B",borderRadius:"16px 16px 0 0",padding:"14px 18px"}}><div style={{fontWeight:700,color:"#fff",fontSize:15}}>🗑️ Excluir Paciente</div></div>
 <div style={{padding:20,display:"flex",flexDirection:"column",gap:12}}>
 <div style={{fontWeight:700,fontSize:14}}>{delModal.pat.name}</div>
@@ -2848,12 +2854,12 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
 {[{k:"today",l:`Hoje (${todP.length})`,c:G.orange},{k:"waiting",l:"Aguardando",c:G.yellow},{k:"returned",l:"Retornou",c:G.blue},{k:"placed",l:"Instaladas",c:G.success},{k:"all",l:"Todas",c:G.muted}].map(({k,l,c})=><button key={k} onClick={()=>setFilt(k)} style={{border:`2px solid ${filt===k?c:G.border}`,background:filt===k?c:"#fff",color:filt===k?"#fff":G.muted,borderRadius:20,padding:"5px 12px",fontSize:11,fontWeight:700,cursor:"pointer"}}>{l}</button>)}
 </div>
-{filt==="today"&&todP.length===0&&<div style={{background:G.card,borderRadius:12,padding:28,textAlign:"center",boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}><div style={{fontSize:28,marginBottom:6}}>✅</div><div style={{fontWeight:700,color:G.success}}>Nenhum trabalho previsto para hoje!</div></div>}
+{filt==="today"&&todP.length===0&&<div style={{background:G.card,borderRadius:12,padding:28,textAlign:"center",boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}><div style={{fontSize:28,marginBottom:6}}>✅</div><div style={{fontWeight:700,color:G.success}}>Nenhum trabalho previsto para hoje!</div></div>}
 {filt==="today"&&lateP.length>0&&<div style={{background:G.red,borderRadius:10,padding:"11px 14px",boxShadow:`0 2px 10px ${G.red}55`}}><div style={{fontWeight:700,color:"#fff",fontSize:14}}>⚠️ {lateP.length} prótese(s) ATRASADA(S)!</div><div style={{color:"#fff",opacity:.85,fontSize:12,marginTop:2}}>Cobrar o laboratório com urgência</div></div>}
 {filt==="today"&&todayOnly.length>0&&<div style={{background:G.orange+"15",border:`2px solid ${G.orange}`,borderRadius:10,padding:"10px 14px"}}><div style={{fontWeight:700,color:G.orange}}>🔔 {todayOnly.length} trabalho(s) para fechar hoje</div></div>}
 <div style={{display:"flex",flexDirection:"column",gap:9}}>
 {flt.map(p=>{const pat=pats.find(x=>x.id===p.patientId);const den=dents.find(x=>x.id===p.dentistId)||dents[0];const lab=labs.find(x=>x.id===p.labId);const late=p.status==="waiting"&&p.due&&p.due<t;const isT=p.due===t&&p.status==="waiting";
-return <div key={p.id} style={late?{background:G.red+"10",borderRadius:12,padding:"13px 15px",border:`2px solid ${G.red}`,boxShadow:`0 2px 12px ${G.red}40`}:{background:G.card,borderRadius:12,padding:"13px 15px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:`4px solid ${isT?G.orange:PROS_SC[p.status]}`}}>
+return <div key={p.id} style={late?{background:G.red+"10",borderRadius:12,padding:"13px 15px",border:`2px solid ${G.red}`,boxShadow:`0 2px 12px ${G.red}40`}:{background:G.card,borderRadius:12,padding:"13px 15px",boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)",borderLeft:`4px solid ${isT?G.orange:PROS_SC[p.status]}`}}>
 <div style={{display:"flex",gap:11,flexWrap:"wrap"}}>
 <div style={{flex:1,minWidth:170}}>
 <div style={{display:"flex",gap:6,alignItems:"center",marginBottom:3,flexWrap:"wrap"}}><span style={{fontWeight:700,fontSize:13,color:late?G.red:G.text}}>{pat?.name}</span><span style={{fontSize:11,color:G.muted}}>P.{pat?.folder}</span><Bdg l={PROS_SL[p.status]} col={PROS_SC[p.status]} sm/>{late&&<Bdg l="⚠ ATRASADO" col={G.red} sm/>}{isT&&!late&&<Bdg l="📅 HOJE" col={G.orange} sm/>}</div>
@@ -2874,7 +2880,7 @@ return <div key={p.id} style={late?{background:G.red+"10",borderRadius:12,paddin
 </div>;})}
 </div>
 {modal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-<div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:620,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+<div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:620,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
 <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>{edit?"Editar Prótese":"Nova Prótese"}</span>
 <button onClick={()=>setModal(false)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -2945,7 +2951,7 @@ setModal(false);
 </div>
 </div>}
 {procModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-<div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:440,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+<div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:440,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
 <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>Procedimentos de Prótese</span>
 <button onClick={()=>setProcModal(false)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -3107,7 +3113,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:0}} className="fi"
   {/* Resumo */}
   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:12}}>
     {[["🔴 Não marcado",pending,G.red],["🟢 Marcado",scheduled,G.success],["⚫ Finalizado",done,"#333"]].map(function([l,v,c]){
-      return <div key={l} style={{background:"#fff",borderRadius:10,padding:"8px 10px",textAlign:"center",borderTop:"3px solid "+c,boxShadow:"0 1px 4px rgba(0,0,0,.06)"}}>
+      return <div key={l} style={{background:"#fff",borderRadius:10,padding:"8px 10px",textAlign:"center",borderTop:"3px solid "+c,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
         <div style={{fontFamily:"'Cormorant Garamond'",fontSize:22,color:c}}>{v}</div>
         <div style={{fontSize:9,color:G.muted,fontWeight:700}}>{l}</div>
       </div>;
@@ -3166,7 +3172,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:0}} className="fi"
 
   {/* Modal de detalhe/edição */}
   {editRow&&editForm&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-    <div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:500,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+    <div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:500,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
       <div style={{background:ST_COLOR[editForm.status],borderRadius:"16px 16px 0 0",padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
         <div>
           <div style={{fontWeight:700,color:"#fff",fontSize:14}}>{editRow.paciente}</div>
@@ -3265,7 +3271,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:0}} className="fi"
     </div>
   </div>}
 {showAdd&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-  <div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:480,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:480,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
     <div style={{background:G.primary,borderRadius:"16px 16px 0 0",padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
       <span style={{fontWeight:700,color:"#fff",fontSize:15}}>{"+ Novo Paciente"}</span>
       <button onClick={function(){setShowAdd(false);}} style={{border:"none",background:"rgba(255,255,255,.2)",borderRadius:8,color:"#fff",cursor:"pointer",padding:"5px 10px",fontSize:16}}>{"x"}</button>
@@ -3371,7 +3377,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 </div>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
   {[["Total",total,G.primary],["Pago",pago,G.success],["Pendente",total-pago,G.red]].map(function([l,v,c]){return(
-    <div key={l} style={{background:G.card,borderRadius:10,padding:"12px",textAlign:"center",borderTop:"3px solid "+c,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+    <div key={l} style={{background:G.card,borderRadius:10,padding:"12px",textAlign:"center",borderTop:"3px solid "+c,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
       <div style={{fontSize:10,color:G.muted,fontWeight:700}}>{l}</div>
       <div style={{fontSize:18,fontWeight:700,color:c,marginTop:4}}>{cur(v)}</div>
     </div>
@@ -3380,7 +3386,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 <div style={{display:"flex",flexDirection:"column",gap:8}}>
   {moList.length===0&&<div style={{background:G.card,borderRadius:12,padding:24,textAlign:"center",color:G.muted}}>{"Nenhum gasto em "+mo}</div>}
   {moList.map(function(e){var pg=isPago(e);var pk=e.parcelado?parcelaK(e)+1:0;return(
-    <div key={e.id} style={{background:G.card,borderRadius:11,padding:"12px 14px",display:"flex",alignItems:"center",gap:10,boxShadow:"0 1px 4px rgba(0,0,0,.07)",opacity:pg?.75:1}}>
+    <div key={e.id} style={{background:G.card,borderRadius:11,padding:"12px 14px",display:"flex",alignItems:"center",gap:10,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)",opacity:pg?.75:1}}>
       <input type="checkbox" checked={pg} onChange={function(){togglePago(e);}} style={{width:18,height:18,accentColor:G.primary,cursor:"pointer",flexShrink:0}}/>
       <div style={{flex:1,minWidth:0}}>
         <div style={{display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
@@ -3832,7 +3838,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 
 <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:11}}>
   {[["Receita Bruta",raw,G.primary],["Receita Líquida",liq,G.success],["Gastos Clínica",clinicExp,G.red],["Resultado",liq-clinicExp,liq-clinicExp>=0?G.success:G.red]].map(([l,v,c])=>(
-    <div key={l} style={{background:G.card,borderRadius:10,padding:"12px 14px",textAlign:"center",borderTop:"4px solid "+c,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+    <div key={l} style={{background:G.card,borderRadius:10,padding:"12px 14px",textAlign:"center",borderTop:"4px solid "+c,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
       <div style={{fontSize:10,color:G.muted,fontWeight:700,marginBottom:4}}>{l}</div>
       <div style={{fontFamily:"'Cormorant Garamond'",fontSize:22,color:c}}>{cur(v)}</div>
     </div>
@@ -3840,7 +3846,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 </div>
 
 {/* Por forma de pagamento */}
-{byP.length>0&&<div style={{background:G.card,borderRadius:12,padding:14,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+{byP.length>0&&<div style={{background:G.card,borderRadius:12,padding:14,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
 
   <div style={{fontWeight:700,marginBottom:11,fontSize:13}}>Por Forma de Pagamento</div>
   {byP.map(({pt,v})=><div key={pt} style={{marginBottom:10}}>
@@ -3856,7 +3862,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 </div>}
 
 {/* MODO MENSAL: lista agrupada por dia */}
-{modo==="mensal"&&<div style={{background:G.card,borderRadius:12,padding:14,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+{modo==="mensal"&&<div style={{background:G.card,borderRadius:12,padding:14,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
 
   <div style={{fontWeight:700,marginBottom:11,fontSize:13}}>{"Dias com recebimento ("+Object.keys(porDia).length+")"}</div>
   {Object.keys(porDia).length===0&&<p style={{color:G.muted,fontSize:12}}>Nenhum recebimento neste mês</p>}
@@ -3906,7 +3912,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 </div>}
 
 {/* MODO DIARIO: lista detalhada do dia */}
-{modo==="diario"&&<div style={{background:G.card,borderRadius:12,padding:14,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+{modo==="diario"&&<div style={{background:G.card,borderRadius:12,padding:14,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
 
   <div style={{fontWeight:700,marginBottom:11,fontSize:13}}>{"Atendimentos - "+fmt(dia)+" ("+mr.length+")"}</div>
   {mr.length===0&&<div style={{textAlign:"center",padding:24,color:G.muted,fontSize:13}}>
@@ -4066,7 +4072,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
   {ALL_TPLS.map(function(tpl){
     var isEditing=editKey===tpl.key;
     var isCustom=waTemplates&&waTemplates[tpl.key];
-    return <div key={tpl.key} style={{background:G.card,borderRadius:12,padding:"13px 15px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",border:isCustom?"2px solid "+G.primary:"1px solid "+G.border}}>
+    return <div key={tpl.key} style={{background:G.card,borderRadius:12,padding:"13px 15px",boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)",border:isCustom?"2px solid "+G.primary:"1px solid "+G.border}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8,gap:8}}>
         <div>
           <div style={{fontWeight:700,fontSize:13}}>{tpl.label}</div>
@@ -4140,7 +4146,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 
 {/* Datas Especiais */}
 
-<div style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+<div style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
   <div style={{fontWeight:700,fontSize:14,color:G.primary,marginBottom:4}}>🎊 Datas Especiais</div>
   <div style={{fontSize:12,color:G.muted,marginBottom:11}}>Clique em "Ver mensagem" para revisar e editar antes de enviar para cada paciente</div>
   <div style={{display:"flex",flexDirection:"column",gap:8}}>
@@ -4180,7 +4186,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 
 {/* Envio Personalizado */}
 
-<div style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+<div style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
   <div style={{fontWeight:700,fontSize:14,color:G.primary,marginBottom:11}}>✉️ Envio Personalizado</div>
   {/* Template tabs */}
   <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:11}}>
@@ -4312,14 +4318,14 @@ const sections=[
 return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi">
 
 <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:9}}>
-{[["Aniv. semana",pendCount("bday_week",bdayWeek,false),G.gold],["Semestral",pendCount("semestral",semestral,false),G.orange],["Sem retorno",pendCount("sem_ret",semRetorno,true),G.red],["Novos mês",pendCount("new_pats",newPats,false),G.primary]].map(([l,v,c])=><div key={l} style={{background:G.card,borderRadius:10,padding:"10px",textAlign:"center",borderTop:`3px solid ${c}`,boxShadow:"0 1px 4px rgba(0,0,0,.05)"}}><div style={{fontFamily:"'Cormorant Garamond'",fontSize:22,color:c}}>{v}</div><div style={{fontSize:10,color:G.muted,fontWeight:700}}>{l}</div></div>)}
+{[["Aniv. semana",pendCount("bday_week",bdayWeek,false),G.gold],["Semestral",pendCount("semestral",semestral,false),G.orange],["Sem retorno",pendCount("sem_ret",semRetorno,true),G.red],["Novos mês",pendCount("new_pats",newPats,false),G.primary]].map(([l,v,c])=><div key={l} style={{background:G.card,borderRadius:10,padding:"10px",textAlign:"center",borderTop:`3px solid ${c}`,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}><div style={{fontFamily:"'Cormorant Garamond'",fontSize:22,color:c}}>{v}</div><div style={{fontSize:10,color:G.muted,fontWeight:700}}>{l}</div></div>)}
 </div>
 {sections.map(sec=>{
 const doneItems=sec.list.filter(x=>{const p=sec.isTreat?pats.find(pt=>pt.id===x.patientId):x;return p&&isHandled(sec.id,p.id+(sec.isTreat?x.id:""));});
 const pendItems=sec.list.filter(x=>{const p=sec.isTreat?pats.find(pt=>pt.id===x.patientId):x;return p&&!isHandled(sec.id,p.id+(sec.isTreat?x.id:""));});
 const sdone=!!showDone[sec.id];
 const open=!!openSec[sec.id];
-return <div key={sec.id} style={{background:G.card,borderRadius:13,padding:"2px 14px",boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+return <div key={sec.id} style={{background:G.card,borderRadius:13,padding:"2px 14px",boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
 <button onClick={function(){setOpenSec(function(prev){var n=Object.assign({},prev);n[sec.id]=!prev[sec.id];return n;});}} style={{width:"100%",border:"none",background:"none",padding:"11px 0",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center",gap:8}}>
 <div style={{textAlign:"left"}}><span style={{fontWeight:700,fontSize:14,color:sec.col}}>{sec.label} ({pendItems.length})</span>{sec.sub&&<div style={{fontSize:11,color:G.muted,fontWeight:400}}>{sec.sub}</div>}</div>
 <span style={{color:sec.col,fontSize:15,fontWeight:700,transform:open?"rotate(90deg)":"none",transition:"transform .15s"}}>{">"}</span>
@@ -4348,7 +4354,7 @@ return <div key={"d"+(sec.isTreat?x.id:p.id)} style={{background:"#f0faf4",borde
 </div>;
 })}
 {noteModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-<div style={{background:"#fff",borderRadius:14,width:"100%",maxWidth:400,boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+<div style={{background:"#fff",borderRadius:14,width:"100%",maxWidth:400,boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"13px 18px",borderBottom:`1px solid ${G.border}`}}>
 <span style={{fontFamily:"'Cormorant Garamond'",fontSize:18}}>Marcar como resolvido</span>
 <button onClick={()=>setNoteModal(null)} style={{border:"none",background:"none",fontSize:22,cursor:"pointer",color:G.muted}}>×</button>
@@ -4450,7 +4456,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 {TABS.map(([k,l])=><button key={k} onClick={()=>setTab(k)} style={{border:"none",background:"none",padding:"9px 15px",fontFamily:"'DM Sans'",fontWeight:700,fontSize:12,cursor:"pointer",color:tab===k?G.primary:G.muted,borderBottom:`3px solid ${tab===k?G.primary:"transparent"}`,marginBottom:-2}}>{l}</button>)}
 </div>
 {tab==="dent"&&<div style={{display:"flex",flexDirection:"column",gap:14}}>
-{dr.map(({d,rs,raw,liq,com,cf,donedItems,doneLiq,doneCom})=>{const aberto=!!openDent[d.id];return <div key={d.id} style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:`4px solid ${d.color}`}}>
+{dr.map(({d,rs,raw,liq,com,cf,donedItems,doneLiq,doneCom})=>{const aberto=!!openDent[d.id];return <div key={d.id} style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)",borderLeft:`4px solid ${d.color}`}}>
 <div onClick={()=>setOpenDent(p=>Object.assign({},p,{[d.id]:!p[d.id]}))} style={{display:"flex",justifyContent:"space-between",flexWrap:"wrap",gap:10,marginBottom:aberto?11:0,cursor:"pointer",alignItems:"center"}}>
 <div style={{display:"flex",alignItems:"center",gap:9}}><span style={{fontSize:13,color:d.color,transition:"transform .2s",transform:aberto?"rotate(90deg)":"none"}}>▶</span><div><div style={{fontWeight:700,fontSize:15,color:d.color}}>{d.name}</div><div style={{fontSize:11,color:G.muted}}>{d.specialty} · {rs.length} atend.{aberto?"":" · toque para abrir"}</div></div></div>
 <div style={{textAlign:"right"}}><div style={{fontWeight:700,fontSize:17,color:G.primary}}>{cur(com+doneCom)}</div><div style={{fontSize:11,color:G.muted}}>Comissão total ({d.commission}%)</div></div>
@@ -4503,7 +4509,7 @@ return <div key={i} style={{display:"flex",gap:8,fontSize:11,padding:"5px 0",bor
 </div>;})}
 </div>}
 {tab==="prot"&&<div style={{display:"flex",flexDirection:"column",gap:14}}>
-{lr.map(({l,ps,tot,done,wait,cost})=>{const aberto=!!openProt[l.id];return <div key={l.id} style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+{lr.map(({l,ps,tot,done,wait,cost})=>{const aberto=!!openProt[l.id];return <div key={l.id} style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
 <div onClick={()=>setOpenProt(p=>Object.assign({},p,{[l.id]:!p[l.id]}))} style={{display:"flex",justifyContent:"space-between",flexWrap:"wrap",gap:10,marginBottom:aberto?11:0,cursor:"pointer",alignItems:"center"}}>
 <div style={{display:"flex",alignItems:"center",gap:9}}><span style={{fontSize:13,color:G.primary,transition:"transform .2s",transform:aberto?"rotate(90deg)":"none"}}>▶</span><div><div style={{fontWeight:700,fontSize:15}}>{l.name}</div><div style={{fontSize:11,color:G.muted}}>{l.contact} · {l.phone}{aberto?"":" · toque para abrir"}</div></div></div>
 <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
@@ -4515,7 +4521,7 @@ return <div key={i} style={{display:"flex",gap:8,fontSize:11,padding:"5px 0",bor
 </div>}
 {tab==="orc"&&<div style={{display:"flex",flexDirection:"column",gap:14}}>
 {/* Origem summary */}
-<div style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+<div style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
 <div style={{fontWeight:700,fontSize:14,marginBottom:12,color:G.primary}}>📊 Origem dos Pacientes</div>
 <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
 {["Indicação","Instagram","Já era paciente","Urgência","Passando na rua","Google","Outro","Não informado"].map(o=>{
@@ -4555,13 +4561,13 @@ return <>
 <div style={{fontFamily:"'Cormorant Garamond'",fontSize:38,fontWeight:700,lineHeight:1}}>{orcs.length}</div>
 </div>
 <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:11}}>
-{["aprovado","espera","parcial","naofechado"].map(sv=><div key={sv} style={{background:G.card,borderRadius:11,padding:"12px",textAlign:"center",borderTop:"4px solid "+STCOLOR[sv],boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+{["aprovado","espera","parcial","naofechado"].map(sv=><div key={sv} style={{background:G.card,borderRadius:11,padding:"12px",textAlign:"center",borderTop:"4px solid "+STCOLOR[sv],boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
 <div style={{fontSize:11,color:G.muted,fontWeight:700}}>{STLABEL[sv]}</div>
 <div style={{fontFamily:"'Cormorant Garamond'",fontSize:30,color:STCOLOR[sv],lineHeight:1.05,fontWeight:700}}>{byStatus[sv].length}</div>
 <div style={{fontSize:12,color:STCOLOR[sv],fontWeight:700}}>{cur(sumV(byStatus[sv]))}</div>
 </div>)}
 </div>
-{Object.keys(byDent).length>0&&<div style={{background:G.card,borderRadius:12,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+{Object.keys(byDent).length>0&&<div style={{background:G.card,borderRadius:12,padding:15,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
 <div style={{fontWeight:700,fontSize:14,marginBottom:10,color:G.primary}}>🦷 Orçamentos por dentista</div>
 <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
 {Object.keys(byDent).map(id=>{var d=dents.find(x=>String(x.id)===String(id));return <div key={id} style={{background:((d&&d.color)||G.primary)+"15",borderRadius:9,padding:"7px 13px",display:"flex",alignItems:"center",gap:8}}>
@@ -4570,7 +4576,7 @@ return <>
 </div>;})}
 </div>
 </div>}
-{byStatus.naofechado.length>0&&<div style={{background:G.card,borderRadius:12,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:"4px solid "+G.red}}>
+{byStatus.naofechado.length>0&&<div style={{background:G.card,borderRadius:12,padding:15,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)",borderLeft:"4px solid "+G.red}}>
 <div style={{fontWeight:700,fontSize:14,marginBottom:10,color:G.red}}>❌ Por que não fecharam ({byStatus.naofechado.length})</div>
 <div style={{display:"flex",flexDirection:"column",gap:7}}>
 {Object.keys(motivos).sort((a,b)=>motivos[b]-motivos[a]).map(m=><div key={m} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 12px",background:G.red+"12",borderRadius:8}}>
@@ -4582,7 +4588,7 @@ return <>
 <div style={{display:"flex",flexDirection:"column",gap:7}}>
 {orcs.length===0&&<div style={{background:G.card,borderRadius:10,padding:20,textAlign:"center",color:G.muted,fontSize:13}}>Nenhum orçamento neste mês</div>}
 {orcs.slice().sort((a,b)=>(b.start||"").localeCompare(a.start||"")).map(t=>{var pat=pats.find(p=>p.id===t.patientId);var den=dents.find(d=>String(d.id)===String(t.dentistId));var sv=stOf(t);var v=dispVal(t);var tt=totOf(t);
-return <div key={t.id} style={{background:G.card,borderRadius:10,padding:"11px 14px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:"4px solid "+STCOLOR[sv]}}>
+return <div key={t.id} style={{background:G.card,borderRadius:10,padding:"11px 14px",boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)",borderLeft:"4px solid "+STCOLOR[sv]}}>
 <div style={{display:"flex",justifyContent:"space-between",flexWrap:"wrap",gap:6}}>
 <div><div style={{fontWeight:700,fontSize:13}}>{pat?pat.name:"--"}</div><div style={{fontSize:11,color:G.muted}}>{fmt(t.start)}{den?(" · "+den.name):""}{t.name?(" · "+t.name):""}</div></div>
 <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}><div style={{display:"flex",gap:7,alignItems:"center"}}><Bdg l={BADGE[sv]} col={STCOLOR[sv]} sm/><span style={{fontWeight:700,color:G.primary}}>{cur(v)}</span></div>{sv==="parcial"&&<span style={{fontSize:10,color:G.blue,fontWeight:700}}>{"pago · de "+cur(tt)}</span>}</div>
@@ -4614,7 +4620,7 @@ return <div key={t.id} style={{background:G.card,borderRadius:10,padding:"11px 1
         if(!byWeek[week])byWeek[week]=[];
         byWeek[week].push(a);
       });
-      return <div key={d.id} style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:"4px solid "+d.color}}>
+      return <div key={d.id} style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)",borderLeft:"4px solid "+d.color}}>
         <div onClick={function(){setOpenOrto(function(p){var n={...p};n[d.id]=!n[d.id];return n;});}} style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:isOp?12:0,flexWrap:"wrap",gap:8,cursor:"pointer"}}>
           <div style={{display:"flex",alignItems:"center",gap:8}}>
             <span style={{fontSize:13,color:d.color,fontWeight:700}}>{isOp?"▾":"▸"}</span>
@@ -4649,7 +4655,7 @@ return <div key={t.id} style={{background:G.card,borderRadius:10,padding:"11px 1
 
 {tab==="gastos"&&user.level>=3&&<div style={{display:"flex",flexDirection:"column",gap:14}}>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
-{[["Gastos Clínica",clinicaG,G.red],["Gastos Pessoais",pessoalG,G.purple]].map(([title,list,color])=><div key={title} style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+{[["Gastos Clínica",clinicaG,G.red],["Gastos Pessoais",pessoalG,G.purple]].map(([title,list,color])=><div key={title} style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
 <div style={{fontWeight:700,fontSize:14,color,marginBottom:10}}>{title}</div>
 <div style={{fontFamily:"'Cormorant Garamond'",fontSize:22,color,marginBottom:12}}>{cur(list.reduce((s,e)=>s+Number(e.value||0),0))}</div>
 {list.map(e=><div key={e.id} style={{display:"flex",gap:8,fontSize:12,padding:"4px 0",borderBottom:`1px solid ${G.border}`,flexWrap:"wrap",alignItems:"center"}}>
@@ -4695,7 +4701,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 <Btn ch="+ Novo Item" onClick={()=>{setEdit(null);setF(b0);setModal(true);}}/>
 </div>
 <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(250px,1fr))",gap:11}}>
-{[...stock].sort((a,b)=>a.name.localeCompare(b.name,"pt-BR",{sensitivity:"base"})).map(s=>{const low=s.qty<=s.min;return <div key={s.id} style={{background:G.card,borderRadius:12,padding:13,boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:`4px solid ${low?G.red:G.success}`}}>
+{[...stock].sort((a,b)=>a.name.localeCompare(b.name,"pt-BR",{sensitivity:"base"})).map(s=>{const low=s.qty<=s.min;return <div key={s.id} style={{background:G.card,borderRadius:12,padding:13,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)",borderLeft:`4px solid ${low?G.red:G.success}`}}>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
 <div><div style={{fontWeight:700,fontSize:13}}>{s.name}</div><div style={{fontSize:11,color:G.muted}}>Custo: {cur(s.price)}/{s.unit}</div></div>
 <div style={{textAlign:"right"}}><div style={{fontFamily:"'Cormorant Garamond'",fontSize:24,color:low?G.red:G.success,lineHeight:1}}>{s.qty}</div><div style={{fontSize:10,color:G.muted}}>{s.unit}</div></div>
@@ -4908,7 +4914,7 @@ function ImportWizard({pats,setPats}){
     var a=document.createElement("a");a.href=url;a.download="modelo_pacientes.csv";document.body.appendChild(a);a.click();setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},120);
   }
 
-  var card={background:G.card,borderRadius:13,padding:"16px 18px",boxShadow:"0 1px 4px rgba(0,0,0,.07)"};
+  var card={background:G.card,borderRadius:13,padding:"16px 18px",boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"};
   var btnPrimary={background:G.primary,color:"#fff",border:"2px solid "+G.primary,borderRadius:9,padding:"10px 20px",fontSize:14,fontWeight:700,cursor:"pointer"};
   var btnGhost={background:"transparent",color:G.primary,border:"1.5px solid "+G.primary,borderRadius:9,padding:"9px 18px",fontSize:14,fontWeight:600,cursor:"pointer"};
   var mapped=step>=3?buildMapped():[];
@@ -4962,7 +4968,7 @@ function ImportWizard({pats,setPats}){
       <div style={{background:G.accent,borderRadius:10,padding:"10px 13px",fontSize:13,color:G.primary}}>
         <b>{validRows.length}</b> paciente(s) prontos para importar.{noName>0?" "+noName+" linha(s) sem nome serao ignoradas.":""}
       </div>
-      <div style={{background:G.card,borderRadius:13,boxShadow:"0 1px 4px rgba(0,0,0,.07)",overflowX:"auto"}}>
+      <div style={{background:G.card,borderRadius:13,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)",overflowX:"auto"}}>
         <table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}>
           <thead><tr style={{background:G.bg}}>
             {["Nome","Telefone","Nascimento","Convenio"].map(function(h){return <th key={h} style={{textAlign:"left",padding:"8px 10px",color:G.muted,fontWeight:700,whiteSpace:"nowrap"}}>{h}</th>;})}
@@ -5021,7 +5027,7 @@ const bd={name:"",specialty:"Clinico Geral",commission:40,cro:"",color:UCOLS[0],
 const [uf,setUf]=useState(b0);const [pf,setPf]=useState(bp);const [lf,setLf]=useState(bl);const [df,setDf]=useState(bd);
 const fu=k=>v=>setUf(p=>({...p,[k]:v}));const fp=k=>v=>setPf(p=>({...p,[k]:v}));const fl=k=>v=>setLf(p=>({...p,[k]:v}));
 const upDf=k=>v=>setDf(p=>({...p,[k]:v}));
-if(user.level<3)return <div style={{background:G.card,borderRadius:13,padding:30,textAlign:"center",boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}><p style={{color:G.red,fontSize:15}}>Acesso restrito ao Administrador</p></div>;
+if(user.level<3)return <div style={{background:G.card,borderRadius:13,padding:30,textAlign:"center",boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}><p style={{color:G.red,fontSize:15}}>Acesso restrito ao Administrador</p></div>;
 const saveU=()=>{
 if(!uf.name||!uf.login)return alert("Preencha nome e login");
 let dentId=uf.dentistId?Number(uf.dentistId):null;
@@ -5061,7 +5067,7 @@ Para adicionar dentista use a aba <strong>Dentistas</strong>. Aqui crie apenas c
 <div style={{textAlign:"right"}}><Btn ch="+ Novo Usuario" sm onClick={()=>{setEu(null);setUf(b0);setUm(true);}}/></div>
 {users.map(u=>{
 const linkedDent=u.dentistId?dents.find(d=>d.id===u.dentistId):null;
-return <div key={u.id} style={{background:G.card,borderRadius:11,padding:"11px 14px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",display:"flex",alignItems:"center",gap:11,borderLeft:"4px solid "+u.color}}>
+return <div key={u.id} style={{background:G.card,borderRadius:11,padding:"11px 14px",boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)",display:"flex",alignItems:"center",gap:11,borderLeft:"4px solid "+u.color}}>
 <div style={{width:34,height:34,borderRadius:"50%",background:u.color,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:700,fontSize:13,flexShrink:0}}>{u.name[0]}</div>
 <div style={{flex:1,minWidth:0}}>
 <div style={{fontWeight:700,fontSize:13}}>{u.name}</div>
@@ -5082,7 +5088,7 @@ Cada dentista adicionado aqui aparece na <strong>agenda</strong> e nos <strong>h
 {dents.length===0&&<div style={{background:G.bg,borderRadius:10,padding:20,textAlign:"center",color:G.muted,fontSize:13}}>Nenhum dentista cadastrado</div>}
 {dents.map(d=>{
 const linkedUser=users.find(u=>u.dentistId===d.id);
-return <div key={d.id} style={{background:G.card,borderRadius:12,padding:"12px 14px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:"4px solid "+d.color}}>
+return <div key={d.id} style={{background:G.card,borderRadius:12,padding:"12px 14px",boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)",borderLeft:"4px solid "+d.color}}>
 <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
 <div style={{width:36,height:36,borderRadius:"50%",background:d.color,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:700,fontSize:14,flexShrink:0}}>{d.name[0]}</div>
 <div style={{flex:1,minWidth:0}}>
@@ -5105,14 +5111,14 @@ if(lu)setUsers(prev=>prev.map(u=>u.dentistId===d.id?{...u,dentistId:null}:u));
 </div>}
 {tab==="procs"&&<div style={{display:"flex",flexDirection:"column",gap:9}}>
 <div style={{textAlign:"right"}}><Btn ch="+ Novo" sm onClick={()=>{setEp(null);setPf(bp);setPm(true);}}/></div>
-{procs.map(p=><div key={p.id} style={{background:G.card,borderRadius:10,padding:"9px 14px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",display:"flex",alignItems:"center",gap:11}}>
+{procs.map(p=><div key={p.id} style={{background:G.card,borderRadius:10,padding:"9px 14px",boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)",display:"flex",alignItems:"center",gap:11}}>
 <span style={{flex:1,fontWeight:700,fontSize:13}}>{p.name}</span><span style={{fontWeight:700,color:G.primary}}>{cur(p.price)}</span>
 <Btn ch="Editar" v="g" sm onClick={()=>{setEp(p);setPf({...p});setPm(true);}}/><Btn ch="✕" v="r" sm onClick={()=>{if(window.confirm("Remover?"))setProcs(prev=>prev.filter(x=>x.id!==p.id));}}/>
 </div>)}
 </div>}
 {tab==="labs"&&<div style={{display:"flex",flexDirection:"column",gap:9}}>
 <div style={{textAlign:"right"}}><Btn ch="+ Novo Laboratório" sm onClick={()=>{setEl(null);setLf(bl);setLm(true);}}/></div>
-{labs.map(l=><div key={l.id} style={{background:G.card,borderRadius:10,padding:"11px 14px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",display:"flex",alignItems:"center",gap:11}}>
+{labs.map(l=><div key={l.id} style={{background:G.card,borderRadius:10,padding:"11px 14px",boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)",display:"flex",alignItems:"center",gap:11}}>
 <div style={{flex:1}}>
 <div style={{fontWeight:700,fontSize:13}}>{l.name}</div>
 <div style={{fontSize:12,color:G.muted}}>{l.contact}{l.phone?` · ${l.phone}`:""}</div>
@@ -5133,7 +5139,7 @@ var alFim=(d.almoco&&d.almoco.fim)||"13:00";
 var upDent=function(patch){setDents(function(prev){return prev.map(function(x){return x.id===d.id?Object.assign({},x,patch):x;});});};
 var togDia=function(dia){var nd=dias.indexOf(dia)>=0?dias.filter(function(x){return x!==dia;}):[...dias,dia].sort();upDent({dias:nd});};
 return(
-<div key={d.id} style={{background:G.card,borderRadius:14,padding:"14px 16px",boxShadow:"0 2px 8px rgba(0,0,0,.06)"}}>
+<div key={d.id} style={{background:G.card,borderRadius:14,padding:"14px 16px",boxShadow:"0 2px 6px rgba(20,40,33,.05),0 10px 28px rgba(27,94,74,.07)"}}>
 <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
 <div style={{width:10,height:10,borderRadius:"50%",background:d.color,flexShrink:0}}/>
 <span style={{fontWeight:700,fontSize:15}}>{d.name}</span>
@@ -5195,7 +5201,7 @@ return <div>
 {[1,2,3].map(function(lvl){
 var pm=perms[lvl];
 return(
-<div key={lvl} style={{background:G.card,borderRadius:14,overflow:"hidden",boxShadow:"0 2px 8px rgba(0,0,0,.06)"}}>
+<div key={lvl} style={{background:G.card,borderRadius:14,overflow:"hidden",boxShadow:"0 2px 6px rgba(20,40,33,.05),0 10px 28px rgba(27,94,74,.07)"}}>
 <div style={{background:pm.color,padding:"12px 16px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
 <span style={{fontWeight:700,color:"#fff",fontSize:15}}>{pm.label}</span>
 <span style={{background:"rgba(255,255,255,.2)",color:"#fff",borderRadius:20,padding:"2px 10px",fontSize:11,fontWeight:700}}>{"Nível "+lvl}</span>
@@ -5269,7 +5275,7 @@ var horaStr=dt.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
 var TIPO_COR={agenda:"#2196F3",paciente:"#27AE60",financeiro:"#FF9800",estoque:"#9C27B0",protese:"#F44336",lembrete:"#00BCD4",remarcar:"#795548",admin:"#607D8B"};
 var cor=TIPO_COR[l.tipo]||G.muted;
 return(
-<div key={l.id} style={{background:G.card,borderRadius:10,padding:"10px 12px",borderLeft:"3px solid "+cor,boxShadow:"0 1px 4px rgba(0,0,0,.05)"}}>
+<div key={l.id} style={{background:G.card,borderRadius:10,padding:"10px 12px",borderLeft:"3px solid "+cor,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:8}}>
 <div style={{flex:1}}>
 <div style={{fontSize:13,color:G.text}}>{l.desc}</div>
@@ -5386,7 +5392,7 @@ return(
 </div>}/>
 {/* Lab modal -- inline to avoid state issues */}
 {lm&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:460,boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:460,boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>{el?"Editar Laboratório":"Novo Laboratório"}</span>
       <button onClick={()=>setLm(false)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -5404,7 +5410,7 @@ return(
 </div>}
 
 {dm&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:560,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:560,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 24px 60px rgba(20,40,33,.26),0 8px 20px rgba(0,0,0,.10)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:"1px solid "+G.border}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>{ed?"Editar Dentista":"Novo Dentista"}</span>
       <button onClick={()=>setDm(false)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>{"x"}</button>
@@ -5504,7 +5510,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:12}} className="fi
   </div>
 
   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:9}}>
-    {[["👥",pats.length,"Pacientes",G.primary],["📅",todayCount,"Hoje",G.blue],["💰",cur(rev),"Receita mês",G.success]].map(function(c){return <div key={c[2]} style={{background:G.card,borderRadius:12,padding:"11px 12px",boxShadow:"0 1px 5px rgba(0,0,0,.07)",borderLeft:"4px solid "+c[3]}}><div style={{fontSize:17}}>{c[0]}</div><div style={{fontFamily:"'Cormorant Garamond'",fontSize:20,color:c[3]}}>{c[1]}</div><div style={{fontSize:10,color:G.muted,fontWeight:600}}>{c[2]}</div></div>;})}
+    {[["👥",pats.length,"Pacientes",G.primary],["📅",todayCount,"Hoje",G.blue],["💰",cur(rev),"Receita mês",G.success]].map(function(c){return <div key={c[2]} style={{background:"linear-gradient(155deg,#fff 0%,"+c[3]+"0a 100%)",borderRadius:14,padding:"15px 14px 13px",boxShadow:"0 1px 2px rgba(20,40,33,.045),0 6px 20px "+c[3]+"14",border:"1px solid "+c[3]+"22",position:"relative",overflow:"hidden"}}><div style={{position:"absolute",top:0,left:0,right:0,height:3,background:c[3]}}/><div style={{fontSize:18,marginBottom:3}}>{c[0]}</div><div style={{fontFamily:"'Cormorant Garamond'",fontSize:27,fontWeight:700,color:c[3],lineHeight:1.05}}>{c[1]}</div><div style={{fontSize:9.5,color:G.muted,fontWeight:700,textTransform:"uppercase",letterSpacing:".7px",marginTop:3}}>{c[2]}</div></div>;})}
   </div>
 
   {bdayAll.length>0&&<div>
@@ -5595,7 +5601,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:12}} className="fi
     <div style={{fontSize:11,color:"#BF360C",marginTop:4,fontWeight:600}}>{"Toque para ver Despesas →"}</div>
   </div>}
 
-  {bdayAll.length===0&&faltOntem.length===0&&prosPend.length===0&&stkBaixo.length===0&&cir.length===0&&despHoje.length===0&&encaixes.length===0&&<div style={{background:G.card,borderRadius:12,padding:24,textAlign:"center",color:G.muted,fontSize:13,boxShadow:"0 1px 4px rgba(0,0,0,.06)"}}>✅ Tudo em dia! Nenhuma pendência hoje.</div>}
+  {bdayAll.length===0&&faltOntem.length===0&&prosPend.length===0&&stkBaixo.length===0&&cir.length===0&&despHoje.length===0&&encaixes.length===0&&<div style={{background:G.card,borderRadius:12,padding:24,textAlign:"center",color:G.muted,fontSize:13,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>✅ Tudo em dia! Nenhuma pendência hoje.</div>}
 
 </div>;
 }
@@ -5725,6 +5731,65 @@ var MEDS_BASE=[
 {id:"listerine",cat:"Antisséptico",name:"Listerine Cool Blue",pos:"Bochechar após a escovação",qty:"1 frasco"},
 ];
 
+function Auditoria({appts,pats,pros,budgets,rems,stock,implCat,espera,anivTicks,users,go}){
+var [open,setOpen]=useState(null);
+var T=today();
+var d0=new Date(T+"T12:00:00");
+var ont=new Date(d0.getTime()-86400000).toISOString().slice(0,10);
+var amanha=new Date(d0.getTime()+86400000).toISOString().slice(0,10);
+var seis=new Date(d0);seis.setMonth(seis.getMonth()-6);var seisStr=seis.toISOString().slice(0,10);
+var pn=function(id){var p=(pats||[]).find(function(x){return x.id===id;});return p?p.name:"Paciente";};
+var un=function(id){var u=(users||[]).find(function(x){return x.id===id;});return u?u.name:"equipe";};
+var diasDe=function(ds){if(!ds)return 0;return Math.max(0,Math.round((d0-new Date(ds+"T12:00:00"))/86400000));};
+var fmt=function(ds){if(!ds)return"";var pp=String(ds).split("-");return pp.length===3?pp[2]+"/"+pp[1]:ds;};
+var money=function(v){return "R$ "+Number(v||0).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});};
+var futur=function(pid){return (appts||[]).some(function(a){return a.patientId===pid&&a.date>=T&&["pending","confirmed","waiting"].indexOf(a.status)>=0;});};
+var anamOk=function(p){var a=p.anamnese||{};return !!(a.hypertension||a.diabetes||a.heartDisease||a.bleeding||a.medications||a.otherConditions||a.allergicMeds||a.smoking||a.pregnant||a.osteoporosis||a.notes);};
+var bdayOn=function(dob,ds){return dob&&ds&&String(dob).slice(5)===String(ds).slice(5);};
+var btot=function(b){var s2=(b.items||[]).reduce(function(a,it){return a+Number(it.v||0);},0);return s2-Number(b.disc||0);};
+var lastConsult=function(pid){var ds=(appts||[]).filter(function(a){return a.patientId===pid&&["done","confirmed"].indexOf(a.status)>=0&&a.date<=T;}).map(function(a){return a.date;});return ds.length?ds.sort().pop():null;};
+var seen2={};
+var TOPICS=[
+{icon:"📲",name:"Confirmações pendentes",view:"agenda",items:(appts||[]).filter(function(a){return (a.date===T||a.date===amanha)&&a.status==="pending";}).map(function(a){return {n:pn(a.patientId),d:fmt(a.date)+" "+(a.time||"")};})},
+{icon:"🔄",name:"Faltas/cancelamentos sem remarcar",view:"remarcar",items:(appts||[]).filter(function(a){return ["missed","cancelled","rescheduled"].indexOf(a.status)>=0&&!futur(a.patientId);}).filter(function(a){if(seen2[a.patientId])return false;seen2[a.patientId]=1;return true;}).map(function(a){return {n:pn(a.patientId),d:(SL[a.status]||a.status)+" em "+fmt(a.date)};})},
+{icon:"💰",name:"Baixas financeiras em aberto",view:"fin",items:(appts||[]).filter(function(a){return a.status==="done"&&Number(a.value)>0&&!a.payment;}).map(function(a){return {n:pn(a.patientId),d:money(a.value)+" · "+fmt(a.date)};})},
+{icon:"🏥",name:"Próteses atrasadas",view:"pros",items:(pros||[]).filter(function(pr){return pr.status==="waiting"&&pr.due&&pr.due<T;}).map(function(pr){return {n:pn(pr.patientId),d:(pr.type||"Prótese")+" · venceu "+fmt(pr.due)};})},
+{icon:"📋",name:"Anamnese pendente",view:"pacs",items:(pats||[]).filter(function(p){return !anamOk(p)&&(appts||[]).some(function(a){return a.patientId===p.id&&a.date<=T&&a.date>=seisStr;});}).map(function(p){return {n:p.name,d:"sem anamnese preenchida"};})},
+{icon:"🎂",name:"Aniversariantes sem parabéns",view:"pacs",items:(pats||[]).filter(function(p){return (bdayOn(p.dob,T)||bdayOn(p.dob,ont))&&!(anivTicks&&anivTicks[p.id]);}).map(function(p){return {n:p.name,d:bdayOn(p.dob,T)?"aniversário hoje":"aniversário ontem"};})},
+{icon:"🔴",name:"Pós-cirúrgico sem contato",view:"agenda",items:(appts||[]).filter(function(a){return a.date===ont&&/irurg/i.test((a.procedure||"")+" "+(a.treatment||""));}).map(function(a){return {n:pn(a.patientId),d:"cirurgia ontem · contatar"};})},
+{icon:"📄",name:"Orçamentos não enviados",view:"pacs",items:(budgets||[]).filter(function(b){return !b.sentAt&&b.status!=="rejected";}).map(function(b){return {n:pn(b.patientId),d:money(btot(b))+" · "+fmt(b.date)};})},
+{icon:"📌",name:"Recados/tarefas não cumpridos",view:"lems",items:(rems||[]).filter(function(r){return !r.done&&r.date&&r.date<T;}).map(function(r){return {n:r.title||"Tarefa",d:"p/ "+un(r.assignedUserId)+" · há "+diasDe(r.date)+"d"};})},
+{icon:"⏳",name:"Lista de espera vencendo",view:"agenda",items:(espera||[]).filter(function(e){var dt=e.validade||e.venc||e.until||e.data||e.date;return dt&&dt<=amanha;}).map(function(e){var dt=e.validade||e.venc||e.until||e.data||e.date;return {n:(e.patName||e.nome||pn(e.patId||e.patientId)),d:"vence "+fmt(dt)};})},
+{icon:"📅",name:"Controle semestral pendente",view:"pacs",items:(pats||[]).filter(function(p){var lc=lastConsult(p.id);return lc&&lc<seisStr&&!futur(p.id);}).map(function(p){return {n:p.name,d:"última em "+fmt(lastConsult(p.id))};})},
+{icon:"📦",name:"Estoque baixo",view:"stk",items:(stock||[]).filter(function(it){return Number(it.qty)<=Number(it.min);}).map(function(it){return {n:it.name,d:it.qty+"/"+it.min+" "+(it.unit||"")};}).concat((implCat||[]).filter(function(it){return it.qty!=null&&it.min!=null&&Number(it.qty)<=Number(it.min);}).map(function(it){return {n:(it.nome||it.name||"Implante"),d:it.qty+"/"+it.min};}))}
+];
+var totalPend=TOPICS.reduce(function(s2,t){return s2+t.items.length;},0);
+return (
+<div style={{display:"flex",flexDirection:"column",gap:14}} className="fi">
+<h2 style={{fontFamily:"'Cormorant Garamond'",fontSize:26,margin:0}}>Auditoria</h2>
+<div style={{background:totalPend>0?"#FDECEA":"#E8F5E9",border:"1.5px solid "+(totalPend>0?"#E74C3C":G.success),borderRadius:12,padding:"14px 16px"}}>
+<div style={{fontSize:16,fontWeight:700,color:totalPend>0?"#C0392B":G.success}}>{totalPend>0?("🔴 "+totalPend+" pendência"+(totalPend>1?"s":"")+" precisam de atenção"):"✅ Tudo em dia!"}</div>
+<div style={{fontSize:12,color:G.muted,marginTop:3}}>Pendências de ontem + acumuladas</div>
+</div>
+<div style={{display:"flex",flexDirection:"column",gap:8}}>
+{TOPICS.map(function(t,ti){
+var n=t.items.length;var isOpen=open===ti;
+if(n===0)return <div key={ti} style={{background:G.card,border:"1px solid "+G.border,borderRadius:12,padding:"12px 15px",display:"flex",alignItems:"center",justifyContent:"space-between",opacity:.65}}><span style={{fontSize:13.5,fontWeight:600,color:G.muted}}>{t.icon+" "+t.name}</span><span style={{fontSize:12,fontWeight:700,color:G.success}}>{"✓ em dia"}</span></div>;
+return <div key={ti} style={{background:G.card,border:"1.5px solid "+(isOpen?"#E74C3C":G.border),borderRadius:12,overflow:"hidden"}}>
+<div onClick={function(){setOpen(isOpen?null:ti);}} style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,padding:"13px 15px",cursor:"pointer"}}>
+<span style={{fontSize:13.5,fontWeight:700,color:G.text}}>{t.icon+" "+t.name}</span>
+<span style={{display:"flex",alignItems:"center",gap:8}}><span style={{background:"#E74C3C",color:"#fff",borderRadius:11,padding:"1px 9px",fontSize:12,fontWeight:700,minWidth:22,textAlign:"center"}}>{n}</span><span style={{color:G.muted,fontSize:16,fontWeight:700,transform:isOpen?"rotate(90deg)":"none",transition:"transform .15s"}}>{"›"}</span></span>
+</div>
+{isOpen&&<div style={{padding:"0 15px 13px"}}>
+{t.items.map(function(it,ii){return <div key={ii} style={{display:"flex",justifyContent:"space-between",gap:10,padding:"8px 0",borderTop:"1px solid "+G.border}}><span style={{fontSize:13,color:G.text,fontWeight:600}}>{it.n}</span><span style={{fontSize:12,color:G.muted,textAlign:"right",flexShrink:0}}>{it.d}</span></div>;})}
+{t.view&&<div onClick={function(){go&&go(t.view);}} style={{marginTop:10,fontSize:12,fontWeight:700,color:G.primary,cursor:"pointer"}}>{"Abrir tela →"}</div>}
+</div>}
+</div>;
+})}
+</div>
+</div>
+);
+}
 function Orientacoes({orient,setOrient,pats,user}){
 var [patId,setPatId]=useState("");
 var [open,setOpen]=useState(null);
@@ -6180,7 +6245,7 @@ return(
   {/* Resumo */}
   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
     {[["Total Comissão",totalComissao,G.primary],["Pago",totalPago,G.success],["Pendente",totalPendente,G.red]].map(function(row){return(
-      <div key={row[0]} style={{background:G.card,borderRadius:12,padding:"11px 8px",textAlign:"center",borderTop:"3px solid "+row[2],boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+      <div key={row[0]} style={{background:G.card,borderRadius:12,padding:"11px 8px",textAlign:"center",borderTop:"3px solid "+row[2],boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
         <div style={{fontSize:9,color:G.muted,fontWeight:700,textTransform:"uppercase",marginBottom:3}}>{row[0]}</div>
         <div style={{fontSize:16,fontWeight:700,color:row[2]}}>{cur(row[1])}</div>
       </div>
@@ -6188,13 +6253,13 @@ return(
   </div>
 
   {/* Lista de procedimentos */}
-  {items.length===0&&<div style={{background:G.card,borderRadius:12,padding:30,textAlign:"center",color:G.muted,fontSize:13,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+  {items.length===0&&<div style={{background:G.card,borderRadius:12,padding:30,textAlign:"center",color:G.muted,fontSize:13,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
     Nenhum procedimento realizado neste mês
   </div>}
 
   <div style={{display:"flex",flexDirection:"column",gap:8}}>
     {items.map(function(item){return(
-      <div key={item.key} style={{background:G.card,borderRadius:12,padding:"13px 15px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:"4px solid "+(item.pago?G.success:item.atrasado?G.red:G.orange),opacity:item.pago?0.75:1}}>
+      <div key={item.key} style={{background:G.card,borderRadius:12,padding:"13px 15px",boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)",borderLeft:"4px solid "+(item.pago?G.success:item.atrasado?G.red:G.orange),opacity:item.pago?0.75:1}}>
         <div style={{display:"flex",alignItems:"center",gap:12}}>
           {/* Checkbox admin */}
           {!isDent&&<div onClick={function(){marcarPago(item.key,!item.pago);}}
@@ -6403,7 +6468,7 @@ var d=dents&&dents.find(function(x){return x.id===a.dentistId;})||{name:"--"};
 if(!p)return null;
 var isMot=selMot===a.id;
 return(
-<div key={a.id} style={{background:G.card,borderRadius:14,padding:"12px 14px",boxShadow:"0 2px 8px rgba(0,0,0,.06)",borderLeft:"4px solid "+(a.status==="missed"?G.red:"#FF9800")}}>
+<div key={a.id} style={{background:G.card,borderRadius:14,padding:"12px 14px",boxShadow:"0 2px 6px rgba(20,40,33,.05),0 10px 28px rgba(27,94,74,.07)",borderLeft:"4px solid "+(a.status==="missed"?G.red:"#FF9800")}}>
 <div style={{fontWeight:700,fontSize:14}}>{p.name}</div>
 <div style={{fontSize:12,color:G.muted,marginTop:2}}>{a.procedure+" · "+d.name}</div>
 <div style={{fontSize:11,fontWeight:600,color:a.status==="missed"?G.red:"#FF9800",marginBottom:10}}>{(a.status==="missed"?"🚫 Faltou":a.status==="rescheduled"?"🔄 Desmarcou":"❌ Cancelou")+" em "+fmt(a.date)}</div>
@@ -6843,7 +6908,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}}>
 </div>
 <div style={{display:"flex",flexDirection:"column",gap:8,opacity:cfg.master?1:.55}}>
 {WA_TPL.map(function(t){
-return <div key={t.k} style={{background:G.card,borderRadius:11,padding:"11px 13px",boxShadow:"0 1px 4px rgba(0,0,0,.06)",display:"flex",alignItems:"center",gap:11,borderLeft:"4px solid "+(cfg[t.k]?G.success:G.border)}}>
+return <div key={t.k} style={{background:G.card,borderRadius:11,padding:"11px 13px",boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)",display:"flex",alignItems:"center",gap:11,borderLeft:"4px solid "+(cfg[t.k]?G.success:G.border)}}>
 <div style={{flex:1}}>
 <div style={{fontWeight:700,fontSize:13}}>{t.label}</div>
 <div style={{fontSize:11,color:G.muted,marginTop:1}}>{t.quando}</div>
@@ -6993,7 +7058,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 {/* Totais do mes - igual Gastos */}
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
   {[["Total Geral",moData.total,G.primary],["PIX",moData.pix,G.success],["Cartao",moData.card,"#1565C0"]].map(function([l,v,c]){return(
-    <div key={l} style={{background:G.card,borderRadius:10,padding:"12px",textAlign:"center",borderTop:"3px solid "+c,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+    <div key={l} style={{background:G.card,borderRadius:10,padding:"12px",textAlign:"center",borderTop:"3px solid "+c,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
       <div style={{fontSize:10,color:G.muted,fontWeight:700}}>{l}</div>
       <div style={{fontSize:18,fontWeight:700,color:c,marginTop:4}}>{cur(v)}</div>
     </div>
@@ -7002,13 +7067,13 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 
 {/* Lista de pagamentos do mes */}
 {moData.recs.length===0
-  ?<div style={{background:G.card,borderRadius:12,padding:24,textAlign:"center",color:G.muted,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>{"Nenhum pagamento em "+fmtMo(moAtivo)}</div>
+  ?<div style={{background:G.card,borderRadius:12,padding:24,textAlign:"center",color:G.muted,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>{"Nenhum pagamento em "+fmtMo(moAtivo)}</div>
   :<div style={{display:"flex",flexDirection:"column",gap:8}}>
     <div style={{fontSize:11,color:G.muted,fontWeight:700,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:2}}>{fmtMo(moAtivo)+" · "+moData.recs.length+" pagamento(s)"}</div>
     {moData.recs.map(function(r){
       var pat=pats.find(function(p){return p.id===r.patientId;});
       var isPix=(r.payment||"").toLowerCase().startsWith("pix");
-      return <div key={r.id} style={{background:G.card,borderRadius:11,padding:"12px 14px",display:"flex",alignItems:"center",gap:10,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+      return <div key={r.id} style={{background:G.card,borderRadius:11,padding:"12px 14px",display:"flex",alignItems:"center",gap:10,boxShadow:"0 1px 2px rgba(20,40,33,.045),0 5px 18px rgba(27,94,74,.06)"}}>
         <div style={{flex:1,minWidth:0}}>
           <div style={{fontWeight:700,fontSize:13}}>{pat&&pat.name||"—"}</div>
           <div style={{fontSize:11,color:G.muted,marginTop:2}}>{fmt(r.date)}</div>
@@ -7592,7 +7657,7 @@ const remBadge=(user.level===1
 const prosBadge=pros.filter(p=>p.due===today()&&p.status==="waiting").length;
 
 const ALL_NAV=[
-{id:"dash",l:"🏠 Visão Geral",lv:3},{id:"agenda",l:"📅 Agenda",lv:1},
+{id:"dash",l:"🏠 Visão Geral",lv:3},{id:"audit",l:"🔍 Auditoria",lv:3},{id:"agenda",l:"📅 Agenda",lv:1},
 {id:"pacs",l:"👥 Pacientes",lv:1},{id:"remarcar",l:"🔄 Remarcar",lv:2},{id:"pros",l:"🏥 Próteses",lv:2,b:prosBadge},
 {id:"impl",l:"🔩 Implantes",lv:2},{id:"lems",l:"📌 Lembretes",lv:1,b:remBadge},
 {id:"fin",l:"💰 Financeiro",lv:3},{id:"pixdent",l:"💸 Pix Dentistas",lv:1},{id:"rel",l:"📊 Relatórios",lv:2},
@@ -7673,6 +7738,7 @@ return <>
       {view==="stk"&&<Estoque stock={stock} setStock={setStock} implCat={implCat} setImplCat={setImplCat} implMov={implMov} setImplMov={setImplMov} pats={pats} dents={dents} addLog={cp.addLog}/>}
       {view==="pixdent"&&<PixDentistas recs={recs} setRecs={setRecs} dents={dents} pats={pats} user={user}/>}
       {view==="pdent"&&<PainelDentista pats={pats} dents={dents} treats={treats} setTreats={setTreats} user={user}/>}
+    {view==="audit"&&<Auditoria appts={appts} pats={pats} pros={pros} budgets={budgets} rems={rems} stock={stock} implCat={implCat} espera={espera} anivTicks={anivTicks} users={users} go={go}/>}
     {view==="orient"&&<Orientacoes orient={orient} setOrient={setOrient} pats={pats} user={user}/>}
     {view==="rec"&&<Receituario pats={pats} dents={dents} user={user}/>}
     {view==="adm"&&<Admin users={users} setUsers={setUsers} procs={procs} setProcs={setProcs} dents={dents} setDents={setDents} labs={labs} setLabs={setLabs} perms={perms} setPerms={setPerms} logs={logs} setLogs={setLogs} user={user} pats={pats} setPats={setPats} appts={appts} setAppts={setAppts} recs={recs} setRecs={setRecs} treats={treats} setTreats={setTreats} budgets={budgets} setBudgets={setBudgets} pros={pros} setPros={setPros} rems={rems} setRems={setRems} stock={stock} setStock={setStock} expenses={expenses} setExpenses={setExpenses} impl={impl} setImpl={setImpl} waAuto={waAuto} setWaAuto={setWaAuto} waAutoLog={waAutoLog} clinica={clinica} setClinica={setClinica} waCfg={waCfg} setWaCfg={setWaCfg} helpHints={helpHints} setHelpHints={setHelpHints}/>}
