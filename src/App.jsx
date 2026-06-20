@@ -302,6 +302,8 @@ const calcNet=(v,p,inst)=>{var n=Number(v)||0;var tc=Number(CLINICA_LIVE.taxaCre
 const fmtTax=(x)=>(""+(Number(x)||0)).replace(".",",");
 const ESCALA_CFG0=[{id:1,nome:"Diurno",inicio:"07:00",fim:"19:00"},{id:2,nome:"Noturno",inicio:"19:00",fim:"07:00"}];
 const DOW_LABELS=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+const nomeArqImg=function(patName,im){var base=(patName||"paciente").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9 ]+/g," ").trim().replace(/\s+/g,"_")||"paciente";return base+"_"+((im&&im.cat)||"img")+"_"+((im&&im.date)||"")+".jpg";};
+const baixarImagem=function(url,nome){try{fetch(url).then(function(r){return r.blob();}).then(function(b){var u=URL.createObjectURL(b);var a=document.createElement("a");a.href=u;a.download=nome||"imagem.jpg";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},3000);}).catch(function(){window.open(url,"_blank");});}catch(e){window.open(url,"_blank");}};
 const DOW_FULL=["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];
 const hhmmNow=function(){var d=new Date();var p=function(n){return (n<10?"0":"")+n;};return p(d.getHours())+":"+p(d.getMinutes());};
 const plantaoAgora=function(esc){var d=new Date(),dow=d.getDay(),hm=hhmmNow();var act=[];var chk=function(e,day){var ini=e.inicio||"00:00",fim=e.fim||"23:59";if(fim>ini){return day===dow&&hm>=ini&&hm<fim;}return (day===dow&&hm>=ini)||(day===((dow+6)%7)&&hm<fim);};[dow,((dow+6)%7)].forEach(function(day){((esc||{})[day]||[]).forEach(function(e){if(chk(e,day))act.push(e);});});return act;};
@@ -1212,7 +1214,7 @@ return <>
     return <div style={{display:"flex",flexDirection:"column",gap:14}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}}>
         <span style={{fontWeight:700,fontSize:15,color:G.primary}}>📷 Imagens e Radiografias</span>
-        <span style={{fontSize:11,color:G.muted}}>{imgs.length+" imagem(ns)"}</span>
+        <div style={{display:"flex",alignItems:"center",gap:10}}><span style={{fontSize:11,color:G.muted}}>{imgs.length+" imagem(ns)"}</span>{imgs.length>0&&<button onClick={function(){imgs.forEach(function(im,i){setTimeout(function(){baixarImagem(im.url,nomeArqImg(pat.name,im));},i*600);});}} style={{border:"1.5px solid "+G.primary,background:"transparent",color:G.primary,borderRadius:8,padding:"5px 11px",fontSize:12,fontWeight:700,cursor:"pointer"}}>⬇️ Baixar todas</button>}</div>
       </div>
       {/* Painel de envio */}
       <div style={{background:G.bg,borderRadius:12,padding:"13px 15px",display:"flex",flexDirection:"column",gap:11}}>
@@ -1252,7 +1254,7 @@ return <>
               var tName=im.treatId?(patTreats.find(function(t){return String(t.id)===String(im.treatId);})||{}).name:"";
               return <div key={im.id} style={{position:"relative"}}>
                 <img src={im.url} alt="" onClick={function(){setImgView(im);}} style={{width:"100%",height:96,objectFit:"cover",borderRadius:9,border:"1.5px solid "+G.border,cursor:"pointer"}}/>
-                <button onClick={function(){removerImg(im);}} style={{position:"absolute",top:3,right:3,background:"rgba(192,57,43,.92)",color:"#fff",border:"none",borderRadius:"50%",width:22,height:22,fontSize:13,fontWeight:700,cursor:"pointer",lineHeight:1}}>×</button>
+                <button onClick={function(){baixarImagem(im.url,nomeArqImg(pat.name,im));}} title="Baixar" style={{position:"absolute",top:3,left:3,background:"rgba(27,94,74,.92)",color:"#fff",border:"none",borderRadius:"50%",width:22,height:22,fontSize:11,fontWeight:700,cursor:"pointer",lineHeight:1}}>⬇</button><button onClick={function(){removerImg(im);}} style={{position:"absolute",top:3,right:3,background:"rgba(192,57,43,.92)",color:"#fff",border:"none",borderRadius:"50%",width:22,height:22,fontSize:13,fontWeight:700,cursor:"pointer",lineHeight:1}}>×</button>
                 {(im.nota||tName)&&<div style={{fontSize:9,color:G.muted,marginTop:2,lineHeight:1.2,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{im.nota||tName}</div>}
                 <div style={{fontSize:8,color:G.muted}}>{fmt(im.date)}</div>
               </div>;
@@ -1266,7 +1268,7 @@ return <>
         <div style={{color:"#fff",marginTop:12,textAlign:"center",fontSize:13}}>
           {(imgView.nota||"")+(imgView.nota?" · ":"")+CAT_L(imgView.cat)+" · "+fmt(imgView.date)+(imgView.by?" · "+imgView.by:"")}
         </div>
-        <button onClick={function(){setImgView(null);}} style={{marginTop:16,background:"#fff",color:"#222",border:"none",borderRadius:10,padding:"10px 24px",fontSize:14,fontWeight:700,cursor:"pointer"}}>Fechar</button>
+        <div style={{display:"flex",gap:10,marginTop:16}} onClick={function(e){e.stopPropagation();}}><button onClick={function(){baixarImagem(imgView.url,nomeArqImg(pat.name,imgView));}} style={{background:G.primary,color:"#fff",border:"none",borderRadius:10,padding:"10px 22px",fontSize:14,fontWeight:700,cursor:"pointer"}}>⬇️ Baixar</button><button onClick={function(){setImgView(null);}} style={{background:"#fff",color:"#222",border:"none",borderRadius:10,padding:"10px 24px",fontSize:14,fontWeight:700,cursor:"pointer"}}>Fechar</button></div>
       </div>}
     </div>;
   })()}
