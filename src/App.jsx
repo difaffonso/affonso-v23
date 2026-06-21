@@ -8241,7 +8241,7 @@ const BOTTOM_NAV=user.level>=3
 ?[{id:"agenda",icon:"📅"},{id:"pacs",icon:"👥"},{id:"pixdent",icon:"💸"},{id:"lems",icon:"📌",b:remBadge},{id:"rel",icon:"📊"}]
 :[{id:"agenda",icon:"📅"},{id:"pacs",icon:"👥"},{id:"pixdent",icon:"💸"},{id:"lems",icon:"📌",b:remBadge},{id:"rec",icon:"📋"}];
 
-const RESPONSIVE_CSS=`@media(min-width:640px){.sidebar-overlay{display:none!important;}.sidebar{position:relative!important;transform:none!important;width:195px!important;flex-shrink:0;}.bottom-nav{display:none!important;}.main-content{padding-bottom:16px!important;}.mobile-topbar{display:none!important;}}@media(max-width:639px){.sidebar{position:fixed!important;top:0!important;left:0!important;height:100vh!important;z-index:500!important;width:240px!important;transition:transform .25s ease!important;}.sidebar.closed{transform:translateX(-100%)!important;}.main-content{padding-bottom:70px!important;}}`;
+const RESPONSIVE_CSS=`@media(min-width:640px){.sidebar-overlay{display:none!important;}.sidebar{position:relative!important;transform:none!important;width:195px!important;flex-shrink:0;}.bottom-nav{display:none!important;}.main-content{padding-bottom:16px!important;}.mobile-topbar{display:none!important;}}@media(max-width:639px){.sidebar{position:fixed!important;top:0!important;left:0!important;height:100vh!important;z-index:500!important;width:240px!important;transition:transform .25s ease!important;}.sidebar.closed{transform:translateX(-100%)!important;}.sidebar-scroll::-webkit-scrollbar{width:6px;}.sidebar-scroll::-webkit-scrollbar-thumb{background:#1B5E4A;border-radius:4px;}.sidebar-scroll::-webkit-scrollbar-track{background:transparent;}.main-content{padding-bottom:70px!important;}}`;
 
 return <>
 
@@ -8255,7 +8255,7 @@ return <>
 
 <div style={{display:"flex",minHeight:"100vh"}}>
   {/* Sidebar */}
-  <div className={`sidebar${sideOpen?"":" closed"}`} style={{background:`linear-gradient(180deg,${G.primary},#0a2e1e)`,display:"flex",flexDirection:"column",padding:"14px 10px",gap:2,flexShrink:0}}>
+  <div className={`sidebar${sideOpen?"":" closed"}`} style={{background:"linear-gradient(180deg,rgba(23,47,38,.90),rgba(11,30,23,.93))",backdropFilter:"blur(22px) saturate(140%)",WebkitBackdropFilter:"blur(22px) saturate(140%)",borderRight:"1px solid rgba(255,255,255,.08)",borderRadius:"0 18px 18px 0",boxShadow:"3px 0 22px rgba(0,0,0,.28)",display:"flex",flexDirection:"column",padding:"14px 10px",gap:2,flexShrink:0}}>
     {/* Header with close button on mobile */}
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",padding:"6px 4px 14px",flexShrink:0}}>
       <div>
@@ -8264,8 +8264,8 @@ return <>
       </div>
       <button onClick={()=>setSideOpen(false)} style={{border:"none",background:"rgba(255,255,255,.15)",borderRadius:7,color:"#fff",fontSize:16,cursor:"pointer",padding:"4px 8px",lineHeight:1}} className="sidebar-close-btn">✕</button>
     </div>
-    <div style={{flex:1,overflowY:"auto",minHeight:0,display:"flex",flexDirection:"column",gap:2}}>
-    {NAV.map(n=><button key={n.id} onClick={()=>go(n.id)} style={{background:view===n.id?"rgba(255,255,255,.2)":"transparent",border:"none",borderRadius:8,padding:"9px 11px",cursor:"pointer",color:"#fff",fontFamily:"'DM Sans'",fontWeight:600,fontSize:12,display:"flex",alignItems:"center",gap:8,textAlign:"left",transition:"background .15s"}}>
+    <div className="sidebar-scroll" style={{flex:1,overflowY:"auto",minHeight:0,display:"flex",flexDirection:"column",gap:2}}>
+    {NAV.map(n=><button key={n.id} onClick={()=>go(n.id)} style={{background:view===n.id?"rgba(255,255,255,.16)":"transparent",border:"none",borderRadius:8,padding:"9px 11px",cursor:"pointer",color:"#fff",fontFamily:"'DM Sans'",fontWeight:600,fontSize:12,display:"flex",alignItems:"center",gap:8,textAlign:"left",transition:"background .15s"}}>
       <span style={{flex:1}}>{n.l}</span>
       {n.b>0&&<span style={{background:G.red,color:"#fff",borderRadius:10,padding:"1px 6px",fontSize:9,fontWeight:700}}>{n.b}</span>}
     </button>)}
