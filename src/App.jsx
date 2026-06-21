@@ -94,7 +94,7 @@ return true;
 }catch(e){console.error("WA fetch error:",e);return false;}
 };
 const ANAM_LINK="https://claude.ai/public/artifacts/134f3434-6997-4396-ab62-3d37bae9d44e";
-const CLINICA_INFO={nome:"Clínica Modelo",endereco:"Rua das Flores, 100 - Centro, São Paulo - SP",telefone:"(11) 3000-0000",whatsapp:"(11) 90000-0000",taxaCredito:3.5,taxaDebito:2,taxaAntecipacao:2.5,agendaInt:30};
+const CLINICA_INFO={nome:"Clínica Modelo",endereco:"Rua das Flores, 100 - Centro, São Paulo - SP",telefone:"(11) 3000-0000",whatsapp:"(11) 90000-0000",taxaCredito:3.5,taxaDebito:2,taxaAntecipacao:2.5};
 var CLINICA_LIVE=(function(){try{var sv=JSON.parse(localStorage.getItem("orbe_clinica")||"null");return (sv&&sv.nome)?Object.assign({},CLINICA_INFO,sv):Object.assign({},CLINICA_INFO);}catch(e){return Object.assign({},CLINICA_INFO);}})();
 const SUPORTE_WA="5511900000000"; // CONFIGURE: WhatsApp do suporte Orbe
 const ANAM_CONDS=[["hypertension","Pressao alta"],["diabetes","Diabetes"],["heartDisease","Problema no coracao"],["rheumaticFever","Febre reumatica / valvula"],["bleeding","Problema de coagulacao"],["anticoagulant","Usa anticoagulante"],["osteoporosis","Osteoporose"],["bisphosphonate","Usa/usou bifosfonato"],["kidneyDisease","Doenca renal"],["liverDisease","Doenca no figado"],["hepatitis","Hepatite (B ou C)"],["hiv","HIV"],["infectious","Doenca infectocontagiosa"],["thyroid","Tireoide"],["epilepsy","Epilepsia / convulsoes"],["cancer","Cancer / quimioterapia"],["pregnant","Gestante"],["smoking","Fumante"]];
@@ -197,7 +197,7 @@ const PROS_SL={waiting:"Aguardando",returned:"Retornou",placed:"Instalada",remak
 const PROS_SC={waiting:G.yellow,returned:G.blue,placed:G.success,remake:G.red};
 const IMPL_ST=["Extração","Enxerto","Implante","Prótese","Controle"];
 function genSlots(iv){iv=Number(iv)||30;var s=[];for(var t=8*60+iv;t<=19*60;t+=iv){var h=Math.floor(t/60),m=t%60;s.push((h<10?"0":"")+h+":"+(m<10?"0":"")+m);}return s;}
-let SLOTS=genSlots(CLINICA_LIVE.agendaInt);
+const SLOTS=(()=>{const s=[];for(let h=8;h<=19;h++){if(h===8)s.push("08:30");else{s.push(`${String(h).padStart(2,"0")}:00`);if(h<19)s.push(`${String(h).padStart(2,"0")}:30`);}}return s;})();
 // Orto slots: every 20 minutes from 08:00 to 20:00
 const SLOTS_ORTO=(()=>{const s=[];for(let h=8;h<=19;h++){for(let m=0;m<60;m+=20){if(h===8&&m===0)continue; // skip 8:00, start 8:20
 s.push(`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`);}}return s;})();
@@ -2247,7 +2247,7 @@ const vd=isDent
     :dents.filter(d=>d.id===Number(denF));
 // Use 20-min slots when viewing a single orto dentist
 const viewingOrto=vd.length===1&&isOrto(vd[0]);
-const activeSlots=viewingOrto?SLOTS_ORTO:SLOTS;
+const activeSlots=(function(){if(vd.length!==1)return SLOTS;var iv=Number(vd[0].slotMin)||(isOrto(vd[0])?20:30);return iv===20?SLOTS_ORTO:(iv===30?SLOTS:genSlots(iv));})();
 const espMatches=(user.level>=2)?esperaMatchDia(espera||[],appts,dents,selDate):[];
 const hiddenToday=denF==="all"?appts.filter(function(a){return a.date===selDate&&!vd.some(function(d){return d.id===a.dentistId;})&&a.status!=="cancelled"&&a.status!=="rescheduled"&&a.status!=="missed";}):[];
 const dim=(y,m)=>new Date(y,m+1,0).getDate();
@@ -5219,7 +5219,6 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 <div style={{fontSize:13.5,color:G.muted,lineHeight:1.6}}>{clinica.endereco}<br/>{"Tel. "+clinica.telefone+" · WhatsApp "+clinica.whatsapp}</div>
 </div>
 <div style={{background:G.card,border:"1px solid "+G.border,borderRadius:14,padding:"16px 18px"}}><div style={{fontWeight:700,fontSize:14,color:G.text,marginBottom:3}}>💳 Taxas de cartão (%)</div><div style={{fontSize:12.5,color:G.muted,lineHeight:1.45,marginBottom:12}}>Defina as taxas da sua máquina/adquirente. Usadas para calcular o valor líquido nos recebimentos.</div><div style={{display:"flex",gap:12,flexWrap:"wrap"}}><div style={{flex:1,minWidth:90}}><label style={{fontSize:11,fontWeight:700,color:G.muted,letterSpacing:"1px",textTransform:"uppercase",display:"block",marginBottom:6}}>Crédito</label><input type="number" step="0.1" value={clinica.taxaCredito} onChange={function(e){updateClinica({taxaCredito:e.target.value});}} style={{width:"100%",background:G.card,border:"1.5px solid "+G.border,borderRadius:10,padding:"12px 14px",fontSize:14,color:G.text,outline:"none",boxSizing:"border-box"}}/></div><div style={{flex:1,minWidth:90}}><label style={{fontSize:11,fontWeight:700,color:G.muted,letterSpacing:"1px",textTransform:"uppercase",display:"block",marginBottom:6}}>Débito</label><input type="number" step="0.1" value={clinica.taxaDebito} onChange={function(e){updateClinica({taxaDebito:e.target.value});}} style={{width:"100%",background:G.card,border:"1.5px solid "+G.border,borderRadius:10,padding:"12px 14px",fontSize:14,color:G.text,outline:"none",boxSizing:"border-box"}}/></div><div style={{flex:1,minWidth:90}}><label style={{fontSize:11,fontWeight:700,color:G.muted,letterSpacing:"1px",textTransform:"uppercase",display:"block",marginBottom:6}}>Antecipação</label><input type="number" step="0.1" value={clinica.taxaAntecipacao} onChange={function(e){updateClinica({taxaAntecipacao:e.target.value});}} style={{width:"100%",background:G.card,border:"1.5px solid "+G.border,borderRadius:10,padding:"12px 14px",fontSize:14,color:G.text,outline:"none",boxSizing:"border-box"}}/></div></div><div style={{fontSize:11.5,color:G.muted,marginTop:9,lineHeight:1.4}}>A antecipação é aplicada quando a venda é parcelada no crédito e você recebe à vista. Deixe 0 se recebe parcela a parcela.</div></div>
-<div style={{background:G.card,border:"1px solid "+G.border,borderRadius:14,padding:"16px 18px"}}><div style={{fontWeight:700,fontSize:14,color:G.text,marginBottom:3}}>🗓️ Intervalo da agenda</div><div style={{fontSize:12.5,color:G.muted,lineHeight:1.45,marginBottom:12}}>Tempo de cada horário na agenda. Padrão 30 min — vale para toda a clínica.</div><div style={{display:"flex",gap:8,flexWrap:"wrap"}}>{[15,20,30,45,60].map(function(iv){var on=(Number(clinica.agendaInt)||30)===iv;return <button key={iv} onClick={function(){updateClinica({agendaInt:iv});}} style={{border:"2px solid "+(on?G.primary:G.border),background:on?G.primary:"#fff",color:on?"#fff":G.text,borderRadius:10,padding:"10px 16px",fontSize:14,fontWeight:700,cursor:"pointer"}}>{iv+" min"}</button>;})}</div><div style={{fontSize:11.5,color:G.muted,marginTop:9,lineHeight:1.4}}>A mudança vale na hora. Agendamentos já marcados continuam no horário deles.</div></div>
 <div style={{background:G.card,border:"1px solid "+G.border,borderRadius:14,padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}>
 <div style={{flex:1}}><div style={{fontWeight:700,fontSize:14,color:G.text,marginBottom:3}}>💡 Dicas de ajuda nas telas</div><div style={{fontSize:12.5,color:G.muted,lineHeight:1.45}}>Mostra uma dica explicativa no topo de cada tela. Desligue quando a equipe já conhecer o sistema.</div></div>
 <button onClick={function(){toggleDicas(!dicas);}} style={{flexShrink:0,width:30,height:30,borderRadius:8,border:"none",cursor:"pointer",background:dicas?"#2F80ED":"#cfd8d4",color:"#fff",fontSize:16,fontWeight:800,display:"flex",alignItems:"center",justifyContent:"center"}}>{dicas?"✓":""}</button>
@@ -5590,6 +5589,7 @@ return(
             <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Cor</label>
             <div style={{display:"flex",gap:6}}>{UCOLS.map(c=><button key={c} onClick={()=>setDf(p=>({...p,color:c}))} style={{width:26,height:26,borderRadius:"50%",background:c,border:"3px solid "+(df.color===c?"#000":"transparent"),cursor:"pointer"}}/>)}</div>
           </div>}/>
+      <div style={{display:"flex",flexDirection:"column",gap:4}}><label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Intervalo da agenda</label><div style={{display:"flex",gap:6,flexWrap:"wrap"}}>{[["",((df.specialty||"").toLowerCase().indexOf("orto")>=0?"Padrão (20m)":"Padrão (30m)")],[15,"15m"],[20,"20m"],[30,"30m"],[45,"45m"],[60,"60m"]].map(function(o){var v=o[0];var lab=o[1];var cur=df.slotMin?Number(df.slotMin):"";var on=cur===v;return <button key={String(v)} type="button" onClick={function(){upDf("slotMin")(v);}} style={{border:"2px solid "+(on?G.primary:G.border),background:on?G.primary:"#fff",color:on?"#fff":G.text,borderRadius:9,padding:"7px 12px",fontSize:13,fontWeight:700,cursor:"pointer"}}>{lab}</button>;})}</div><div style={{fontSize:11,color:G.muted,marginTop:2,lineHeight:1.4}}>Tempo de cada horário na agenda deste dentista. "Padrão" usa 20 min para Orto e 30 min para os demais.</div></div>
       <div style={{display:"flex",gap:9,justifyContent:"flex-end",paddingTop:12,borderTop:"1px solid "+G.border}}>
         <button onClick={()=>setDm(false)} style={{border:"1.5px solid "+G.primary,background:"transparent",color:G.primary,borderRadius:8,padding:"8px 16px",fontSize:14,fontWeight:600,cursor:"pointer"}}>Cancelar</button>
         <button onClick={()=>{
@@ -7529,7 +7529,7 @@ function Escala({dents,users,user,escala,setEscala}){var isAdmin=user.level>=3;v
 export default function App(){
 const [user,setUser]=useState(null);const [view,setView]=useState("dash");
 const [clinica,setClinica]=useState(CLINICA_LIVE);
-const updateClinica=function(patch){setClinica(function(prev){var next=Object.assign({},prev,patch);Object.assign(CLINICA_LIVE,next);if(patch&&patch.agendaInt!==undefined){SLOTS=genSlots(next.agendaInt);}try{localStorage.setItem("orbe_clinica",JSON.stringify(next));}catch(e){}return next;});};
+const updateClinica=function(patch){setClinica(function(prev){var next=Object.assign({},prev,patch);Object.assign(CLINICA_LIVE,next);try{localStorage.setItem("orbe_clinica",JSON.stringify(next));}catch(e){}return next;});};
 const [showWelcome,setShowWelcome]=useState(function(){try{return !localStorage.getItem("orbe_welcome_seen");}catch(e){return true;}});
 const fecharWelcome=function(){setShowWelcome(false);try{localStorage.setItem("orbe_welcome_seen","1");}catch(e){}};
 const [dicas,setDicas]=useState(function(){try{var v=localStorage.getItem("orbe_dicas");return v===null?true:v==="1";}catch(e){return true;}});
