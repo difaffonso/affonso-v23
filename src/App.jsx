@@ -3494,7 +3494,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
     <Btn ch="+ Novo" onClick={function(){setEdit(null);setF({...blank,cat:CATS[0]});setModal(true);}}/>
   </div>
 </div>
-<div style={{display:"flex",borderBottom:"2px solid "+G.border}}>
+<div style={{display:"flex",flexWrap:"wrap",gap:"0 2px",borderBottom:"2px solid "+G.border}}>
   {[["clinica","Clinica"],["pessoal","Pessoal"]].map(function([k,l]){return(
     <button key={k} onClick={function(){setTab(k);}} style={{border:"none",background:"none",padding:"9px 20px",fontWeight:700,fontSize:13,cursor:"pointer",color:tab===k?G.primary:G.muted,borderBottom:"3px solid "+(tab===k?G.primary:"transparent"),marginBottom:-2,fontFamily:"'DM Sans'"}}>{l}</button>
   );})}
@@ -4579,7 +4579,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 <h2 style={{fontFamily:"'Cormorant Garamond'",fontSize:26}}>Relatórios</h2>
 <Inp val={mo} set={setMo} type="month" style={{width:165}}/>
 </div>
-<div style={{display:"flex",gap:0,borderBottom:`2px solid ${G.border}`}}>
+<div style={{display:"flex",flexWrap:"wrap",gap:"0 2px",borderBottom:`2px solid ${G.border}`}}>
 {TABS.map(([k,l])=><button key={k} onClick={()=>setTab(k)} style={{border:"none",background:"none",padding:"9px 15px",fontFamily:"'DM Sans'",fontWeight:700,fontSize:12,cursor:"pointer",color:tab===k?G.primary:G.muted,borderBottom:`3px solid ${tab===k?G.primary:"transparent"}`,marginBottom:-2}}>{l}</button>)}
 </div>
 {tab==="dent"&&<div style={{display:"flex",flexDirection:"column",gap:14}}>
