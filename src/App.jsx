@@ -5902,6 +5902,7 @@ function Receituario({pats,dents,user}){
 var [patId,setPatId]=useState("");
 var [dentId,setDentId]=useState(String(user.level===1&&user.dentistId?user.dentistId:dents[0]&&dents[0].id||""));
 var [cat,setCat]=useState("Todos");
+var [q,setQ]=useState("");
 var [sel,setSel]=useState([]);
 var [extra,setExtra]=useState([]);
 var [addMod,setAddMod]=useState(false);
@@ -5911,7 +5912,9 @@ var pat=pats.find(function(p){return p.id===Number(patId);});
 var dent=dents.find(function(d){return d.id===Number(dentId);})||dents[0];
 var allMeds=MEDS_BASE.concat(extra);
 var cats=["Todos"].concat([...new Set(allMeds.map(function(m){return m.cat;}))]);
-var filt=cat==="Todos"?allMeds:allMeds.filter(function(m){return m.cat===cat;});
+var qNorm=function(s){return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");};
+var qn=qNorm(q.trim());
+var filt=allMeds.filter(function(m){if(cat!=="Todos"&&m.cat!==cat)return false;if(qn&&qNorm(m.name).indexOf(qn)<0&&qNorm(m.cat).indexOf(qn)<0)return false;return true;});
 var tog=function(med){setSel(function(prev){return prev.find(function(m){return m.id===med.id;})?prev.filter(function(m){return m.id!==med.id;}):[...prev,{...med,posEdit:med.pos,qtyEdit:med.qty}];});};
 var updSel=function(id,k,v){setSel(function(prev){return prev.map(function(m){return m.id===id?{...m,[k]:v}:m;});});};
 var saveExtra=function(){
@@ -5961,6 +5964,11 @@ return (
 
 <R2 a={<PatSearch lb="Paciente" val={patId} set={setPatId} pats={pats}/>} b={<Sel lb="Dentista" val={dentId} set={setDentId} opts={dents.map(function(d){return{v:String(d.id),l:d.name};})}/>}/>
 
+  <div style={{position:"relative"}}>
+    <input value={q} onChange={function(e){setQ(e.target.value);}} placeholder="🔍 Buscar medicação (ex: amoxi, dipirona, nimesulida...)" style={{width:"100%",boxSizing:"border-box",border:"1.5px solid "+G.border,borderRadius:10,padding:"10px 38px 10px 13px",fontSize:13.5,outline:"none",fontFamily:"'DM Sans'"}}/>
+    {q&&<button onClick={function(){setQ("");}} aria-label="Limpar busca" style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",border:"none",background:G.border,color:G.muted,borderRadius:"50%",width:24,height:24,fontSize:15,cursor:"pointer",lineHeight:1,display:"flex",alignItems:"center",justifyContent:"center"}}>{"×"}</button>}
+  </div>
+
   <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
     {cats.map(function(c){return(
       <button key={c} onClick={function(){setCat(c);}} style={{border:"2px solid "+(cat===c?G.primary:G.border),background:cat===c?G.primary:"#fff",color:cat===c?"#fff":G.muted,borderRadius:20,padding:"4px 12px",fontSize:11,fontWeight:700,cursor:"pointer"}}>{c}</button>
@@ -5997,6 +6005,7 @@ return (
         </div>
       );
     })}
+    {filt.length===0&&<div style={{background:G.bg,borderRadius:10,padding:"16px",textAlign:"center",color:G.muted,fontSize:12.5}}>{q?('Nenhuma medicação encontrada para "'+q+'".'):"Nenhuma medicação nesta categoria."}</div>}
   </div>
 
   <div style={{display:"flex",flexDirection:"column",gap:4}}>
