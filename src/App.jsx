@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
-const SUPA_URL=""; // CONFIGURE: URL do Supabase do cliente
-const SUPA_KEY=""; // CONFIGURE: chave anon do Supabase do cliente
+const SUPA_URL="https://plsgzoasoomzruiqqppm.supabase.co"; // dentispro
+const SUPA_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsc2d6b2Fzb29tenJ1aXFxcHBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5OTQyNDksImV4cCI6MjA5NzU3MDI0OX0.xez2EqlbG72LqbbIV7gUPrin6i7gxxzmLpnFJQUe77w"; // chave anon dentispro
 const supabase={
 async loadFull(){try{const r=await fetch(SUPA_URL+"/rest/v1/clinic_data?id=eq.main&select=data,updated_at",{headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY}});const rows=await r.json();if(rows&&rows[0]&&rows[0].data&&Object.keys(rows[0].data).length>0)return {data:rows[0].data,updated_at:rows[0].updated_at};return null;}catch(e){return null;}},
 async load(){const f=await this.loadFull();return f?f.data:null;},
@@ -14,9 +14,6 @@ async submitAnam(token,payload){if(!SUPA_URL)return {ok:false,msg:"Sem conexao c
 async fetchAnam(token){if(!SUPA_URL)return null;try{const r=await fetch(SUPA_URL+"/rest/v1/anamnese_subs?token=eq."+encodeURIComponent(token)+"&select=payload,created_at&order=created_at.desc&limit=1",{headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY}});const rows=await r.json();if(rows&&rows[0])return rows[0].payload;return null;}catch(e){return null;}}
 ,async fetchAnamRecent(){if(!SUPA_URL)return [];try{var since=new Date(Date.now()-7*864e5).toISOString();const r=await fetch(SUPA_URL+"/rest/v1/anamnese_subs?created_at=gte."+encodeURIComponent(since)+"&select=token,payload,created_at&order=created_at.desc&limit=200",{headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY}});var rows=await r.json();return Array.isArray(rows)?rows:[];}catch(e){return [];}}
 ,async loadWaMessages(){if(!SUPA_URL)return [];try{const r=await fetch(SUPA_URL+"/rest/v1/wa_messages?select=*&order=id.desc&limit=1000",{headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY}});var rows=await r.json();return Array.isArray(rows)?rows:[];}catch(e){return [];}}
-,async fetchPortal(token){if(!SUPA_URL)return null;try{const r=await fetch(SUPA_URL+"/rest/v1/patients?data->>portalToken=eq."+encodeURIComponent(token)+"&select=id,data&limit=1",{headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY}});const rows=await r.json();if(rows&&rows[0])return rows[0].data;return null;}catch(e){return null;}}
-,async sendPortalAction(token,action){if(!SUPA_URL)return {ok:false};try{const r=await fetch(SUPA_URL+"/rest/v1/portal_actions",{method:"POST",headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY,"Content-Type":"application/json","Prefer":"return=minimal"},body:JSON.stringify({token:token,action:action})});return {ok:r.ok};}catch(e){return {ok:false};}}
-,async fetchPortalActions(){if(!SUPA_URL)return [];try{var since=new Date(Date.now()-3*864e5).toISOString();const r=await fetch(SUPA_URL+"/rest/v1/portal_actions?created_at=gte."+encodeURIComponent(since)+"&select=token,action,created_at&order=created_at.desc&limit=500",{headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY}});var rows=await r.json();return Array.isArray(rows)?rows:[];}catch(e){return [];}}
 };
 const G = {
 bg:"#EEF3F0",card:"#FFF",primary:"#1B5E4A",accent:"#E3EFE9",accentDark:"#A8D5C0",
@@ -97,9 +94,8 @@ return true;
 }catch(e){console.error("WA fetch error:",e);return false;}
 };
 const ANAM_LINK="https://claude.ai/public/artifacts/134f3434-6997-4396-ab62-3d37bae9d44e";
-const CLINICA_INFO={nome:"Clínica Modelo",endereco:"Rua das Flores, 100 - Centro, São Paulo - SP",telefone:"(11) 3000-0000",whatsapp:"(11) 90000-0000",waSender:"",appUrl:"",taxaCredito:3.5,taxaDebito:2,taxaAntecipacao:2.5};
+const CLINICA_INFO={nome:"Clínica Modelo",endereco:"Rua das Flores, 100 - Centro, São Paulo - SP",telefone:"(11) 3000-0000",whatsapp:"(11) 90000-0000",waSender:"",taxaCredito:3.5,taxaDebito:2,taxaAntecipacao:2.5};
 var CLINICA_LIVE=(function(){try{var sv=JSON.parse(localStorage.getItem("orbe_clinica")||"null");return (sv&&sv.nome)?Object.assign({},CLINICA_INFO,sv):Object.assign({},CLINICA_INFO);}catch(e){return Object.assign({},CLINICA_INFO);}})();
-function appBase(){try{var u=((typeof CLINICA_LIVE!=="undefined"&&CLINICA_LIVE&&CLINICA_LIVE.appUrl)||"").trim();if(u){if(!/^https?:\/\//i.test(u))u="https://"+u;u=u.split("?")[0].split("#")[0];if(!/\/$/.test(u))u=u+"/";return u;}}catch(e){}return window.location.origin+window.location.pathname;}
 const SUPORTE_WA="5511900000000"; // CONFIGURE: WhatsApp do suporte Orbe
 const ANAM_CONDS=[["hypertension","Pressao alta"],["diabetes","Diabetes"],["heartDisease","Problema no coracao"],["rheumaticFever","Febre reumatica / valvula"],["bleeding","Problema de coagulacao"],["anticoagulant","Usa anticoagulante"],["osteoporosis","Osteoporose"],["bisphosphonate","Usa/usou bifosfonato"],["kidneyDisease","Doenca renal"],["liverDisease","Doenca no figado"],["hepatitis","Hepatite (B ou C)"],["hiv","HIV"],["infectious","Doenca infectocontagiosa"],["thyroid","Tireoide"],["epilepsy","Epilepsia / convulsoes"],["cancer","Cancer / quimioterapia"],["pregnant","Gestante"],["smoking","Fumante"]];
 // Detecta se a anamnese ja foi cadastrada (salva, assinada, enviada pelo paciente ou com qualquer conteudo de saude)
@@ -643,132 +639,13 @@ function PublicAnamnese({token}){
 }
 
 
-function genToken(){try{if(window.crypto&&window.crypto.randomUUID)return window.crypto.randomUUID().replace(/-/g,"").slice(0,16);}catch(e){}return (Date.now().toString(36)+Math.random().toString(36).slice(2,10)).slice(0,16);}
-
-function PortalSwitch({on,onClick}){return <div onClick={onClick} role="switch" aria-checked={on?"true":"false"} style={{width:40,height:23,borderRadius:20,background:on?G.primary:"#CBD5CE",position:"relative",cursor:"pointer",flexShrink:0,transition:"background .15s"}}><div style={{width:18,height:18,borderRadius:"50%",background:"#fff",position:"absolute",top:2.5,left:on?19.5:2.5,boxShadow:"0 1px 2px rgba(0,0,0,.2)",transition:"left .15s"}}/></div>;}
-
-function PortalModal({pat,setPats,onClose}){
-  const SECS=[["consulta","\ud83d\udcc5","Pr\u00f3xima consulta"],["tratamento","\ud83e\uddb7","Tratamento e or\u00e7amento"],["fotos","\ud83d\udcf7","Fotos antes / depois"],["financeiro","\ud83d\udcb0","Pend\u00eancia financeira"],["confirmar","\u2705","Confirmar presen\u00e7a"],["clinica","\ud83d\udccd","Dados da cl\u00ednica"]];
-  const DEF={consulta:true,tratamento:true,fotos:true,financeiro:true,confirmar:true,clinica:true};
-  const [copied,setCopied]=useState(false);
-  useEffect(function(){
-    if(!pat.portalToken||!pat.portalOpts){
-      var tok=pat.portalToken||genToken();
-      var opts=pat.portalOpts||Object.assign({},DEF);
-      setPats(function(prev){return prev.map(function(p){return p.id===pat.id?Object.assign({},p,{portalToken:tok,portalOpts:opts}):p;});});
-    }
-  },[]);
-  const opts=pat.portalOpts||DEF;
-  const token=pat.portalToken||"";
-  const link=appBase()+"?portal="+token;
-  function toggle(k){setPats(function(prev){return prev.map(function(p){if(p.id!==pat.id)return p;var c=p.portalOpts||Object.assign({},DEF);var o=Object.assign({},c);o[k]=!o[k];return Object.assign({},p,{portalOpts:o});});});}
-  function copy(){try{navigator.clipboard.writeText(link);setCopied(true);setTimeout(function(){setCopied(false);},1800);}catch(e){var ta=document.createElement("textarea");ta.value=link;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");setCopied(true);setTimeout(function(){setCopied(false);},1800);}catch(_){}document.body.removeChild(ta);}}
-  function novo(){if(!window.confirm("Gerar um link novo? O link anterior deixar\u00e1 de funcionar."))return;var tok=genToken();setPats(function(prev){return prev.map(function(p){return p.id===pat.id?Object.assign({},p,{portalToken:tok}):p;});});}
-  function enviar(){wa(pat.phone,"Ol\u00e1, "+pat.name+"! \ud83d\ude0a Preparamos um portal pra voc\u00ea acompanhar sua pr\u00f3xima consulta, tratamento e fotos. \u00c9 s\u00f3 abrir: "+link);}
-  return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",zIndex:9000,display:"flex",alignItems:"flex-start",justifyContent:"center",padding:16,overflowY:"auto"}} onClick={onClose}>
-    <div onClick={function(e){e.stopPropagation();}} style={{background:G.card,borderRadius:18,width:"100%",maxWidth:430,margin:"24px auto",padding:"20px 20px 18px",boxShadow:"0 14px 40px rgba(0,0,0,.28)"}}>
-      <div style={{display:"flex",alignItems:"center",gap:9,marginBottom:3}}>
-        <span style={{fontSize:20}}>{"\ud83d\udd17"}</span>
-        <div style={{fontFamily:"'Cormorant Garamond'",fontSize:23,color:G.primary,fontWeight:600}}>Portal do paciente</div>
-        <button onClick={onClose} style={{marginLeft:"auto",border:"none",background:"transparent",fontSize:22,color:G.muted,cursor:"pointer",lineHeight:1}}>{"\u00d7"}</button>
-      </div>
-      <div style={{fontSize:12.5,color:G.muted,margin:"0 0 13px 1px"}}>Escolha o que aparece no link de <strong style={{color:G.text}}>{pat.name}</strong>.</div>
-      {SECS.map(function(s,i){var on=!!opts[s[0]];return <div key={s[0]} style={{display:"flex",alignItems:"center",gap:11,padding:"11px 2px",borderBottom:i<SECS.length-1?"1px solid "+G.border:"none"}}>
-        <span style={{fontSize:17,width:22,textAlign:"center"}}>{s[1]}</span>
-        <span style={{fontSize:13.5,color:G.text,flex:1}}>{s[2]}</span>
-        <PortalSwitch on={on} onClick={function(){toggle(s[0]);}}/>
-      </div>;})}
-      <div style={{background:G.bg,borderRadius:10,padding:"10px 12px",margin:"14px 0 12px",display:"flex",alignItems:"center",gap:8}}>
-        <span style={{fontSize:14}}>{"\ud83d\udd17"}</span>
-        <span style={{fontSize:11.5,color:G.primary,fontWeight:600,wordBreak:"break-all",flex:1}}>{link}</span>
-      </div>
-      <div style={{display:"flex",gap:8}}>
-        <button onClick={copy} style={{flex:1,border:"1.5px solid "+G.primary,background:"#fff",color:G.primary,borderRadius:10,padding:"10px",fontSize:12.5,fontWeight:700,cursor:"pointer"}}>{copied?"\u2713 Copiado":"\ud83d\udccb Copiar link"}</button>
-        <button onClick={enviar} style={{flex:1.3,border:"none",background:"#25D366",color:"#fff",borderRadius:10,padding:"10px",fontSize:12.5,fontWeight:700,cursor:"pointer"}}>{"\ud83d\udcf2 Enviar no WhatsApp"}</button>
-      </div>
-      <button onClick={novo} style={{marginTop:10,width:"100%",border:"none",background:"transparent",color:G.muted,fontSize:11.5,fontWeight:600,cursor:"pointer",textDecoration:"underline"}}>Gerar link novo (invalida o atual)</button>
-    </div>
-  </div>;
-}
-
-function PatientPortal({token}){
-  const [data,setData]=useState(undefined);
-  const [confirmSt,setConfirmSt]=useState("");
-  useEffect(function(){
-    if(!SUPA_URL){setData(null);return;}
-    supabase.fetchPortal(token).then(function(d){setData(d||null);});
-  },[token]);
-  if(data===undefined)return <div style={{minHeight:"100vh",background:G.bg,display:"flex",alignItems:"center",justifyContent:"center",color:G.muted,fontSize:14}}>Carregando…</div>;
-  if(!data)return <div style={{minHeight:"100vh",background:G.bg,display:"flex",alignItems:"center",justifyContent:"center",padding:24}}><div style={{background:G.card,borderRadius:16,padding:"26px 22px",maxWidth:420,textAlign:"center",boxShadow:"0 4px 24px rgba(0,0,0,.1)"}}><div style={{fontSize:38,marginBottom:8}}>{"\ud83d\udd17"}</div><div style={{fontFamily:"'Cormorant Garamond'",fontSize:22,color:G.primary,marginBottom:6}}>Link não encontrado</div><div style={{fontSize:13.5,color:G.text,lineHeight:1.5}}>{"Este link pode ter expirado ou n\u00e3o est\u00e1 mais dispon\u00edvel. Fale com a sua cl\u00ednica para receber um novo."+(!SUPA_URL?" (Modo demonstra\u00e7\u00e3o: sem banco conectado.)":"")}</div></div></div>;
-  const por=data._portal||{};
-  const cli=por.clinica||{};
-  const card={background:G.card,borderRadius:14,padding:"13px 15px",boxShadow:"0 1px 5px rgba(27,94,74,.08)"};
-  const lbl={fontSize:11,fontWeight:700,letterSpacing:".4px",color:G.primary,textTransform:"uppercase"};
-  const head=function(ic,tx,right){return <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}><div style={{width:30,height:30,borderRadius:9,background:G.accent,display:"flex",alignItems:"center",justifyContent:"center",fontSize:15}}>{ic}</div><span style={lbl}>{tx}</span>{right}</div>;};
-  function confirmar(){if(!por.proxima)return;setConfirmSt("enviando");supabase.sendPortalAction(token,{type:"confirm",apptId:por.proxima.id,date:por.proxima.date}).then(function(r){setConfirmSt(r&&r.ok?"ok":"erro");});}
-  const jaConf=por.proxima&&por.proxima.confirmed;
-  return <div style={{minHeight:"100vh",background:G.bg}}>
-    <div style={{background:G.primary,padding:"13px 16px",display:"flex",alignItems:"center",justifyContent:"center",gap:7}}>
-      <span style={{fontSize:16}}>{"\ud83e\uddb7"}</span><span style={{color:"#fff",fontSize:13,fontWeight:600,letterSpacing:".3px"}}>{cli.nome||"Sua cl\u00ednica"}</span>
-    </div>
-    <div style={{maxWidth:440,margin:"0 auto",padding:"15px 13px 22px",display:"flex",flexDirection:"column",gap:11}}>
-      <div style={{padding:"1px 3px 2px"}}>
-        <div style={{fontFamily:"'Cormorant Garamond'",fontSize:26,color:G.primary,lineHeight:1.05}}>{"Ol\u00e1, "+(por.nome||data.name||"paciente")}</div>
-        <div style={{fontSize:12.5,color:G.muted,marginTop:3}}>Acompanhe seu tratamento por aqui.</div>
-      </div>
-      {por.proxima&&<div style={card}>
-        {head("\ud83d\udcc5","Pr\u00f3xima consulta")}
-        <div style={{fontSize:15,fontWeight:600,color:G.text}}>{por.proxima.quando}</div>
-        {por.proxima.sub&&<div style={{fontSize:12.5,color:G.muted,marginTop:2}}>{por.proxima.sub}</div>}
-        {por.confirmavel&&(jaConf||confirmSt==="ok"
-          ? <div style={{marginTop:10,background:G.accent,color:G.primary,borderRadius:10,padding:"9px",fontSize:12.5,fontWeight:700,textAlign:"center"}}>{"\u2713 Presen\u00e7a confirmada"}</div>
-          : <button onClick={confirmar} disabled={confirmSt==="enviando"} style={{marginTop:11,width:"100%",border:"1.5px solid "+G.primary,background:"#fff",color:G.primary,borderRadius:10,padding:"9px",fontSize:12.5,fontWeight:700,cursor:"pointer"}}>{confirmSt==="enviando"?"Enviando\u2026":confirmSt==="erro"?"Tentar de novo":"Confirmar presen\u00e7a"}</button>)}
-      </div>}
-      {por.tratamento&&<div style={card}>
-        {head("\ud83e\uddb7","Seu tratamento",<span style={{marginLeft:"auto",fontSize:10.5,fontWeight:700,padding:"3px 9px",borderRadius:20,background:por.tratamento.done?G.accent:"#FBF2DD",color:por.tratamento.done?G.primary:"#8A6D1A"}}>{por.tratamento.done?"Conclu\u00eddo":"Em andamento"}</span>)}
-        <div style={{fontSize:15,fontWeight:600,color:G.text}}>{por.tratamento.name}</div>
-        <div style={{fontSize:12,color:G.muted,margin:"8px 0 5px"}}>{por.tratamento.feitas+" de "+por.tratamento.total+" etapas conclu\u00eddas"}</div>
-        <div style={{height:6,background:G.accent,borderRadius:6,overflow:"hidden"}}><div style={{width:(por.tratamento.pct||0)+"%",height:"100%",background:G.primary}}/></div>
-      </div>}
-      {por.orcamento&&<div style={card}>
-        {head("\ud83e\uddfe","Or\u00e7amento",<span style={{marginLeft:"auto",fontSize:10.5,fontWeight:700,padding:"3px 9px",borderRadius:20,background:G.accent,color:G.primary}}>{por.orcamento.status}</span>)}
-        <div style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between"}}>
-          <div style={{fontSize:13.5,color:G.text}}>{por.orcamento.label}</div>
-          <div style={{fontSize:15,fontWeight:600,color:G.primary}}>{por.orcamento.total}</div>
-        </div>
-      </div>}
-      {por.fotos&&por.fotos.length>0&&<div style={card}>
-        {head("\ud83d\udcf7","Fotos do seu sorriso")}
-        <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>{por.fotos.map(function(f,i){return <img key={i} src={f.url} alt={f.nota||"foto"} style={{width:"calc(33.33% - 6px)",aspectRatio:"1",objectFit:"cover",borderRadius:10,border:"1px solid "+G.border}}/>;})}</div>
-      </div>}
-      {por.financeiro&&<div style={card}>
-        {head("\ud83d\udcb0","Financeiro")}
-        <div style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between"}}>
-          <div style={{fontSize:12.5,color:G.muted}}>Saldo em aberto</div>
-          <div style={{fontSize:17,fontWeight:700,color:por.financeiro.saldoNum>0?"#B23A2E":G.primary}}>{por.financeiro.saldoNum>0?por.financeiro.saldo:"Em dia \u2713"}</div>
-        </div>
-        {por.financeiro.saldoNum>0&&<div style={{fontSize:11.5,color:G.muted,marginTop:6,lineHeight:1.4}}>Fale com a recepção para combinar o pagamento.</div>}
-      </div>}
-      {cli&&cli.nome&&<div style={{background:"#173E33",borderRadius:14,padding:"14px 15px",marginTop:2}}>
-        <div style={{fontFamily:"'Cormorant Garamond'",fontSize:19,color:"#fff",lineHeight:1.1}}>{cli.nome}</div>
-        <div style={{fontSize:11.5,color:"#AFC8BD",marginTop:5,lineHeight:1.5}}>{cli.endereco||""}{cli.telefone?(<span><br/>{"Tel. "+cli.telefone}</span>):null}</div>
-        <div style={{display:"flex",gap:8,marginTop:11}}>
-          {cli.whatsapp&&<a href={"https://wa.me/55"+String(cli.whatsapp).replace(/\D/g,"")} style={{flex:1,textDecoration:"none",textAlign:"center",background:"#25D366",color:"#fff",borderRadius:9,padding:"9px",fontSize:12,fontWeight:700}}>WhatsApp</a>}
-          {cli.endereco&&<a href={"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(cli.endereco)} target="_blank" style={{flex:1,textDecoration:"none",textAlign:"center",border:"1px solid #3E6356",background:"transparent",color:"#D6E6DF",borderRadius:9,padding:"9px",fontSize:12,fontWeight:700}}>Como chegar</a>}
-        </div>
-      </div>}
-      <div style={{textAlign:"center",fontSize:10.5,color:G.muted,marginTop:4}}>{"Portal seguro \u00b7 "+(cli.nome||"")}</div>
-    </div>
-  </div>;
-}
-
 function PatientFolder({pat:patProp,pats,setPats,recs,setRecs,treats,setTreats,budgets,setBudgets,appts,dents,procs,user,onClose}){
 // Always read live data from pats - this ensures saves reflect immediately
 const pat=pats.find(p=>p.id===patProp.id)||patProp;
 const isDentUser=user&&user.level===1;
 const [tab,setTab]=useState("ficha");
 const [editMode,setEditMode]=useState(false);
-const [imgCat,setImgCat]=useState("rx");const [imgTreat,setImgTreat]=useState("");const [imgNota,setImgNota]=useState("");const [imgBusy,setImgBusy]=useState(false);const [imgErr,setImgErr]=useState("");const [imgView,setImgView]=useState(null);const [showPortal,setShowPortal]=useState(false);
+const [imgCat,setImgCat]=useState("rx");const [imgTreat,setImgTreat]=useState("");const [imgNota,setImgNota]=useState("");const [imgBusy,setImgBusy]=useState(false);const [imgErr,setImgErr]=useState("");const [imgView,setImgView]=useState(null);
 const [pf,setPf]=useState({...pat});const [showWAanam,setShowWAanam]=useState(false);const [showIARX,setShowIARX]=useState(false);const [fillAnam,setFillAnam]=useState(false);const [buscaMsg,setBuscaMsg]=useState("");
 
 // Keep pf in sync when pat updates externally (e.g. after NF save)
@@ -1072,8 +949,6 @@ return <>
   {/* ── FICHA ── */}
   {tab==="ficha"&&<div style={{display:"flex",flexDirection:"column",gap:14}}>
     {showIARX&&<IARX pat={pf} onClose={function(){setShowIARX(false);}}/>}
-    {showPortal&&<PortalModal pat={pat} setPats={setPats} onClose={function(){setShowPortal(false);}}/>}
-    <button onClick={function(){setShowPortal(true);}} style={{background:G.primary,color:"#fff",border:"none",borderRadius:10,padding:"9px 14px",fontSize:13,fontWeight:700,cursor:"pointer"}}>{"\ud83d\udd17 Portal do paciente"}</button>
     <button onClick={function(){setShowIARX(true);}} style={{background:G.blue,color:"#fff",border:"none",borderRadius:10,padding:"9px 14px",fontSize:13,fontWeight:700,cursor:"pointer"}}>{"🦷 Analisar RX com IA"}</button>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
       <span style={{fontWeight:700,fontSize:15,color:G.primary}}>📋 Dados do Paciente</span>
@@ -1138,7 +1013,7 @@ return <>
   {tab==="anamnese"&&<div style={{display:"flex",flexDirection:"column",gap:14}}>
     {showWAanam&&<WAAnamneseModal pat={pf} onClose={function(){setShowWAanam(false);}}/>}
     {buscaMsg&&<div style={{background:G.accent,borderRadius:8,padding:"8px 12px",fontSize:12.5,color:G.primary}}>{buscaMsg}</div>}
-    {pat.anamPend&&<div style={{background:G.success+"18",border:"1.5px solid "+G.success,borderRadius:10,padding:"10px 13px",display:"flex",gap:8,alignItems:"center"}}><span style={{fontSize:16}}>✅</span><div style={{fontSize:12.5,color:G.success,fontWeight:600,lineHeight:1.45}}>Ficha recebida do paciente pelo WhatsApp! Revise os dados abaixo e clique em <strong>Salvar</strong> para confirmar.</div></div>}
+    {pat.anamPend&&<div style={{background:G.success+"18",border:"1.5px solid "+G.success,borderRadius:10,padding:"10px 13px",display:"flex",gap:8,alignItems:"center"}}><span style={{fontSize:16}}>\u2705</span><div style={{fontSize:12.5,color:G.success,fontWeight:600,lineHeight:1.45}}>Ficha recebida do paciente pelo WhatsApp! Revise os dados abaixo e clique em <strong>Salvar</strong> para confirmar.</div></div>}
     {fillAnam&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",zIndex:9000,display:"flex",alignItems:"flex-start",justifyContent:"center",padding:16,overflowY:"auto"}}><div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:560,margin:"16px auto",padding:"20px"}}><AnamForm patientName={pat.name} initial={pf.anamnese} onCancel={function(){setFillAnam(false);}} onSubmit={function(a){var aa=Object.assign({},a,{preenchida:true});setPf(prev=>Object.assign({},prev,{anamnese:Object.assign({},prev.anamnese||{},aa)}));setPats(prev=>prev.map(pp=>pp.id===pf.id?Object.assign({},pp,{anamnese:Object.assign({},pp.anamnese||{},aa)}):pp));setFillAnam(false);}}/></div></div>}
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
       <span style={{fontWeight:700,fontSize:15,color:G.primary}}>🩺 Anamnese Clínica</span>
@@ -3030,7 +2905,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 <div style={{fontWeight:700,fontSize:13,cursor:"pointer"}} onClick={()=>setOpenFolder(p)}>{p.name}<span style={{fontSize:11,color:G.muted,fontWeight:400}}> · {age(p.dob)} · Ficha: {p.folder||"--"}</span></div>
 <div style={{color:G.muted,fontSize:12}}>{user.level>=2?p.phone:"••••••••••"}</div>
 {p.since&&<div style={{fontSize:11,color:G.primary,fontWeight:600}}>{"⭐ Paciente desde "+fmt(p.since)}</div>}
-{p.anamPend&&<div style={{background:G.success+"22",border:"1px solid "+G.success,borderRadius:5,padding:"2px 7px",fontSize:10,fontWeight:700,color:G.success,marginTop:2,display:"inline-block"}}>✅ Anamnese nova - revisar</div>}
+{p.anamPend&&<div style={{background:G.success+"22",border:"1px solid "+G.success,borderRadius:5,padding:"2px 7px",fontSize:10,fontWeight:700,color:G.success,marginTop:2,display:"inline-block"}}>\u2705 Anamnese nova - revisar</div>}
 {p.obs&&<div style={{background:G.red+"20",border:`1px solid ${G.red}`,borderRadius:5,padding:"2px 7px",fontSize:10,fontWeight:700,color:G.red,marginTop:2,display:"inline-block"}}>⚠ {p.obs.slice(0,45)}</div>}
 {(p.allergy&&p.allergy!=="Nenhuma"&&!p.obs)&&<div style={{background:G.yellow+"20",border:`1px solid ${G.yellow}`,borderRadius:5,padding:"2px 7px",fontSize:10,fontWeight:700,color:G.yellow,marginTop:2,display:"inline-block"}}>⚠ {p.allergy}</div>}
 </div>
@@ -5499,7 +5374,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 <div style={{flex:1,minWidth:150}}><label style={{fontSize:11,fontWeight:700,color:G.muted,letterSpacing:"1px",textTransform:"uppercase",display:"block",marginBottom:6}}>Telefone</label><input value={clinica.telefone} onChange={function(e){updateClinica({telefone:e.target.value});}} style={{width:"100%",background:G.card,border:"1.5px solid "+G.border,borderRadius:10,padding:"12px 14px",fontSize:14,color:G.text,outline:"none",boxSizing:"border-box"}}/></div>
 <div style={{flex:1,minWidth:150}}><label style={{fontSize:11,fontWeight:700,color:G.muted,letterSpacing:"1px",textTransform:"uppercase",display:"block",marginBottom:6}}>WhatsApp</label><input value={clinica.whatsapp} onChange={function(e){updateClinica({whatsapp:e.target.value});}} style={{width:"100%",background:G.card,border:"1.5px solid "+G.border,borderRadius:10,padding:"12px 14px",fontSize:14,color:G.text,outline:"none",boxSizing:"border-box"}}/></div>
 </div>
-<div style={{background:G.card,border:"1px solid "+G.border,borderRadius:14,padding:"16px 18px"}}><div style={{fontWeight:700,fontSize:14,color:G.text,marginBottom:3}}>📲 WhatsApp para envio automático</div><div style={{fontSize:12.5,color:G.muted,lineHeight:1.45,marginBottom:12}}>Número da linha que enviará as mensagens automáticas (confirmação, véspera, aniversário, recall...). Será o número conectado à API oficial do WhatsApp. Pode ser o mesmo do contato acima.</div><label style={{fontSize:11,fontWeight:700,color:G.muted,letterSpacing:"1px",textTransform:"uppercase",display:"block",marginBottom:6}}>Número de envio (com DDD)</label><input value={clinica.waSender||""} onChange={function(e){updateClinica({waSender:e.target.value});}} placeholder="(11) 90000-0000" style={{width:"100%",background:G.card,border:"1.5px solid "+G.border,borderRadius:10,padding:"12px 14px",fontSize:14,color:G.text,outline:"none",boxSizing:"border-box"}}/><div style={{fontSize:11.5,color:G.muted,marginTop:9,lineHeight:1.4}}>O envio sem clicar (direto por este número) é ativado quando a API oficial do WhatsApp estiver conectada. Por enquanto, este campo deixa o número pronto.</div></div><div style={{background:G.card,border:"1px solid "+G.border,borderRadius:14,padding:"16px 18px"}}><div style={{fontWeight:700,fontSize:14,color:G.text,marginBottom:3}}>{"\ud83d\udd17 URL do sistema"}</div><div style={{fontSize:12.5,color:G.muted,lineHeight:1.45,marginBottom:12}}>Endereço onde o sistema está publicado (ex.: https://suaclinica.com.br). Usado para montar os links do <strong>Portal do paciente</strong> e da <strong>anamnese</strong>. Deixe em branco para usar o endereço atual do navegador automaticamente.</div><label style={{fontSize:11,fontWeight:700,color:G.muted,letterSpacing:"1px",textTransform:"uppercase",display:"block",marginBottom:6}}>Endereço do sistema</label><input value={clinica.appUrl||""} onChange={function(e){updateClinica({appUrl:e.target.value});}} placeholder="https://suaclinica.com.br" style={{width:"100%",background:G.card,border:"1.5px solid "+G.border,borderRadius:10,padding:"12px 14px",fontSize:14,color:G.text,outline:"none",boxSizing:"border-box"}}/></div>
+<div style={{background:G.card,border:"1px solid "+G.border,borderRadius:14,padding:"16px 18px"}}><div style={{fontWeight:700,fontSize:14,color:G.text,marginBottom:3}}>📲 WhatsApp para envio automático</div><div style={{fontSize:12.5,color:G.muted,lineHeight:1.45,marginBottom:12}}>Número da linha que enviará as mensagens automáticas (confirmação, véspera, aniversário, recall...). Será o número conectado à API oficial do WhatsApp. Pode ser o mesmo do contato acima.</div><label style={{fontSize:11,fontWeight:700,color:G.muted,letterSpacing:"1px",textTransform:"uppercase",display:"block",marginBottom:6}}>Número de envio (com DDD)</label><input value={clinica.waSender||""} onChange={function(e){updateClinica({waSender:e.target.value});}} placeholder="(11) 90000-0000" style={{width:"100%",background:G.card,border:"1.5px solid "+G.border,borderRadius:10,padding:"12px 14px",fontSize:14,color:G.text,outline:"none",boxSizing:"border-box"}}/><div style={{fontSize:11.5,color:G.muted,marginTop:9,lineHeight:1.4}}>O envio sem clicar (direto por este número) é ativado quando a API oficial do WhatsApp estiver conectada. Por enquanto, este campo deixa o número pronto.</div></div>
 <div style={{background:G.card,border:"1px solid "+G.border,borderRadius:14,padding:"16px 18px"}}>
 <div style={{fontSize:10.5,fontWeight:700,color:G.muted,letterSpacing:"1px",marginBottom:8}}>PRÉ-VISUALIZAÇÃO</div>
 <div style={{fontFamily:"'Cormorant Garamond'",fontSize:26,color:G.primary,fontWeight:700,marginBottom:6}}>{clinica.nome}</div>
@@ -6594,7 +6469,7 @@ return(
 function WAAnamneseModal({pat,onClose}){
 const [sent,setSent]=useState(false);
 const send=function(){
-const link=appBase()+"?anam="+encodeURIComponent(btoa("orbe:"+pat.id));
+const link=(window.location.origin+window.location.pathname)+"?anam="+encodeURIComponent(btoa("orbe:"+pat.id));
 const msg="Ola, "+pat.name+"! 😊\n\nPara seu atendimento na Clínica Modelo, clique no link abaixo e preencha sua ficha de saude. Sao perguntas com botoes SIM e NAO, leva menos de 2 minutos!\n\n"+link+"\n\nObrigado! 🦷 Clínica Modelo";
 wa(pat.phone,msg);setSent(true);
 };
@@ -6609,7 +6484,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex
 <div style={{padding:20,display:"flex",flexDirection:"column",gap:12}}>
 {!sent?<div style={{display:"flex",flexDirection:"column",gap:12}}>
 <p style={{fontSize:13,color:"#555",margin:0}}>Envia um link para <strong>{pat.name}</strong> preencher a ficha de saude pelo celular com botoes SIM e NAO.</p>
-<div style={{background:"#f0f4f0",borderRadius:10,padding:"10px 12px",fontSize:11,color:"#1B5E4A",wordBreak:"break-all",fontWeight:600}}>{appBase()+"?anam="+encodeURIComponent(btoa("orbe:"+pat.id))}</div>
+<div style={{background:"#f0f4f0",borderRadius:10,padding:"10px 12px",fontSize:11,color:"#1B5E4A",wordBreak:"break-all",fontWeight:600}}>{(window.location.origin+window.location.pathname)+"?anam="+encodeURIComponent(btoa("orbe:"+pat.id))}</div>
 <button onClick={send} style={{background:"#25D366",color:"#fff",border:"none",borderRadius:12,padding:"13px",fontSize:15,fontWeight:700,cursor:"pointer"}}>{"📱 Enviar por WhatsApp"}</button>
 <button onClick={onClose} style={{background:"none",border:"1.5px solid #ddd",borderRadius:10,padding:"10px",fontSize:13,cursor:"pointer",color:"#888"}}>Cancelar</button>
 </div>:<div style={{textAlign:"center",display:"flex",flexDirection:"column",gap:12}}>
@@ -8496,74 +8371,6 @@ useEffect(function(){
   },1000);
 },[pats]);
 
-// ── PORTAL DO PACIENTE: resumo _portal (so para quem tem link gerado) ──
-useEffect(function(){
-  var dname=function(id){var d=(dents||[]).find(function(x){return x.id===Number(id);});return d?d.name:"";};
-  var clinica={nome:CLINICA_LIVE.nome,endereco:CLINICA_LIVE.endereco,telefone:CLINICA_LIVE.telefone,whatsapp:CLINICA_LIVE.whatsapp};
-  var tnow=today();
-  var stt={approved:"Aprovado",pending:"Em an\u00e1lise",rejected:"Recusado",done:"Conclu\u00eddo"};
-  var build=function(p){
-    var opts=p.portalOpts||{consulta:true,tratamento:true,fotos:true,financeiro:true,confirmar:true,clinica:true};
-    var por={nome:p.name,clinica:clinica,opts:opts};
-    if(opts.consulta){
-      var fut=(appts||[]).filter(function(a){return a.patientId===p.id&&!a.blocked&&a.date&&a.date>=tnow&&["cancelled","missed","rescheduled","blocked","done"].indexOf(a.status)<0;}).sort(function(a,b){return (a.date+(a.time||"")).localeCompare(b.date+(b.time||""));});
-      if(fut[0]){var a=fut[0];var dn=dname(a.dentistId);
-        por.proxima={id:a.id,date:a.date,quando:fmt(a.date)+(a.time?(" \u00b7 "+a.time):""),sub:[(a.procedure||a.treatment||""),dn?("Dr(a). "+dn):""].filter(Boolean).join(" \u2014 "),confirmed:a.status==="confirmed"};
-        if(opts.confirmar)por.confirmavel=true;}
-    }
-    if(opts.tratamento){
-      var pts=(treats||[]).filter(function(t){return t.patientId===p.id;}).sort(function(x,y){return ((y.start||"")+y.id).localeCompare((x.start||"")+x.id);});
-      var ativo=pts.find(function(t){return (t.items||[]).some(function(it){return !it.paid;});})||pts[0];
-      if(ativo){var its=ativo.items||[];var feitas=its.filter(function(it){return it.paid;}).length;var tot=its.length;
-        por.tratamento={name:ativo.name||"Tratamento",feitas:feitas,total:tot,pct:tot>0?Math.round(feitas/tot*100):0,done:tot>0&&feitas>=tot};}
-      var pbs=(budgets||[]).filter(function(b){return b.patientId===p.id;}).sort(function(x,y){return ((y.date||"")+y.id).localeCompare((x.date||"")+x.id);});
-      if(pbs[0]){var b=pbs[0];var sumb=(b.items||[]).reduce(function(s,it){return s+(Number(it.v)||0);},0)-(Number(b.disc)||0);
-        por.orcamento={label:(b.items&&b.items.length?(b.items[0].d+(b.items.length>1?(" +"+(b.items.length-1)):"")):"Or\u00e7amento"),total:cur(sumb),status:stt[b.status]||"Em an\u00e1lise"};}
-    }
-    if(opts.financeiro){
-      var saldo=(treats||[]).filter(function(t){return t.patientId===p.id;}).reduce(function(s,t){return s+(t.items||[]).reduce(function(s2,it){return s2+(it.paid?0:(Number(it.value)||0));},0);},0);
-      por.financeiro={saldo:cur(saldo),saldoNum:saldo};
-    }
-    if(opts.fotos){
-      por.fotos=(p.imagens||[]).filter(function(im){return im.cat==="antesdepois"&&im.url;}).slice(0,9).map(function(im){return {url:im.url,nota:im.nota||""};});
-    }
-    return por;
-  };
-  var changed=false;
-  var next=(pats||[]).map(function(p){
-    if(!p.portalToken)return p;
-    var np=build(p);
-    if(JSON.stringify(p._portal)!==JSON.stringify(np)){changed=true;return Object.assign({},p,{_portal:np});}
-    return p;
-  });
-  if(changed)setPats(next);
-},[pats,appts,treats,budgets,dents]);
-
-// ── PORTAL DO PACIENTE: reconcilia confirmacoes de presenca (idempotente, isolado) ──
-const portalReconRef=useRef({pats:pats,appts:appts});
-useEffect(function(){portalReconRef.current={pats:pats,appts:appts};});
-useEffect(function(){
-  if(!SUPA_URL)return;
-  var run=function(){
-    if(!initialized.current||document.hidden)return;
-    supabase.fetchPortalActions().then(function(acts){
-      if(!acts||!acts.length)return;
-      var ps=portalReconRef.current.pats||[];var aps=portalReconRef.current.appts||[];
-      var toConfirm={};
-      acts.forEach(function(row){
-        var ac=row.action||{};if(ac.type!=="confirm"||!ac.apptId)return;
-        var owner=ps.find(function(p){return p.portalToken&&p.portalToken===row.token;});if(!owner)return;
-        var ap=aps.find(function(a){return a.id===ac.apptId&&a.patientId===owner.id;});if(!ap)return;
-        if(ap.status!=="confirmed")toConfirm[ap.id]=true;
-      });
-      var ids=Object.keys(toConfirm).map(Number);
-      if(ids.length)setAppts(function(prev){return prev.map(function(a){return ids.indexOf(a.id)>=0?Object.assign({},a,{status:"confirmed",statusTs:new Date().toISOString()}):a;});});
-    });
-  };
-  var t0=setTimeout(run,4000);var iv=setInterval(run,20000);
-  return function(){clearTimeout(t0);clearInterval(iv);};
-},[]);
-
 // ── SINCRONIZACAO entre dispositivos: polling a cada 15s ──
 useEffect(function(){
   var poll=setInterval(async function(){
@@ -8659,8 +8466,6 @@ useEffect(function(){
 
 // Polling removido - causava race condition sobrescrevendo dados locais;
 
-const portalToken=(function(){try{return new URLSearchParams(window.location.search).get("portal");}catch(e){return null;}})();
-if(portalToken)return <PatientPortal token={portalToken}/>;
 const anamToken=(function(){try{return new URLSearchParams(window.location.search).get("anam");}catch(e){return null;}})();
 if(anamToken)return <PublicAnamnese token={anamToken}/>;
 // === WHATSAPP AUTO: eventos + motor diário ===
