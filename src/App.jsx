@@ -3907,28 +3907,29 @@ const idxOf=ym=>(Number(ym.slice(0,4))-baseY)*12+(Number(ym.slice(5,7))-baseM);
 const inH=ym=>{var k=idxOf(ym);return k>=0&&k<12;};
 const dOk=id=>dn==="all"||Number(dn)===Number(id);
 
-const card={},orto={},trat={},gasto={};
-months.forEach(m=>{card[m]=0;orto[m]=0;trat[m]=0;gasto[m]=0;});
+const card={},orto={},gasto={};
+months.forEach(m=>{card[m]=0;orto[m]=0;gasto[m]=0;});
 
-// A) Cartão parcelado a compensar (parcelas futuras, já líquidas)
+// A) Cartão parcelado a compensar (parcelas futuras, valor cheio da parcela)
+// Meses calculados pela DATA + Nº DE PARCELAS — não depende de instM, que nem
+// sempre é gravado (ex.: pagamentos lançados pelo Plano de Tratamento).
+const parcelaMeses=(dateStr,n)=>{var out=[];var d=new Date((dateStr||today())+"T12:00");for(var pi=1;pi<=n;pi++){d.setMonth(d.getMonth()+1);out.push(d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"));}return out;};
 recs.forEach(r=>{
 if(!dOk(r.dentistId))return;
-if(r.payment==="Cartão Crédito"&&Number(r.inst)>1&&Array.isArray(r.instM)&&r.instM.length){
-var net=calcNet(Number(r.paid)||0,r.payment,r.inst);var per=net/r.instM.length;
-r.instM.forEach(m=>{if(inH(m))card[m]+=per;});
+if(r.payment==="Cartão Crédito"&&Number(r.inst)>1){
+var n=Number(r.inst);
+var meses=(Array.isArray(r.instM)&&r.instM.length===n)?r.instM:parcelaMeses(r.date,n);
+var per=(Number(r.paid)||0)/n;
+meses.forEach(m=>{if(inH(m))card[m]+=per;});
 }
 });
 
-// B) Orto/carnê  +  C) Tratamentos a receber (plano em aberto)
+// B) Orto/carnê (parcelas mensais pelo mês de referência)
 treats.forEach(t=>{
 if(!dOk(t.dentistId))return;
 (t.items||[]).forEach(it=>{
 if(it.paid)return;
-if((t.orto||it.orto)&&it.mesRef){if(inH(it.mesRef))orto[it.mesRef]+=Number(it.value)||0;return;}
-if(it.creditFuture)return; // já contado no canal do cartão
-var v=Number(it.value)||0;if(v<=0)return;
-if(it.done){if(inH(base))trat[base]+=v;} // realizado e não pago -> mês atual
-else{var part=v/3;for(var k=0;k<3;k++){var ym=ymAt(k);if(inH(ym))trat[ym]+=part;}} // distribui em 3 meses
+if((t.orto||it.orto)&&it.mesRef){if(inH(it.mesRef))orto[it.mesRef]+=Number(it.value)||0;}
 });
 });
 
@@ -3943,7 +3944,7 @@ if(e.date&&e.date.slice(0,7)===m)gasto[m]+=v;
 });
 });
 
-const entrada=m=>card[m]+orto[m]+trat[m];
+const entrada=m=>card[m]+orto[m];
 const saldo=m=>entrada(m)-gasto[m];
 const totReceber=months.reduce((s,m)=>s+entrada(m),0);
 const totSaldo=months.reduce((s,m)=>s+saldo(m),0);
@@ -3976,14 +3977,13 @@ return <div style={{display:"flex",flexDirection:"column",gap:13}}>
 <div style={{background:G.card,borderRadius:12,padding:14,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
 <div style={{fontWeight:700,fontSize:13,marginBottom:8}}>Entradas previstas por mês</div>
 <div style={{display:"flex",gap:14,marginBottom:10,flexWrap:"wrap"}}>
-{[["Cartão",G.blue],["Orto/carnê",G.primary],["Tratamento",G.yellow]].map(row=><div key={row[0]} style={{display:"flex",alignItems:"center",gap:5}}><span style={{width:8,height:8,borderRadius:8,background:row[1],display:"inline-block"}}/><span style={{fontSize:10,color:G.muted}}>{row[0]}</span></div>)}
+{[["Cartão",G.blue],["Orto/carnê",G.primary]].map(row=><div key={row[0]} style={{display:"flex",alignItems:"center",gap:5}}><span style={{width:8,height:8,borderRadius:8,background:row[1],display:"inline-block"}}/><span style={{fontSize:10,color:G.muted}}>{row[0]}</span></div>)}
 </div>
 <div style={{overflowX:"auto",paddingBottom:4}}>
 <div style={{display:"flex",gap:6,alignItems:"flex-end",minWidth:480}}>
-{months.map(m=>{var e=entrada(m);var ht=trat[m]/maxEnt*HH,ho=orto[m]/maxEnt*HH,hc=card[m]/maxEnt*HH;return <div key={m} style={{flex:"0 0 34px",width:34,display:"flex",flexDirection:"column",alignItems:"center"}}>
+{months.map(m=>{var e=entrada(m);var ho=orto[m]/maxEnt*HH,hc=card[m]/maxEnt*HH;return <div key={m} style={{flex:"0 0 34px",width:34,display:"flex",flexDirection:"column",alignItems:"center"}}>
 <div style={{fontSize:8,fontWeight:700,color:e>0?G.text:"transparent",marginBottom:3,whiteSpace:"nowrap"}}>{e>0?kfmt(e):"0"}</div>
 <div style={{width:30,height:HH,display:"flex",flexDirection:"column",justifyContent:"flex-end",background:G.bg,borderRadius:4,overflow:"hidden"}}>
-<div style={{height:ht,background:G.yellow}}/>
 <div style={{height:ho,background:G.primary}}/>
 <div style={{height:hc,background:G.blue}}/>
 </div>
@@ -3995,7 +3995,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:13}}>
 
 {cardMonths.length>0&&<div style={{background:G.card,borderRadius:12,padding:"12px 14px",boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
 <div style={{fontWeight:700,fontSize:13}}>💳 Cartão a compensar</div>
-<div style={{fontSize:10.5,color:G.muted,marginBottom:9}}>Quando cada parcela cai na conta (já líquido)</div>
+<div style={{fontSize:10.5,color:G.muted,marginBottom:9}}>Cada parcela no mês em que vence (data + nº de parcelas)</div>
 <div style={{display:"flex",gap:7,flexWrap:"wrap"}}>
 {cardMonths.map(m=><div key={m} style={{background:G.blue+"15",borderRadius:8,padding:"5px 11px",fontSize:11,fontWeight:700,color:G.blue}}>{mLab(m)+" "+kfmt(card[m])}</div>)}
 </div>
@@ -4013,7 +4013,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:13}}>
 </div>
 </div>
 {open&&<div style={{marginTop:11}}>
-{[["💳 Cartão parcelado",card[m],G.blue],["🦷 Orto / carnê",orto[m],G.primary],["📋 Tratamentos a receber",trat[m],G.yellow]].map(row=><div key={row[0]} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",fontSize:12.5}}><span style={{color:row[1]>0?G.text:G.muted}}>{row[0]}</span><span style={{fontWeight:700,color:row[1]>0?row[2]:G.muted}}>{cur(row[1])}</span></div>)}
+{[["💳 Cartão parcelado",card[m],G.blue],["🦷 Orto / carnê",orto[m],G.primary]].map(row=><div key={row[0]} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",fontSize:12.5}}><span style={{color:row[1]>0?G.text:G.muted}}>{row[0]}</span><span style={{fontWeight:700,color:row[1]>0?row[2]:G.muted}}>{cur(row[1])}</span></div>)}
 <div style={{borderTop:"1px solid "+G.border,margin:"7px 0"}}/>
 <div style={{display:"flex",justifyContent:"space-between",padding:"3px 0",fontSize:12.5}}><span style={{fontWeight:700,color:G.success}}>＋ Entradas</span><span style={{fontWeight:700,color:G.success}}>{cur(e)}</span></div>
 <div style={{display:"flex",justifyContent:"space-between",padding:"3px 0",fontSize:12.5}}><span style={{color:G.red}}>－ Gastos previstos</span><span style={{fontWeight:700,color:G.red}}>{cur(gasto[m])}</span></div>
