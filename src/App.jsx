@@ -6693,6 +6693,214 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex
   </div>;
 }
 
+// ===== 1) MÉTRICAS — o cliente calcula, a IA só narra =====
+function _moShift(mo, delta){
+  var y=Number(mo.slice(0,4)), m=Number(mo.slice(5,7))-1+delta;
+  var d=new Date(Date.UTC(y, m, 1));
+  return d.getUTCFullYear()+"-"+String(d.getUTCMonth()+1).padStart(2,"0");
+}
+
+// Despesas devidas no mês — espelha a engine do Dashboard (despHoje),
+// somada para o mês inteiro. Só gastos da CLÍNICA (gestão); pessoal fora.
+function _expForMonth(gastos, mo){
+  var arr=[].concat((gastos&&gastos.clinica)||[]);
+  var moIdx=Number(mo.slice(0,4))*12+(Number(mo.slice(5,7))-1);
+  var total=0, seen={};
+  arr.forEach(function(e){
+    var amount=Number(e.value)||0, charged=false;
+    if(e.recorrente && e.diaVenc){ charged=true; }
+    else if(e.parcelado){
+      var sIdx=Number((e.date||"").slice(0,4))*12+(Number((e.date||"").slice(5,7))-1);
+      var k=moIdx - sIdx;
+      if(k>=0 && k<Number(e.parcelas||1)) charged=true;
+    } else {
+      if((e.date||"").slice(0,7)===mo) charged=true;
+    }
+    if(!charged) return;
+    var key=(e.desc||"").trim().toLowerCase()+"|"+(e.recorrente?("r"+e.diaVenc):e.parcelado?("p"+(e.date||"")):("d"+(e.date||"")));
+    if(seen[key]) return; seen[key]=1;
+    total+=amount;
+  });
+  return Math.round(total*100)/100;
+}
+
+function buildClinicMetrics(ctx, refMonth){
+  var recs=ctx.recs||[], appts=ctx.appts||[], budgets=ctx.budgets||[],
+      treats=ctx.treats||[], gastos=ctx.gastos||{}, dents=ctx.dents||[];
+  var mo=refMonth || new Date().toISOString().slice(0,7);
+  var moPrev=_moShift(mo,-1);
+  var todayStr=new Date().toISOString().slice(0,10);
+
+  var fat=function(m){ return Math.round(recs.filter(function(r){return (r.date||"").slice(0,7)===m && r.paid>0;}).reduce(function(s,r){return s+(Number(r.paid)||0);},0)*100)/100; };
+  var cntPaid=function(m){ return recs.filter(function(r){return (r.date||"").slice(0,7)===m && r.paid>0;}).length; };
+
+  var fatAtual=fat(mo), fatPrev=fat(moPrev);
+  var variacao = fatPrev>0 ? Math.round(((fatAtual-fatPrev)/fatPrev)*1000)/10 : null;
+  var despAtual=_expForMonth(gastos, mo);
+  var nPaid=cntPaid(mo);
+  var ticket = nPaid>0 ? Math.round(fatAtual/nPaid) : 0;
+
+  var apptsMo=appts.filter(function(a){return (a.date||"").slice(0,7)===mo;});
+  var missed=apptsMo.filter(function(a){return a.status==="missed";}).length;
+  var done=apptsMo.filter(function(a){return a.status==="done";}).length;
+  var cancelled=apptsMo.filter(function(a){return a.status==="cancelled";}).length;
+  var taxaFalta = (missed+done)>0 ? Math.round((missed/(missed+done))*1000)/10 : 0;
+
+  var pend=budgets.filter(function(b){return b.status==="pending";});
+  var apr=budgets.filter(function(b){return b.status==="approved";});
+  var valBudget=function(b){return Math.max(0,(b.items||[]).reduce(function(s,i){return s+(Number(i.v)||0);},0)-(Number(b.disc)||0));};
+  var valorParado=Math.round(pend.reduce(function(s,b){return s+valBudget(b);},0)*100)/100;
+  var d30=new Date(Date.now()-30*864e5).toISOString().slice(0,10);
+  var paradosMais30=pend.filter(function(b){return (b.date||"")<d30;}).length;
+  var conversao = (apr.length+pend.length)>0 ? Math.round((apr.length/(apr.length+pend.length))*100) : null;
+
+  var prodMap={};
+  recs.filter(function(r){return (r.date||"").slice(0,7)===mo && r.paid>0;}).forEach(function(r){ var id=r.dentistId; prodMap[id]=(prodMap[id]||0)+(Number(r.paid)||0); });
+  var producao=Object.keys(prodMap).map(function(id){ var d=dents.find(function(x){return String(x.id)===String(id);}); return {nome:d?d.name:"Dentista "+id, valor:Math.round(prodMap[id]*100)/100}; }).sort(function(a,b){return b.valor-a.valor;});
+
+  var aReceber=Math.round(treats.reduce(function(s,t){ return s+(t.items||[]).filter(function(i){return !i.paid;}).reduce(function(ss,i){return ss+(Number(i.value)||0);},0); },0)*100)/100;
+
+  // primeira/última atividade por paciente (recs + appts)
+  var firstAct={}, lastAct={};
+  var reg=function(pid,date){ if(!pid||!date)return; if(!firstAct[pid]||date<firstAct[pid])firstAct[pid]=date; if(!lastAct[pid]||date>lastAct[pid])lastAct[pid]=date; };
+  recs.forEach(function(r){reg(r.patientId,(r.date||""));});
+  appts.forEach(function(a){reg(a.patientId,(a.date||""));});
+  var novos=Object.keys(firstAct).filter(function(pid){return (firstAct[pid]||"").slice(0,7)===mo;}).length;
+  var d180=new Date(Date.now()-180*864e5).toISOString().slice(0,10);
+  var futuros={}; appts.forEach(function(a){ if((a.date||"")>todayStr && a.status!=="cancelled") futuros[a.patientId]=1; });
+  var inativos=Object.keys(lastAct).filter(function(pid){return (lastAct[pid]||"")<d180 && !futuros[pid];}).length;
+
+  var procMap={};
+  recs.filter(function(r){return (r.date||"").slice(0,7)===mo;}).forEach(function(r){ var p=(r.procedure||"").trim(); if(p)procMap[p]=(procMap[p]||0)+1; });
+  var topProc=Object.keys(procMap).sort(function(a,b){return procMap[b]-procMap[a];}).slice(0,5);
+
+  return {
+    periodo:{mesAtual:mo, mesAnterior:moPrev},
+    faturamento:{atual:fatAtual, anterior:fatPrev, variacaoPct:variacao},
+    despesas:{atual:despAtual},
+    resultado:{atual:Math.round((fatAtual-despAtual)*100)/100},
+    ticketMedio:ticket,
+    faltas:{qtd:missed, realizadas:done, taxaPct:taxaFalta, cancelamentos:cancelled},
+    orcamentos:{valorParado:valorParado, qtdParados:pend.length, paradosMais30d:paradosMais30, conversaoPct:conversao},
+    producaoDentistas:producao,
+    aReceber:aReceber,
+    pacientesNovos:novos,
+    inativos:inativos,
+    topProcedimentos:topProc
+  };
+}
+
+
+// ===== 2) COMPONENTE — view dedicada (sem créditos) =====
+function ConsultorIA(props){
+  var hoje=new Date().toISOString().slice(0,7);
+  const [refMonth,setRefMonth]=useState(hoje);
+  const [loading,setLoading]=useState(false);
+  const [parsed,setParsed]=useState(null);
+  const [raw,setRaw]=useState("");
+  const [err,setErr]=useState("");
+  const [m,setM]=useState(null);
+
+  var brl=function(v){var n=Math.round((Number(v)||0)*100)/100,neg=n<0,s=Math.abs(n).toFixed(2).split("."),i=s[0].replace(/\B(?=(\d{3})+(?!\d))/g,".");return (neg?"-":"")+"R$ "+i+","+s[1];};
+  var MS=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+  var moLabel=function(mo){return MS[Number(mo.slice(5,7))-1]+"/"+mo.slice(0,4);};
+  var moOpts=(function(){var a=[],d=new Date();for(var i=0;i<6;i++){var x=new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth()-i,1));a.push(x.getUTCFullYear()+"-"+String(x.getUTCMonth()+1).padStart(2,"0"));}return a;})();
+
+  var gerar=async function(){
+    setLoading(true);setParsed(null);setRaw("");setErr("");
+    var metrics=buildClinicMetrics(props, refMonth);
+    setM(metrics);
+    try{
+      var r=await orbeApi("analyzeClinic",{metrics:metrics});
+      if(r&&r.ok&&r.j&&r.j.text){
+        var t=r.j.text;
+        try{ setParsed(JSON.parse(t.replace(/```json|```/g,"").trim())); }
+        catch(e){ setRaw(t); }
+      }else{
+        setErr((r&&r.j&&r.j.msg)||("Não foi possível gerar a análise (erro "+(r&&r.status)+")."));
+      }
+    }catch(e){ setErr("Erro de conexão: "+String((e&&e.message)||e)); }
+    setLoading(false);
+  };
+
+  var card={background:G.card,borderRadius:14,padding:"16px 18px",boxShadow:"0 1px 4px rgba(0,0,0,.07)"};
+  var kpi=function(label,valor,cor,sub){return (
+    <div style={{background:G.card,borderRadius:13,padding:"13px 15px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",flex:"1 1 140px"}}>
+      <div style={{fontSize:10.5,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>{label}</div>
+      <div style={{fontSize:20,fontWeight:800,color:cor||G.text,marginTop:3}}>{valor}</div>
+      {sub?<div style={{fontSize:11,color:G.muted,marginTop:2}}>{sub}</div>:null}
+    </div>
+  );};
+
+  var listaCard=function(icon,titulo,itens,cor,bg){
+    if(!itens||!itens.length)return null;
+    return (
+      <div style={{background:bg||G.card,borderRadius:14,padding:"15px 17px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:"4px solid "+cor}}>
+        <div style={{fontSize:13.5,fontWeight:800,color:cor,marginBottom:9,display:"flex",alignItems:"center",gap:7}}><span>{icon}</span><span>{titulo}</span></div>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          {itens.map(function(it,ix){return (
+            <div key={ix} style={{display:"flex",gap:8,fontSize:13.5,lineHeight:1.5,color:G.text}}>
+              <span style={{color:cor,flexShrink:0,fontWeight:700}}>{"•"}</span><span>{it}</span>
+            </div>
+          );})}
+        </div>
+      </div>
+    );
+  };
+
+  var variacaoBadge=null;
+  if(m&&m.faturamento.variacaoPct!==null){
+    var vp=m.faturamento.variacaoPct, pos=vp>=0;
+    variacaoBadge=(pos?"▲ +":"▼ ")+vp+"% vs "+moLabel(m.periodo.mesAnterior);
+  }
+
+  return (
+    <div style={{display:"flex",flexDirection:"column",gap:14,maxWidth:760}} className="fi">
+      <div>
+        <h2 style={{fontFamily:"'Cormorant Garamond'",fontSize:27,margin:0,color:G.text}}>{"🧠 Consultor IA"}</h2>
+        <div style={{fontSize:13,color:G.muted,marginTop:2}}>Análise de gestão da clínica — apoio à decisão, gerada por IA.</div>
+      </div>
+
+      <div style={Object.assign({},card,{display:"flex",gap:10,flexWrap:"wrap",alignItems:"flex-end"})}>
+        <div style={{flex:"1 1 160px"}}>
+          <label style={{fontSize:10.5,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px",display:"block",marginBottom:4}}>Mês de referência</label>
+          <select value={refMonth} onChange={function(e){setRefMonth(e.target.value);}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"9px 11px",fontSize:14,outline:"none",background:"#fff",fontWeight:600}}>
+            {moOpts.map(function(mo){return <option key={mo} value={mo}>{moLabel(mo)}</option>;})}
+          </select>
+        </div>
+        <button onClick={gerar} disabled={loading} style={{background:"linear-gradient(135deg,#2E7D5A,#1B5E4A)",color:"#fff",border:"none",borderRadius:10,padding:"11px 22px",fontSize:14.5,fontWeight:700,cursor:loading?"default":"pointer",opacity:loading?.7:1}}>
+          {loading?"Analisando…":(parsed||raw||err?"Atualizar análise":"✨ Gerar análise")}
+        </button>
+      </div>
+
+      {m&&<div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+        {kpi("Faturamento",brl(m.faturamento.atual),G.primary,variacaoBadge)}
+        {kpi("Resultado",brl(m.resultado.atual),m.resultado.atual>=0?G.success:G.red,"Receita − despesas (clínica)")}
+        {kpi("Orçamento parado",brl(m.orcamentos.valorParado),G.gold,m.orcamentos.qtdParados+" parado(s) · "+m.orcamentos.paradosMais30d+" há +30d")}
+        {kpi("Faltas",m.faltas.qtd+" ("+m.faltas.taxaPct+"%)",m.faltas.taxaPct>=15?G.red:G.text,m.faltas.cancelamentos+" cancelamento(s)")}
+      </div>}
+
+      {loading&&<div style={Object.assign({},card,{textAlign:"center",color:G.muted,fontSize:14})}>Lendo os números da clínica e montando a análise…</div>}
+
+      {err&&!loading&&<div style={{background:"#FDECEA",border:"1.5px solid "+G.red,borderRadius:12,padding:"12px 15px",fontSize:13.5,color:G.red}}>{err}</div>}
+
+      {parsed&&!loading&&<div style={{display:"flex",flexDirection:"column",gap:12}}>
+        {parsed.diagnostico?<div style={{background:G.accent,borderRadius:14,padding:"15px 17px",borderLeft:"4px solid "+G.primary}}>
+          <div style={{fontSize:13.5,fontWeight:800,color:G.primary,marginBottom:7,display:"flex",alignItems:"center",gap:7}}><span>{"🩺"}</span><span>Diagnóstico</span></div>
+          <div style={{fontSize:14,lineHeight:1.55,color:G.text}}>{parsed.diagnostico}</div>
+        </div>:null}
+        {listaCard("⚠️","Pontos de atenção",parsed.atencao,G.red)}
+        {listaCard("💡","Oportunidades",parsed.oportunidades,G.gold)}
+        {listaCard("✅","Ações recomendadas",parsed.acoes,G.success)}
+      </div>}
+
+      {raw&&!loading&&<div style={Object.assign({},card,{whiteSpace:"pre-wrap",fontSize:13.5,lineHeight:1.6,color:G.text})}>{raw}</div>}
+
+      {(parsed||raw)&&!loading&&<div style={{fontSize:11,color:G.muted,textAlign:"center",lineHeight:1.5}}>Análise de gestão por IA a partir dos dados do sistema. Confira sempre antes de decidir — não substitui avaliação contábil/financeira.</div>}
+    </div>
+  );
+}
+
 function IARX({pat,onClose,onSave}){
 const [img,setImg]=useState(null);
 const [imgData,setImgData]=useState(null);
@@ -8877,7 +9085,7 @@ const ALL_NAV=[
 {id:"impl",l:"🔩 Implantes",lv:2},{id:"lems",l:"📌 Lembretes",lv:1,b:remBadge},{id:"conversas",l:"💬 Conversas",lv:2,b:waUnread},
 {id:"fin",l:"💰 Financeiro",lv:3},{id:"pixdent",l:"💸 Pix Dentistas",lv:1},{id:"rel",l:"📊 Relatórios",lv:2},
 {id:"desp",l:"💸 Gastos",lv:3},{id:"stk",l:"📦 Estoque",lv:2},
-{id:"rec",l:"📋 Receituário",lv:1},{id:"orient",l:"📖 Orientações",lv:1},{id:"pdent",l:"💰 Recebimentos",lv:1},{id:"audit",l:"🔍 Auditoria",lv:3},{id:"adm",l:"⚙️ Administrativo",lv:3},
+{id:"rec",l:"📋 Receituário",lv:1},{id:"orient",l:"📖 Orientações",lv:1},{id:"pdent",l:"💰 Recebimentos",lv:1},{id:"consultor",l:"🧠 Consultor IA",lv:3},{id:"audit",l:"🔍 Auditoria",lv:3},{id:"adm",l:"⚙️ Administrativo",lv:3},
 ];
 const NAV=ALL_NAV.filter(n=>n.lv<=user.level);
 const go=v=>{
@@ -8958,6 +9166,7 @@ return <>
       {view==="conversas"&&<Conversas pats={pats} user={user} waSeenRef={waSeenRef} onSeen={function(maxId){if(maxId>(waSeenRef.current||0)){waSeenRef.current=maxId;try{localStorage.setItem("waSeenId",String(maxId));}catch(e){}}setWaUnread(0);}} abrirFicha={abrirFicha}/>}
       {view==="fin"&&<Financeiro recs={recs} setRecs={setRecs} pats={pats} dents={dents} expenses={expenses} gastos={gastos} treats={treats} user={user}/>}
       {view==="rel"&&<Relatorios recs={recs} treats={treats} budgets={budgets} appts={appts} pros={pros} pats={pats} dents={dents} labs={labs} expenses={expenses} gastos={gastos} user={user} waTemplates={waTemplates} setWaTemplates={setWaTemplates} pacsTicks={pacsTicks} setPacsTicks={setPacsTicks} abrirFicha={abrirFicha}/>}
+      {view==="consultor"&&<ConsultorIA recs={recs} appts={appts} budgets={budgets} treats={treats} gastos={gastos} dents={dents} pats={pats}/>}
       {view==="desp"&&<Gastos gastos={gastos} setGastos={function(v){gastosEditRef.current=Date.now();setGastos(v);}} user={user}/>}
       {view==="stk"&&<Estoque stock={stock} setStock={setStock} implCat={implCat} setImplCat={setImplCat} implMov={implMov} setImplMov={setImplMov} pats={pats} dents={dents} addLog={cp.addLog} user={user}/>}
       {view==="pixdent"&&<PixDentistas recs={recs} setRecs={setRecs} dents={dents} pats={pats} user={user}/>}
