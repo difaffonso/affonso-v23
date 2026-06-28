@@ -6730,6 +6730,10 @@ function buildClinicMetrics(ctx, refMonth){
   var mo=refMonth || new Date().toISOString().slice(0,7);
   var moPrev=_moShift(mo,-1);
   var todayStr=new Date().toISOString().slice(0,10);
+  // status efetivo do orçamento do plano (espelha stOf do sistema)
+  var _totOf=function(t){return (t.items||[]).reduce(function(s,i){return s+(Number(i.value)||0);},0);};
+  var _paidOf=function(t){return (t.payments||[]).reduce(function(s,p){return s+(Number(p.value)||0);},0);};
+  var _stOf=function(t){var s=t.orcStatus||"espera";var tot=_totOf(t),pd=_paidOf(t);if((s==="parcial"||s==="espera")&&tot>0&&pd>=tot-0.005)return "aprovado";if(s==="espera"&&pd>0)return "parcial";return s;};
 
   var fat=function(m){ return Math.round(recs.filter(function(r){return (r.date||"").slice(0,7)===m && r.paid>0;}).reduce(function(s,r){return s+(Number(r.paid)||0);},0)*100)/100; };
   var cntPaid=function(m){ return recs.filter(function(r){return (r.date||"").slice(0,7)===m && r.paid>0;}).length; };
@@ -6758,7 +6762,11 @@ function buildClinicMetrics(ctx, refMonth){
   recs.filter(function(r){return (r.date||"").slice(0,7)===mo && r.paid>0;}).forEach(function(r){ var id=r.dentistId; prodMap[id]=(prodMap[id]||0)+(Number(r.paid)||0); });
   var producao=Object.keys(prodMap).map(function(id){ var d=dents.find(function(x){return String(x.id)===String(id);}); return {nome:d?d.name:"Dentista "+id, valor:Math.round(prodMap[id]*100)/100}; }).sort(function(a,b){return b.valor-a.valor;});
 
-  var aReceber=Math.round(treats.reduce(function(s,t){ return s+(t.items||[]).filter(function(i){return !i.paid;}).reduce(function(ss,i){return ss+(Number(i.value)||0);},0); },0)*100)/100;
+  // a receber REAL = saldo nao-pago de planos ACEITOS (aprovado ou parcial). NAO inclui orcamento nao fechado.
+  var aReceber=Math.round(treats.reduce(function(s,t){ var st=_stOf(t); if(st!=="aprovado"&&st!=="parcial") return s; return s+(t.items||[]).filter(function(i){return !i.paid;}).reduce(function(ss,i){return ss+(Number(i.value)||0);},0); },0)*100)/100;
+  // planos apresentados mas NAO fechados (espera/naofechado) = oportunidade de fechamento, nao e "a receber"
+  var planosAberto=treats.filter(function(t){var st=_stOf(t);return st==="espera"||st==="naofechado";});
+  var valorPlanosAberto=Math.round(planosAberto.reduce(function(s,t){return s+Math.max(0,_totOf(t)-_paidOf(t));},0)*100)/100;
 
   // primeira/última atividade por paciente (recs + appts)
   var firstAct={}, lastAct={};
@@ -6770,8 +6778,10 @@ function buildClinicMetrics(ctx, refMonth){
   var futuros={}; appts.forEach(function(a){ if((a.date||"")>todayStr && a.status!=="cancelled") futuros[a.patientId]=1; });
   var inativos=Object.keys(lastAct).filter(function(pid){return (lastAct[pid]||"")<d180 && !futuros[pid];}).length;
 
+  // nomes de planos de tratamento NAO sao procedimentos -> excluir (ex.: "Junho 26")
+  var _treatNames={}; treats.forEach(function(t){var n=(t.name||"").trim().toLowerCase(); if(n)_treatNames[n]=1;});
   var procMap={};
-  recs.filter(function(r){return (r.date||"").slice(0,7)===mo;}).forEach(function(r){ var p=(r.procedure||"").trim(); if(p)procMap[p]=(procMap[p]||0)+1; });
+  recs.filter(function(r){return (r.date||"").slice(0,7)===mo;}).forEach(function(r){ var p=(r.procedure||"").trim(); if(p&&!_treatNames[p.toLowerCase()])procMap[p]=(procMap[p]||0)+1; });
   var topProc=Object.keys(procMap).sort(function(a,b){return procMap[b]-procMap[a];}).slice(0,5);
 
   return {
@@ -6781,7 +6791,7 @@ function buildClinicMetrics(ctx, refMonth){
     resultado:{atual:Math.round((fatAtual-despAtual)*100)/100},
     ticketMedio:ticket,
     faltas:{qtd:missed, realizadas:done, taxaPct:taxaFalta, cancelamentos:cancelled},
-    orcamentos:{valorParado:valorParado, qtdParados:pend.length, paradosMais30d:paradosMais30, conversaoPct:conversao},
+    orcamentos:{valorParado:valorParado, qtdParados:pend.length, paradosMais30d:paradosMais30, conversaoPct:conversao, planosEmAberto:{valor:valorPlanosAberto, qtd:planosAberto.length}},
     producaoDentistas:producao,
     aReceber:aReceber,
     pacientesNovos:novos,
