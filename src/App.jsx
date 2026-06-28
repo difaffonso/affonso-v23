@@ -6697,8 +6697,8 @@ const [img,setImg]=useState(null);
 const [imgData,setImgData]=useState(null);
 const [result,setResult]=useState("");
 const [loading,setLoading]=useState(false);
-const [usage,setUsage]=useState(null);
-useEffect(function(){var on=true;orbeApi("aiUsage").then(function(r){if(on&&r&&r.ok&&r.j&&typeof r.j.used==="number")setUsage({used:r.j.used,limit:r.j.limit,remaining:r.j.remaining});});return function(){on=false;};},[]);
+const [bal,setBal]=useState(null);
+useEffect(function(){var on=true;orbeApi("aiBalance").then(function(r){if(on&&r&&r.ok&&r.j&&typeof r.j.totalRemaining==="number")setBal(r.j);});return function(){on=false;};},[]);
 const onFile=function(e){
 const f=e.target.files[0];if(!f)return;
 const r=new FileReader();
@@ -6710,7 +6710,7 @@ if(!imgData)return;setLoading(true);setResult("");
 try{
 var mt="image/jpeg";try{mt=((img||"").match(/^data:(.*?);/)||[])[1]||"image/jpeg";}catch(e){}
 var r=await orbeApi("analyzeRX",{image:imgData,media_type:mt,patient:(pat&&pat.name)||""});
-if(r&&r.j&&typeof r.j.used==="number")setUsage({used:r.j.used,limit:r.j.limit,remaining:r.j.remaining});
+if(r&&r.j&&typeof r.j.totalRemaining==="number")setBal(r.j);
 if(r&&r.ok&&r.j&&r.j.text){setResult(r.j.text);}
 else{setResult("Não foi possível analisar: "+((r&&r.j&&r.j.msg)||("erro "+(r&&r.status))));}
 }catch(e){setResult("Erro: "+String((e&&e.message)||e));}
@@ -6725,7 +6725,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex
 <button onClick={onClose} style={{border:"none",background:"rgba(255,255,255,.2)",borderRadius:8,color:"#fff",cursor:"pointer",padding:"5px 10px",fontSize:16}}>{"x"}</button>
 </div>
 <div style={{padding:20,display:"flex",flexDirection:"column",gap:14}}>
-{usage&&<div style={{fontSize:12,color:G.muted,textAlign:"center",background:G.bg,borderRadius:8,padding:"6px 10px"}}>{"Análises com IA este mês: "+usage.used+" / "+usage.limit+" · restam "+usage.remaining}</div>}
+{bal&&<div style={{fontSize:12,color:G.muted,textAlign:"center",background:G.bg,borderRadius:8,padding:"6px 10px"}}>{"Saldo de IA: "+bal.includedRemaining+" inclusas este mês + "+bal.credits+" créditos"}</div>}
 <div style={{border:"2px dashed "+G.border,borderRadius:12,padding:20,textAlign:"center",cursor:"pointer",background:G.bg}} onClick={function(){document.getElementById("rx-up").click();}}>
 {img?<img src={img} style={{maxWidth:"100%",maxHeight:180,borderRadius:8}} alt="RX"/>:<div><div style={{fontSize:32}}>{"📷"}</div><div style={{fontSize:13,color:G.muted}}>{"Toque para selecionar o RX"}</div></div>}
 </div>
