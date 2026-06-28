@@ -26,6 +26,9 @@ async submitAnam(token,payload,alertas){if(!SUPA_URL)return {ok:false,msg:"Sem c
 async fetchAnam(token){var r=await orbeApi("fetchAnam",{token:token});return r.ok?(r.j.payload||null):null;},
 async fetchAnamRecent(){var r=await orbeApi("fetchAnamRecent");return r.ok?((r.j&&r.j.rows)||[]):[];},
 async loadWaMessages(){var r=await orbeApi("loadWaMessages");return r.ok?((r.j&&r.j.rows)||[]):[];}
+,async fetchPortal(token){var r=await orbeApi("fetchPortal",{token:token});return r.ok?((r.j&&r.j.portal)||null):null;}
+,async sendPortalAction(token,payload){var r=await orbeApi("sendPortalAction",{token:token,payload:payload});return r.ok?{ok:true}:{ok:false,msg:(r.j&&r.j.msg)||"Erro"};}
+,async fetchPortalActions(){var r=await orbeApi("fetchPortalActions");return r.ok?((r.j&&r.j.rows)||[]):[];}
 };
 const G = {
 bg:"#EEF3F0",card:"#FFF",primary:"#1B5E4A",accent:"#E3EFE9",accentDark:"#A8D5C0",
@@ -106,7 +109,7 @@ return true;
 }catch(e){console.error("WA fetch error:",e);return false;}
 };
 const ANAM_LINK="https://claude.ai/public/artifacts/134f3434-6997-4396-ab62-3d37bae9d44e";
-const CLINICA_INFO={nome:"Clínica Modelo",endereco:"Rua das Flores, 100 - Centro, São Paulo - SP",telefone:"(11) 3000-0000",whatsapp:"(11) 90000-0000",waSender:"",taxaCredito:3.5,taxaDebito:2,taxaAntecipacao:2.5};
+const CLINICA_INFO={nome:"Clínica Modelo",endereco:"Rua das Flores, 100 - Centro, São Paulo - SP",telefone:"(11) 3000-0000",whatsapp:"(11) 90000-0000",waSender:"",appUrl:"",taxaCredito:3.5,taxaDebito:2,taxaAntecipacao:2.5};
 var CLINICA_LIVE=(function(){try{var sv=JSON.parse(localStorage.getItem("orbe_clinica")||"null");return (sv&&sv.nome)?Object.assign({},CLINICA_INFO,sv):Object.assign({},CLINICA_INFO);}catch(e){return Object.assign({},CLINICA_INFO);}})();
 const SUPORTE_WA="5511900000000"; // CONFIGURE: WhatsApp do suporte Orbe
 const ANAM_CONDS=[["hypertension","Pressao alta"],["diabetes","Diabetes"],["heartDisease","Problema no coracao"],["rheumaticFever","Febre reumatica / valvula"],["bleeding","Problema de coagulacao"],["anticoagulant","Usa anticoagulante"],["osteoporosis","Osteoporose"],["bisphosphonate","Usa/usou bifosfonato"],["kidneyDisease","Doenca renal"],["liverDisease","Doenca no figado"],["hepatitis","Hepatite (B ou C)"],["hiv","HIV"],["infectious","Doenca infectocontagiosa"],["thyroid","Tireoide"],["epilepsy","Epilepsia / convulsoes"],["cancer","Cancer / quimioterapia"],["pregnant","Gestante"],["smoking","Fumante"]];
@@ -651,6 +654,229 @@ function PublicAnamnese({token}){
 }
 
 
+// ════════════════════════════════════════════════════════════════
+// PORTAL DO PACIENTE — link pessoal por paciente (sem login, sem app)
+// ════════════════════════════════════════════════════════════════
+const PORTAL_SECTIONS=[
+  ["proxima","Próxima consulta","Data, horário e profissional"],
+  ["tratamento","Tratamento e orçamento","Itens em andamento e orçamento"],
+  ["fotos","Fotos antes / depois","Imagens marcadas como antes/depois"],
+  ["financeiro","Pendência financeira","Saldo em aberto do paciente"],
+  ["presenca","Confirmar presença","Botão para o paciente confirmar a consulta"],
+  ["clinica","Dados da clínica","Nome, endereço, telefone e WhatsApp"]
+];
+const PORTAL_DEFAULT_OPTS={proxima:true,tratamento:true,fotos:true,financeiro:true,presenca:true,clinica:true};
+
+function genToken(){
+  try{
+    var a=new Uint8Array(20);(window.crypto||window.msCrypto).getRandomValues(a);
+    var s="";for(var i=0;i<a.length;i++){s+=("0"+a[i].toString(16)).slice(-2);}
+    return s.slice(0,28);
+  }catch(e){
+    var t="";var c="abcdefghijklmnopqrstuvwxyz0123456789";
+    for(var j=0;j<28;j++)t+=c[Math.floor(Math.random()*c.length)];
+    return t;
+  }
+}
+
+// Domínio base do link. Usa CLINICA_LIVE.appUrl se preenchido; senão a URL atual.
+function appBase(){
+  try{
+    var u=((CLINICA_LIVE&&CLINICA_LIVE.appUrl)||"").trim();
+    if(u){if(!/^https?:\/\//i.test(u))u="https://"+u;return u.replace(/[?#].*$/,"").replace(/\/+$/,"");}
+  }catch(e){}
+  return window.location.origin+window.location.pathname;
+}
+function portalLink(token){return appBase()+"?portal="+encodeURIComponent(token||"");}
+
+// Recalcula o resumo público do paciente. Só inclui as seções LIGADAS (o que está
+// desligado não é gravado — não vaza). Não inclui updatedAt (esse é só na gravação).
+function buildPortalSnapshot(pat,opts,ctx){
+  var appts=ctx.appts||[],treats=ctx.treats||[],budgets=ctx.budgets||[],dents=ctx.dents||[],clinica=ctx.clinica||{},td=ctx.today;
+  var o=opts||PORTAL_DEFAULT_OPTS;
+  var snap={name:pat.name||""};
+  var prox=appts.filter(function(a){return a.patientId===pat.id&&a.date>=td&&a.status!=="cancelled"&&a.status!=="missed"&&a.status!=="rescheduled"&&a.status!=="done"&&a.status!=="blocked";})
+    .sort(function(a,b){return (a.date+(a.time||"")).localeCompare(b.date+(b.time||""));})[0];
+  if(o.clinica){snap.clinica={nome:clinica.nome||"",endereco:clinica.endereco||"",telefone:clinica.telefone||"",whatsapp:clinica.whatsapp||""};}
+  if(o.proxima&&prox){
+    var dp=dents.find(function(x){return x.id===prox.dentistId;});
+    snap.proxima={date:prox.date,time:prox.time||"",procedure:prox.procedureCustom||prox.procedure||"Consulta",dentista:dp?dp.name:"",status:prox.status};
+  }
+  if(o.presenca&&prox){snap.presenca={apptId:prox.id,date:prox.date,time:prox.time||"",confirmado:prox.status==="confirmed"};}
+  if(o.tratamento){
+    var at=treats.filter(function(t){return t.patientId===pat.id&&(t.items||[]).some(function(it){return !(it.done||it.paid);});})
+      .sort(function(a,b){return (b.start||"").localeCompare(a.start||"");})[0];
+    if(at){snap.tratamento={name:at.name||"Tratamento",items:(at.items||[]).map(function(it){return {desc:it.desc||"",feito:!!(it.done||it.paid)};})};}
+    var bd=budgets.filter(function(b){return b.patientId===pat.id;}).sort(function(a,b){return (b.date||"").localeCompare(a.date||"");})[0];
+    if(bd){
+      var sub=(bd.items||[]).reduce(function(s,it){return s+(Number(it.v)||0);},0);
+      snap.orcamento={date:bd.date||"",status:bd.status||"",total:sub-(Number(bd.disc)||0),items:(bd.items||[]).map(function(it){return {d:it.d||"",v:Number(it.v)||0};})};
+    }
+  }
+  if(o.financeiro){
+    var pend=0;
+    treats.filter(function(t){return t.patientId===pat.id;}).forEach(function(t){(t.items||[]).forEach(function(it){if(!it.paid)pend+=(Number(it.value)||0);});});
+    snap.financeiro={pendente:pend};
+  }
+  if(o.fotos){
+    var fotos=(pat.imagens||[]).filter(function(im){return im.cat==="antesdepois"&&im.url;})
+      .sort(function(a,b){return (b.date||"").localeCompare(a.date||"");}).slice(0,8)
+      .map(function(im){return {url:im.url,date:im.date||""};});
+    if(fotos.length)snap.fotos=fotos;
+  }
+  return snap;
+}
+
+function PortalSwitch({on,onToggle,label,desc}){
+  return <button type="button" onClick={onToggle} style={{display:"flex",alignItems:"center",gap:11,width:"100%",textAlign:"left",border:"1.5px solid "+(on?G.primary:G.border),background:on?G.accent:G.card,borderRadius:11,padding:"10px 12px",cursor:"pointer"}}>
+    <span style={{width:38,height:22,borderRadius:12,background:on?G.primary:G.border,position:"relative",flexShrink:0,transition:"background .15s"}}>
+      <span style={{position:"absolute",top:2,left:on?18:2,width:18,height:18,borderRadius:"50%",background:"#fff",transition:"left .15s",boxShadow:"0 1px 3px rgba(0,0,0,.25)"}}/>
+    </span>
+    <span style={{flex:1}}>
+      <span style={{display:"block",fontWeight:700,fontSize:13,color:G.text}}>{label}</span>
+      <span style={{display:"block",fontSize:11,color:G.muted,marginTop:1}}>{desc}</span>
+    </span>
+  </button>;
+}
+
+function PortalModal({pat,setPats,onClose}){
+  const live=pat;
+  const token=live.portalToken||"";
+  const opts=live.portalOpts||PORTAL_DEFAULT_OPTS;
+  const [copied,setCopied]=useState(false);
+  const setOpt=function(key){
+    setPats(function(prev){return prev.map(function(p){return p.id===pat.id?Object.assign({},p,{portalOpts:Object.assign({},p.portalOpts||PORTAL_DEFAULT_OPTS,{[key]:!(p.portalOpts||PORTAL_DEFAULT_OPTS)[key]})}):p;});});
+  };
+  const gerar=function(novo){
+    setPats(function(prev){return prev.map(function(p){return p.id===pat.id?Object.assign({},p,{portalToken:(novo||!p.portalToken)?genToken():p.portalToken,portalOpts:p.portalOpts||PORTAL_DEFAULT_OPTS}):p;});});
+  };
+  const link=token?portalLink(token):"";
+  const copiar=function(){if(!link)return;try{navigator.clipboard.writeText(link);}catch(e){}setCopied(true);setTimeout(function(){setCopied(false);},1500);};
+  const enviarWA=function(){if(!link)return;var msg="Olá, "+pat.name+"! 😊\n\nEste é o seu portal pessoal da "+(CLINICA_LIVE.nome||"clínica")+". Pelo link você vê sua próxima consulta, tratamento e mais — sem precisar instalar nada:\n\n"+link;wa(pat.phone,msg);};
+  return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex:9999,display:"flex",alignItems:"flex-start",justifyContent:"center",padding:16,overflowY:"auto"}}>
+    <div style={{background:G.card,borderRadius:18,width:"100%",maxWidth:460,margin:"16px auto",boxShadow:"0 8px 32px rgba(0,0,0,.2)"}}>
+      <div style={{background:G.primary,borderRadius:"18px 18px 0 0",padding:"14px 18px",display:"flex",alignItems:"center",gap:10}}>
+        <span style={{fontSize:20}}>{"🔗"}</span>
+        <div style={{flex:1}}><div style={{fontWeight:700,color:"#fff",fontSize:15}}>Portal do paciente</div><div style={{fontSize:11,color:"rgba(255,255,255,.85)"}}>{pat.name}</div></div>
+        <button onClick={onClose} style={{border:"none",background:"rgba(255,255,255,.2)",borderRadius:8,color:"#fff",cursor:"pointer",padding:"5px 10px",fontSize:16}}>{"✕"}</button>
+      </div>
+      <div style={{padding:18,display:"flex",flexDirection:"column",gap:12}}>
+        <div style={{fontSize:12.5,color:G.muted,lineHeight:1.45}}>Escolha o que este link mostra. O que estiver desligado não é gravado e não aparece para o paciente.</div>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          {PORTAL_SECTIONS.map(function(s){return <PortalSwitch key={s[0]} on={!!opts[s[0]]} onToggle={function(){setOpt(s[0]);}} label={s[1]} desc={s[2]}/>;})}
+        </div>
+        {!token
+          ?<button onClick={function(){gerar(false);}} style={{background:G.primary,color:"#fff",border:"none",borderRadius:12,padding:"13px",fontSize:15,fontWeight:700,cursor:"pointer"}}>{"🔗 Gerar link do portal"}</button>
+          :<div style={{display:"flex",flexDirection:"column",gap:10}}>
+            <div style={{background:G.accent,borderRadius:10,padding:"10px 12px",fontSize:11.5,color:G.primary,wordBreak:"break-all",fontWeight:600}}>{link}</div>
+            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+              <button onClick={enviarWA} style={{flex:1,minWidth:140,background:"#25D366",color:"#fff",border:"none",borderRadius:11,padding:"12px",fontSize:14,fontWeight:700,cursor:"pointer"}}>{"📱 Enviar por WhatsApp"}</button>
+              <button onClick={copiar} style={{flex:1,minWidth:110,background:G.card,color:G.primary,border:"1.5px solid "+G.primary,borderRadius:11,padding:"12px",fontSize:14,fontWeight:700,cursor:"pointer"}}>{copied?"✓ Copiado":"📋 Copiar link"}</button>
+            </div>
+            <button onClick={function(){if(window.confirm("Gerar um link novo invalida o link anterior. Continuar?"))gerar(true);}} style={{background:"transparent",color:G.muted,border:"none",fontSize:12,fontWeight:600,cursor:"pointer",textAlign:"center",padding:"4px"}}>{"↻ Gerar link novo (invalida o anterior)"}</button>
+          </div>}
+        <div style={{fontSize:11,color:G.muted,lineHeight:1.4}}>O link não expira. Ele começa a funcionar assim que o paciente é salvo na nuvem (poucos segundos após gerar).</div>
+      </div>
+    </div>
+  </div>;
+}
+
+// ── ROTA PÚBLICA: a tela que o paciente abre pelo link ──
+function PatientPortal({token}){
+  const [state,setState]=useState("load"); // load | ok | none | err
+  const [p,setP]=useState(null);
+  const [conf,setConf]=useState(""); // "" | sending | done | err
+  useEffect(function(){
+    var alive=true;
+    if(!SUPA_URL){setState("none");return;}
+    supabase.fetchPortal(token).then(function(portal){
+      if(!alive)return;
+      if(portal){setP(portal);setState("ok");}else{setState("none");}
+    }).catch(function(){if(alive)setState("err");});
+    return function(){alive=false;};
+  },[token]);
+  const confirmar=function(){
+    if(!p||!p.presenca)return;
+    setConf("sending");
+    supabase.sendPortalAction(token,{type:"confirm",apptId:p.presenca.apptId,date:p.presenca.date}).then(function(r){
+      setConf(r&&r.ok?"done":"err");
+    }).catch(function(){setConf("err");});
+  };
+  const wrap=function(children){return <div style={{minHeight:"100vh",background:G.bg,display:"flex",justifyContent:"center",padding:"16px"}}><div style={{width:"100%",maxWidth:440}}>{children}</div></div>;};
+  if(state==="load")return wrap(<div style={{textAlign:"center",padding:"60px 0",color:G.muted,fontSize:14}}>Carregando…</div>);
+  if(state!=="ok"||!p)return wrap(<div style={{background:G.card,borderRadius:16,padding:"40px 24px",textAlign:"center",marginTop:40}}>
+    <div style={{fontSize:40,marginBottom:10}}>{"🔗"}</div>
+    <div style={{fontWeight:700,fontSize:16,color:G.text,marginBottom:6}}>Link não encontrado</div>
+    <div style={{fontSize:13,color:G.muted,lineHeight:1.5}}>Este link pode ter sido atualizado. Peça um novo link à clínica.</div>
+  </div>);
+  const card={background:G.card,borderRadius:16,padding:"16px 18px",boxShadow:"0 2px 10px rgba(0,0,0,.05)"};
+  const titulo=function(t){return <div style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".5px",marginBottom:8}}>{t}</div>;};
+  return wrap(<div style={{display:"flex",flexDirection:"column",gap:14,paddingBottom:30}}>
+    <div style={{textAlign:"center",padding:"22px 0 6px"}}>
+      <div style={{fontFamily:"'Cormorant Garamond'",fontSize:26,color:G.primary,lineHeight:1.1}}>{(p.clinica&&p.clinica.nome)||"Seu portal"}</div>
+      <div style={{fontSize:14,color:G.text,marginTop:4}}>{"Olá, "+(p.name||"")+" 👋"}</div>
+    </div>
+
+    {p.proxima&&<div style={card}>
+      {titulo("📅 Próxima consulta")}
+      <div style={{fontFamily:"'Cormorant Garamond'",fontSize:22,color:G.primary,fontWeight:700,lineHeight:1.1}}>{fmt(p.proxima.date)+(p.proxima.time?" às "+p.proxima.time:"")}</div>
+      <div style={{fontSize:13,color:G.text,marginTop:4}}>{(p.proxima.procedure||"Consulta")+(p.proxima.dentista?" · "+p.proxima.dentista:"")}</div>
+      {p.proxima.status&&<div style={{display:"inline-block",marginTop:8,fontSize:11.5,fontWeight:700,color:G.primary,background:G.accent,borderRadius:8,padding:"3px 9px"}}>{SL[p.proxima.status]||p.proxima.status}</div>}
+    </div>}
+
+    {p.presenca&&<div style={card}>
+      {titulo("✅ Confirmação de presença")}
+      {p.presenca.confirmado||conf==="done"
+        ?<div style={{fontSize:14,color:G.success,fontWeight:700}}>{"✓ Presença confirmada. Até breve!"}</div>
+        :<div style={{display:"flex",flexDirection:"column",gap:8}}>
+          <div style={{fontSize:13,color:G.text}}>{"Você confirma a consulta de "+fmt(p.presenca.date)+(p.presenca.time?" às "+p.presenca.time:"")+"?"}</div>
+          <button onClick={confirmar} disabled={conf==="sending"} style={{background:conf==="sending"?G.muted:G.success,color:"#fff",border:"none",borderRadius:11,padding:"12px",fontSize:14,fontWeight:700,cursor:conf==="sending"?"default":"pointer"}}>{conf==="sending"?"Enviando…":"✅ Confirmar presença"}</button>
+          {conf==="err"&&<div style={{fontSize:12,color:G.red}}>Não foi possível confirmar agora. Tente de novo em instantes.</div>}
+        </div>}
+    </div>}
+
+    {p.tratamento&&<div style={card}>
+      {titulo("🦷 Seu tratamento")}
+      <div style={{fontWeight:700,fontSize:14,color:G.text,marginBottom:6}}>{p.tratamento.name}</div>
+      {(p.tratamento.items||[]).map(function(it,i){return <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"5px 0",borderBottom:"1px solid "+G.border,fontSize:13,color:G.text}}>
+        <span style={{color:it.feito?G.success:G.muted}}>{it.feito?"✓":"○"}</span>
+        <span style={{flex:1,textDecoration:it.feito?"line-through":"none",opacity:it.feito?.6:1}}>{it.desc}</span>
+      </div>;})}
+    </div>}
+
+    {p.orcamento&&<div style={card}>
+      {titulo("💬 Orçamento")}
+      {(p.orcamento.items||[]).map(function(it,i){return <div key={i} style={{display:"flex",justifyContent:"space-between",fontSize:13,color:G.text,padding:"4px 0"}}><span>{it.d}</span><span style={{fontWeight:600}}>{cur(it.v)}</span></div>;})}
+      <div style={{display:"flex",justifyContent:"space-between",marginTop:8,paddingTop:8,borderTop:"1.5px solid "+G.border,fontSize:14,fontWeight:700,color:G.primary}}><span>Total</span><span>{cur(p.orcamento.total)}</span></div>
+    </div>}
+
+    {p.financeiro&&p.financeiro.pendente>0&&<div style={card}>
+      {titulo("💰 Financeiro")}
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <span style={{fontSize:13,color:G.text}}>Saldo em aberto</span>
+        <span style={{fontSize:18,fontWeight:700,color:G.red,fontFamily:"'Cormorant Garamond'"}}>{cur(p.financeiro.pendente)}</span>
+      </div>
+    </div>}
+
+    {p.fotos&&p.fotos.length>0&&<div style={card}>
+      {titulo("✨ Antes e depois")}
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+        {p.fotos.map(function(f,i){return <img key={i} src={f.url} alt="" style={{width:"100%",borderRadius:10,objectFit:"cover",aspectRatio:"1/1"}}/>;})}
+      </div>
+    </div>}
+
+    {p.clinica&&<div style={card}>
+      {titulo("🏥 "+(p.clinica.nome||"A clínica"))}
+      {p.clinica.endereco&&<div style={{fontSize:13,color:G.text,marginBottom:4}}>{"📍 "+p.clinica.endereco}</div>}
+      {p.clinica.telefone&&<div style={{fontSize:13,color:G.text,marginBottom:4}}>{"☎️ "+p.clinica.telefone}</div>}
+      {p.clinica.whatsapp&&<button onClick={function(){var n=(p.clinica.whatsapp||"").replace(/\D/g,"");window.open("https://wa.me/"+(n.startsWith("55")?n:"55"+n),"_blank");}} style={{marginTop:6,background:"#25D366",color:"#fff",border:"none",borderRadius:10,padding:"10px 14px",fontSize:13,fontWeight:700,cursor:"pointer"}}>{"💬 Falar no WhatsApp"}</button>}
+    </div>}
+
+    <div style={{textAlign:"center",fontSize:11,color:G.muted,marginTop:6}}>{p.updatedAt?("Atualizado em "+new Date(p.updatedAt).toLocaleDateString("pt-BR")):""}</div>
+  </div>);
+}
+
+
 function PatientFolder({pat:patProp,pats,setPats,recs,setRecs,treats,setTreats,budgets,setBudgets,appts,dents,procs,user,onClose}){
 // Always read live data from pats - this ensures saves reflect immediately
 const pat=pats.find(p=>p.id===patProp.id)||patProp;
@@ -658,7 +884,7 @@ const isDentUser=user&&user.level===1;
 const [tab,setTab]=useState("ficha");
 const [editMode,setEditMode]=useState(false);
 const [imgCat,setImgCat]=useState("rx");const [imgTreat,setImgTreat]=useState("");const [imgNota,setImgNota]=useState("");const [imgBusy,setImgBusy]=useState(false);const [imgErr,setImgErr]=useState("");const [imgView,setImgView]=useState(null);
-const [pf,setPf]=useState({...pat});const [showWAanam,setShowWAanam]=useState(false);const [showIARX,setShowIARX]=useState(false);const [fillAnam,setFillAnam]=useState(false);const [buscaMsg,setBuscaMsg]=useState("");
+const [pf,setPf]=useState({...pat});const [showWAanam,setShowWAanam]=useState(false);const [showIARX,setShowIARX]=useState(false);const [fillAnam,setFillAnam]=useState(false);const [buscaMsg,setBuscaMsg]=useState("");const [showPortal,setShowPortal]=useState(false);
 
 // Keep pf in sync when pat updates externally (e.g. after NF save)
 // But don't override if user is actively editing
@@ -961,10 +1187,11 @@ return <>
   {/* ── FICHA ── */}
   {tab==="ficha"&&<div style={{display:"flex",flexDirection:"column",gap:14}}>
     {showIARX&&<IARX pat={pf} onClose={function(){setShowIARX(false);}}/>}
+    {showPortal&&<PortalModal pat={pat} setPats={setPats} onClose={function(){setShowPortal(false);}}/>}
     <button onClick={function(){setShowIARX(true);}} style={{background:G.blue,color:"#fff",border:"none",borderRadius:10,padding:"9px 14px",fontSize:13,fontWeight:700,cursor:"pointer"}}>{"🦷 Analisar RX com IA"}</button>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
       <span style={{fontWeight:700,fontSize:15,color:G.primary}}>📋 Dados do Paciente</span>
-      {!editMode?<div style={{display:"flex",gap:5}}><Btn ch="📋 WA" v="g" sm onClick={function(){setShowWAanam(true);}}/><Btn ch="✏️ Editar" v="g" sm onClick={()=>setEditMode(true)}/></div>:<div style={{display:"flex",gap:8}}><Btn ch="💾 Salvar" sm onClick={savePat}/><Btn ch="Cancelar" v="g" sm onClick={()=>{setPf({...pat});setEditMode(false);}}/></div>}
+      {!editMode?<div style={{display:"flex",gap:5}}><Btn ch="🔗 Portal" v="g" sm onClick={function(){setShowPortal(true);}}/><Btn ch="📋 WA" v="g" sm onClick={function(){setShowWAanam(true);}}/><Btn ch="✏️ Editar" v="g" sm onClick={()=>setEditMode(true)}/></div>:<div style={{display:"flex",gap:8}}><Btn ch="💾 Salvar" sm onClick={savePat}/><Btn ch="Cancelar" v="g" sm onClick={()=>{setPf({...pat});setEditMode(false);}}/></div>}
     </div>
     {pat.obs&&<div style={{background:G.yellow+"18",border:`2px solid ${G.yellow}`,borderRadius:10,padding:"9px 14px"}}><span style={{fontWeight:700,color:G.yellow}}>⚠ ALERGIA / OBS. IMPORTANTE</span><div style={{color:G.text,marginTop:4,fontSize:14}}>{pat.obs||pat.allergy}</div></div>}
     {pat.conv&&pat.conv.on&&pat.conv.validade&&pat.conv.validade<today()&&<div style={{background:"#FDECEA",border:"2px solid "+G.red,borderRadius:10,padding:"9px 14px"}}><span style={{fontWeight:700,color:G.red}}>⚠ CARTEIRINHA DE CONVÊNIO VENCIDA</span><div style={{fontSize:12.5,color:G.red,marginTop:2}}>{"Venceu em "+fmt(pat.conv.validade)+" — atualize antes de faturar pelo convênio."}</div></div>}
@@ -5392,7 +5619,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 <div style={{fontFamily:"'Cormorant Garamond'",fontSize:26,color:G.primary,fontWeight:700,marginBottom:6}}>{clinica.nome}</div>
 <div style={{fontSize:13.5,color:G.muted,lineHeight:1.6}}>{clinica.endereco}<br/>{"Tel. "+clinica.telefone+" · WhatsApp "+clinica.whatsapp}</div>
 </div>
-<div style={{background:G.card,border:"1px solid "+G.border,borderRadius:14,padding:"16px 18px"}}><div style={{fontWeight:700,fontSize:14,color:G.text,marginBottom:3}}>💳 Taxas de cartão (%)</div><div style={{fontSize:12.5,color:G.muted,lineHeight:1.45,marginBottom:12}}>Defina as taxas da sua máquina/adquirente. Usadas para calcular o valor líquido nos recebimentos.</div><div style={{display:"flex",gap:12,flexWrap:"wrap"}}><div style={{flex:1,minWidth:90}}><label style={{fontSize:11,fontWeight:700,color:G.muted,letterSpacing:"1px",textTransform:"uppercase",display:"block",marginBottom:6}}>Crédito</label><input type="number" step="0.1" value={clinica.taxaCredito} onChange={function(e){updateClinica({taxaCredito:e.target.value});}} style={{width:"100%",background:G.card,border:"1.5px solid "+G.border,borderRadius:10,padding:"12px 14px",fontSize:14,color:G.text,outline:"none",boxSizing:"border-box"}}/></div><div style={{flex:1,minWidth:90}}><label style={{fontSize:11,fontWeight:700,color:G.muted,letterSpacing:"1px",textTransform:"uppercase",display:"block",marginBottom:6}}>Débito</label><input type="number" step="0.1" value={clinica.taxaDebito} onChange={function(e){updateClinica({taxaDebito:e.target.value});}} style={{width:"100%",background:G.card,border:"1.5px solid "+G.border,borderRadius:10,padding:"12px 14px",fontSize:14,color:G.text,outline:"none",boxSizing:"border-box"}}/></div><div style={{flex:1,minWidth:90}}><label style={{fontSize:11,fontWeight:700,color:G.muted,letterSpacing:"1px",textTransform:"uppercase",display:"block",marginBottom:6}}>Antecipação</label><input type="number" step="0.1" value={clinica.taxaAntecipacao} onChange={function(e){updateClinica({taxaAntecipacao:e.target.value});}} style={{width:"100%",background:G.card,border:"1.5px solid "+G.border,borderRadius:10,padding:"12px 14px",fontSize:14,color:G.text,outline:"none",boxSizing:"border-box"}}/></div></div><div style={{fontSize:11.5,color:G.muted,marginTop:9,lineHeight:1.4}}>A antecipação é aplicada quando a venda é parcelada no crédito e você recebe à vista. Deixe 0 se recebe parcela a parcela.</div></div>
+<div style={{background:G.card,border:"1px solid "+G.border,borderRadius:14,padding:"16px 18px"}}><div style={{fontWeight:700,fontSize:14,color:G.text,marginBottom:3}}>🔗 URL do sistema (links do portal)</div><div style={{fontSize:12.5,color:G.muted,lineHeight:1.45,marginBottom:12}}>Endereço onde o sistema fica publicado. Usado para montar os links do Portal do Paciente e da Anamnese. Deixe em branco para usar o endereço atual do navegador.</div><label style={{fontSize:11,fontWeight:700,color:G.muted,letterSpacing:"1px",textTransform:"uppercase",display:"block",marginBottom:6}}>URL do sistema</label><input value={clinica.appUrl||""} onChange={function(e){updateClinica({appUrl:e.target.value});}} placeholder="https://app.suaclinica.com.br" style={{width:"100%",background:G.card,border:"1.5px solid "+G.border,borderRadius:10,padding:"12px 14px",fontSize:14,color:G.text,outline:"none",boxSizing:"border-box"}}/></div><div style={{background:G.card,border:"1px solid "+G.border,borderRadius:14,padding:"16px 18px"}}><div style={{fontWeight:700,fontSize:14,color:G.text,marginBottom:3}}>💳 Taxas de cartão (%)</div><div style={{fontSize:12.5,color:G.muted,lineHeight:1.45,marginBottom:12}}>Defina as taxas da sua máquina/adquirente. Usadas para calcular o valor líquido nos recebimentos.</div><div style={{display:"flex",gap:12,flexWrap:"wrap"}}><div style={{flex:1,minWidth:90}}><label style={{fontSize:11,fontWeight:700,color:G.muted,letterSpacing:"1px",textTransform:"uppercase",display:"block",marginBottom:6}}>Crédito</label><input type="number" step="0.1" value={clinica.taxaCredito} onChange={function(e){updateClinica({taxaCredito:e.target.value});}} style={{width:"100%",background:G.card,border:"1.5px solid "+G.border,borderRadius:10,padding:"12px 14px",fontSize:14,color:G.text,outline:"none",boxSizing:"border-box"}}/></div><div style={{flex:1,minWidth:90}}><label style={{fontSize:11,fontWeight:700,color:G.muted,letterSpacing:"1px",textTransform:"uppercase",display:"block",marginBottom:6}}>Débito</label><input type="number" step="0.1" value={clinica.taxaDebito} onChange={function(e){updateClinica({taxaDebito:e.target.value});}} style={{width:"100%",background:G.card,border:"1.5px solid "+G.border,borderRadius:10,padding:"12px 14px",fontSize:14,color:G.text,outline:"none",boxSizing:"border-box"}}/></div><div style={{flex:1,minWidth:90}}><label style={{fontSize:11,fontWeight:700,color:G.muted,letterSpacing:"1px",textTransform:"uppercase",display:"block",marginBottom:6}}>Antecipação</label><input type="number" step="0.1" value={clinica.taxaAntecipacao} onChange={function(e){updateClinica({taxaAntecipacao:e.target.value});}} style={{width:"100%",background:G.card,border:"1.5px solid "+G.border,borderRadius:10,padding:"12px 14px",fontSize:14,color:G.text,outline:"none",boxSizing:"border-box"}}/></div></div><div style={{fontSize:11.5,color:G.muted,marginTop:9,lineHeight:1.4}}>A antecipação é aplicada quando a venda é parcelada no crédito e você recebe à vista. Deixe 0 se recebe parcela a parcela.</div></div>
 <div style={{background:G.card,border:"1px solid "+G.border,borderRadius:14,padding:"14px 16px",display:"flex",alignItems:"center",gap:12}}>
 <div style={{flex:1}}><div style={{fontWeight:700,fontSize:14,color:G.text,marginBottom:3}}>💡 Dicas de ajuda nas telas</div><div style={{fontSize:12.5,color:G.muted,lineHeight:1.45}}>Mostra uma dica explicativa no topo de cada tela. Desligue quando a equipe já conhecer o sistema.</div></div>
 <button onClick={function(){toggleDicas(!dicas);}} style={{flexShrink:0,width:30,height:30,borderRadius:8,border:"none",cursor:"pointer",background:dicas?"#2F80ED":"#cfd8d4",color:"#fff",fontSize:16,fontWeight:800,display:"flex",alignItems:"center",justifyContent:"center"}}>{dicas?"✓":""}</button>
@@ -6481,7 +6708,7 @@ return(
 function WAAnamneseModal({pat,onClose}){
 const [sent,setSent]=useState(false);
 const send=function(){
-const link=(window.location.origin+window.location.pathname)+"?anam="+encodeURIComponent(btoa("orbe:"+pat.id));
+const link=appBase()+"?anam="+encodeURIComponent(btoa("orbe:"+pat.id));
 const msg="Ola, "+pat.name+"! 😊\n\nPara seu atendimento na Clínica Modelo, clique no link abaixo e preencha sua ficha de saude. Sao perguntas com botoes SIM e NAO, leva menos de 2 minutos!\n\n"+link+"\n\nObrigado! 🦷 Clínica Modelo";
 wa(pat.phone,msg);setSent(true);
 };
@@ -6496,7 +6723,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex
 <div style={{padding:20,display:"flex",flexDirection:"column",gap:12}}>
 {!sent?<div style={{display:"flex",flexDirection:"column",gap:12}}>
 <p style={{fontSize:13,color:"#555",margin:0}}>Envia um link para <strong>{pat.name}</strong> preencher a ficha de saude pelo celular com botoes SIM e NAO.</p>
-<div style={{background:"#f0f4f0",borderRadius:10,padding:"10px 12px",fontSize:11,color:"#1B5E4A",wordBreak:"break-all",fontWeight:600}}>{(window.location.origin+window.location.pathname)+"?anam="+encodeURIComponent(btoa("orbe:"+pat.id))}</div>
+<div style={{background:"#f0f4f0",borderRadius:10,padding:"10px 12px",fontSize:11,color:"#1B5E4A",wordBreak:"break-all",fontWeight:600}}>{appBase()+"?anam="+encodeURIComponent(btoa("orbe:"+pat.id))}</div>
 <button onClick={send} style={{background:"#25D366",color:"#fff",border:"none",borderRadius:12,padding:"13px",fontSize:15,fontWeight:700,cursor:"pointer"}}>{"📱 Enviar por WhatsApp"}</button>
 <button onClick={onClose} style={{background:"none",border:"1.5px solid #ddd",borderRadius:10,padding:"10px",fontSize:13,cursor:"pointer",color:"#888"}}>Cancelar</button>
 </div>:<div style={{textAlign:"center",display:"flex",flexDirection:"column",gap:12}}>
@@ -8384,6 +8611,37 @@ useEffect(function(){
   },1000);
 },[pats]);
 
+// ── PORTAL: recalcula o resumo _portal dos pacientes com token ──
+useEffect(function(){
+  if(!initialized.current)return;
+  var td=today();var changed=false;
+  var next=pats.map(function(p){
+    if(!p||!p.portalToken)return p;
+    var core=buildPortalSnapshot(p,p.portalOpts||PORTAL_DEFAULT_OPTS,{appts:appts,treats:treats,budgets:budgets,dents:dents,clinica:CLINICA_LIVE,today:td});
+    var prevCore=p._portal?Object.assign({},p._portal):null;if(prevCore)delete prevCore.updatedAt;
+    if(JSON.stringify(prevCore)!==JSON.stringify(core)){changed=true;return Object.assign({},p,{_portal:Object.assign({},core,{updatedAt:new Date().toISOString()})});}
+    return p;
+  });
+  if(changed)setPats(next);
+},[pats,appts,treats,budgets,dents]);
+
+// ── PORTAL: reconcilia confirmações de presença (janela de 3 dias) ──
+useEffect(function(){
+  if(!SUPA_URL)return;
+  var run=function(){
+    if(!initialized.current||document.hidden)return;
+    supabase.fetchPortalActions().then(function(rows){
+      if(!rows||!rows.length)return;
+      var td=today();var alvo={};
+      rows.forEach(function(r){var a=r.action||{};if(a.type!=="confirm")return;if(r.created_at){var age=(Date.now()-new Date(r.created_at).getTime())/86400000;if(age>3)return;}if(a.apptId!=null)alvo[a.apptId]=true;});
+      if(!Object.keys(alvo).length)return;
+      setAppts(function(prev){var did=false;var nx=prev.map(function(ap){if(alvo[ap.id]&&ap.status!=="confirmed"&&ap.status!=="done"&&ap.date>=td){did=true;return Object.assign({},ap,{status:"confirmed",statusTs:new Date().toISOString(),confirmedByPortal:true});}return ap;});return did?nx:prev;});
+    }).catch(function(){});
+  };
+  var t0=setTimeout(run,6000);var iv=setInterval(run,30000);
+  return function(){clearTimeout(t0);clearInterval(iv);};
+},[]);
+
 // ── SINCRONIZACAO entre dispositivos: polling a cada 15s ──
 useEffect(function(){
   var poll=setInterval(async function(){
@@ -8479,6 +8737,8 @@ useEffect(function(){
 
 // Polling removido - causava race condition sobrescrevendo dados locais;
 
+const portalToken=(function(){try{return new URLSearchParams(window.location.search).get("portal");}catch(e){return null;}})();
+if(portalToken)return <PatientPortal token={portalToken}/>;
 const anamToken=(function(){try{return new URLSearchParams(window.location.search).get("anam");}catch(e){return null;}})();
 if(anamToken)return <PublicAnamnese token={anamToken}/>;
 // === WHATSAPP AUTO: eventos + motor diário ===
