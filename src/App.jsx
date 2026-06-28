@@ -25,7 +25,10 @@ async upsertPatients(arr){if(!SUPA_URL)return {ok:false,msg:"Sem conexao"};if(!a
 async submitAnam(token,payload,alertas){if(!SUPA_URL)return {ok:false,msg:"Sem conexao com o banco"};var r=await orbeApi("submitAnam",{token:token,payload:payload,alertas:alertas||[]});return r.ok?{ok:true}:{ok:false,status:r.status,msg:(r.j&&r.j.msg)||("Erro "+r.status)};},
 async fetchAnam(token){var r=await orbeApi("fetchAnam",{token:token});return r.ok?(r.j.payload||null):null;},
 async fetchAnamRecent(){var r=await orbeApi("fetchAnamRecent");return r.ok?((r.j&&r.j.rows)||[]):[];},
-async loadWaMessages(){var r=await orbeApi("loadWaMessages");return r.ok?((r.j&&r.j.rows)||[]):[];}
+async loadWaMessages(){var r=await orbeApi("loadWaMessages");return r.ok?((r.j&&r.j.rows)||[]):[];},
+async fetchPortal(token){var r=await orbeApi("fetchPortal",{token:token});return r.ok?(r.j.portal||null):null;},
+async sendPortalAction(token,payload){if(!SUPA_URL)return {ok:false,msg:"Sem conexao"};var r=await orbeApi("sendPortalAction",{token:token,payload:payload});return r.ok?{ok:true}:{ok:false,status:r.status,msg:(r.j&&r.j.msg)||"Erro"};},
+async fetchPortalActions(){var r=await orbeApi("fetchPortalActions");return r.ok?((r.j&&r.j.rows)||[]):[];}
 };
 const G = {
 bg:"#EEF3F0",card:"#FFF",primary:"#1B5E4A",accent:"#E3EFE9",accentDark:"#A8D5C0",
@@ -325,6 +328,26 @@ const wa=(ph,msg)=>{const n=(ph||"").replace(/\D/g,"");const u="https://wa.me/"+
 const age=dob=>{if(!dob)return"";const d=new Date(dob+"T12:00");const a=new Date();let y=a.getFullYear()-d.getFullYear();if(a.getMonth()<d.getMonth()||(a.getMonth()===d.getMonth()&&a.getDate()<d.getDate()))y--;return y+" anos";};
 const getDaysInMonth=(y,m)=>new Date(y,m+1,0).getDate();
 const getFirstDayOfMonth=(y,m)=>new Date(y,m,1).getDay();
+
+// ── Portal do Paciente: token opaco + snapshot público ──────
+const genPortalToken=function(){try{var a=new Uint8Array(16);crypto.getRandomValues(a);return Array.prototype.map.call(a,function(b){return ("0"+b.toString(16)).slice(-2);}).join("");}catch(e){return Date.now().toString(36)+Math.random().toString(36).slice(2,12)+Math.random().toString(36).slice(2,12);}};
+const portalDentName=function(dents,id){var d=(dents||[]).find(function(x){return x.id===Number(id);});return d?d.name:"";};
+const buildPortalSnapshot=function(pat,ctx){
+ctx=ctx||{};var appts=ctx.appts||[],treats=ctx.treats||[],budgets=ctx.budgets||[],dents=ctx.dents||[];
+var pid=pat.id,td=today();
+var futuras=appts.filter(function(a){return a&&Number(a.patientId)===Number(pid)&&!a.blocked&&a.date>=td&&["pending","confirmed","waiting","rescheduled"].indexOf(a.status)>=0;}).sort(function(a,b){return (a.date+(a.time||"")).localeCompare(b.date+(b.time||""));});
+var nextA=futuras[0]||null;
+var next=nextA?{id:nextA.id,date:nextA.date,time:pad2(nextA.time),procedure:nextA.procedure||nextA.treatment||"Consulta",dentist:portalDentName(dents,nextA.dentistId),status:nextA.status,confirmed:nextA.status==="confirmed"}:null;
+var upcoming=futuras.slice(0,6).map(function(a){return {id:a.id,date:a.date,time:pad2(a.time),procedure:a.procedure||a.treatment||"Consulta",dentist:portalDentName(dents,a.dentistId),confirmed:a.status==="confirmed"};});
+var plans=treats.filter(function(t){return Number(t.patientId)===Number(pid);}).map(function(t){var items=(t.items||[]).map(function(it){return {desc:it.desc||"",value:Number(it.value)||0,paid:!!(it.paid||it.done)};});var total=items.reduce(function(s,i){return s+i.value;},0);var paid=items.filter(function(i){return i.paid;}).reduce(function(s,i){return s+i.value;},0);return {name:t.name||"Plano de tratamento",start:t.start||"",items:items,total:total,paid:paid,pending:Math.max(0,total-paid)};});
+var orcs=budgets.filter(function(b){return Number(b.patientId)===Number(pid)&&(b.status==="pending"||b.status==="approved");}).map(function(b){var items=(b.items||[]).map(function(i){return {d:i.d||"",v:Number(i.v)||0};});var sub=items.reduce(function(s,i){return s+i.v;},0);var disc=Number(b.disc)||0;return {date:b.date||"",items:items,total:Math.max(0,sub-disc),status:b.status};});
+var photos=(pat.imagens||[]).filter(function(im){return im&&im.cat==="antesdepois"&&im.url;}).sort(function(a,b){return (a.date||"").localeCompare(b.date||"");}).map(function(im){return {url:im.url,date:im.date||"",nota:im.nota||""};});
+var pendTotal=plans.reduce(function(s,p){return s+p.pending;},0);
+var pagamentos=[];treats.filter(function(t){return Number(t.patientId)===Number(pid);}).forEach(function(t){(t.payments||[]).forEach(function(p){pagamentos.push({date:p.date||"",value:Number(p.value)||0,method:p.method||""});});});
+pagamentos.sort(function(a,b){return (b.date||"").localeCompare(a.date||"");});
+var nome=pat.name||"",primeiro=(nome.trim().split(/\s+/)[0])||nome;
+return {v:1,updatedAt:new Date().toISOString(),clinic:{nome:CLINICA_LIVE.nome||"",telefone:CLINICA_LIVE.telefone||"",endereco:CLINICA_LIVE.endereco||"",whatsapp:CLINICA_LIVE.whatsapp||""},patient:{nome:nome,primeiro:primeiro},next:next,upcoming:upcoming,plans:plans,budgets:orcs,photos:photos,finance:{pending:pendTotal,payments:pagamentos.slice(0,5)}};
+};
 
 // ── UI Atoms ───────────────────────────────────────────────
 const Bdg=({l,col,sm})=><span style={{background:col+"22",color:col,borderRadius:20,padding:sm?"2px 7px":"3px 10px",fontSize:sm?10:11,fontWeight:700,whiteSpace:"nowrap"}}>{l}</span>;
@@ -651,6 +674,128 @@ function PublicAnamnese({token}){
 }
 
 
+function PortalPaciente({token}){
+const [st,setSt]=useState("loading");
+const [d,setD]=useState(null);
+const [confirming,setConfirming]=useState(false);
+const [confirmed,setConfirmed]=useState(false);
+const [zoom,setZoom]=useState(null);
+useEffect(function(){var alive=true;if(!SUPA_URL){setSt("error");return;}supabase.fetchPortal(token).then(function(p){if(!alive)return;if(p){setD(p);if(p.next&&p.next.confirmed)setConfirmed(true);setSt("ok");}else setSt("empty");}).catch(function(){if(alive)setSt("error");});return function(){alive=false;};},[token]);
+var GOLD="#B7950B",GREEN=G.primary;
+var card={background:"#fff",borderRadius:16,boxShadow:"0 2px 14px rgba(20,60,45,.07)",overflow:"hidden",border:"1px solid #E7EFEA"};
+var capTop=function(){return <div style={{height:3,background:"linear-gradient(90deg,"+GREEN+","+GOLD+")"}}/>;};
+var secTitle=function(ic,t){return <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}><span style={{fontSize:17}}>{ic}</span><span style={{fontFamily:"'Cormorant Garamond'",fontSize:21,color:GREEN,fontWeight:700}}>{t}</span></div>;};
+function confirmar(){if(!d||!d.next)return;setConfirming(true);supabase.sendPortalAction(token,{type:"confirm_appt",apptId:d.next.id,at:new Date().toISOString()}).then(function(r){setConfirming(false);if(r&&r.ok)setConfirmed(true);});}
+var wrap=function(inner){return <div style={{minHeight:"100vh",background:"#EEF3F0",padding:"0 0 40px",fontFamily:"'DM Sans',system-ui,sans-serif"}}>{inner}</div>;};
+if(st==="loading")return wrap(<div style={{textAlign:"center",padding:"80px 20px",color:G.muted}}><div style={{fontSize:30,marginBottom:10}}>🦷</div>Carregando seu portal…</div>);
+if(st==="error")return wrap(<div style={{maxWidth:520,margin:"0 auto",padding:"60px 20px",textAlign:"center"}}><div style={{fontSize:40,marginBottom:12}}>🔌</div><div style={{fontFamily:"'Cormorant Garamond'",fontSize:24,color:GREEN}}>Não foi possível abrir o portal</div><div style={{fontSize:14,color:G.text,marginTop:8}}>Verifique sua conexão e tente novamente. Se continuar, fale com a clínica.</div></div>);
+if(st==="empty")return wrap(<div style={{maxWidth:520,margin:"0 auto",padding:"60px 20px",textAlign:"center"}}><div style={{fontSize:40,marginBottom:12}}>🔍</div><div style={{fontFamily:"'Cormorant Garamond'",fontSize:24,color:GREEN}}>Link inválido ou expirado</div><div style={{fontSize:14,color:G.text,marginTop:8}}>Este link de acesso não está mais ativo. Peça um novo à sua clínica.</div></div>);
+var clinic=d.clinic||{},pac=d.patient||{};
+return wrap(<div style={{maxWidth:560,margin:"0 auto"}}>
+  <div style={{background:"linear-gradient(135deg,"+GREEN+",#134A3A)",color:"#fff",padding:"30px 22px 26px",borderRadius:"0 0 22px 22px",boxShadow:"0 6px 20px rgba(20,60,45,.18)"}}>
+    <div style={{fontSize:11,letterSpacing:"2px",textTransform:"uppercase",opacity:.85,marginBottom:8,color:"#E7D9A8"}}>Portal do Paciente</div>
+    <div style={{fontFamily:"'Cormorant Garamond'",fontSize:27,fontWeight:700,lineHeight:1.15}}>{"🦷 "+(clinic.nome||"Sua clínica")}</div>
+    <div style={{fontSize:15,marginTop:12,opacity:.95}}>{"Olá, "+(pac.primeiro||"")+"! 👋"}</div>
+    <div style={{fontSize:12.5,opacity:.8,marginTop:3}}>Aqui você acompanha suas consultas e seu tratamento.</div>
+  </div>
+  <div style={{padding:"18px 16px",display:"flex",flexDirection:"column",gap:14}}>
+    <div style={card}>{capTop()}<div style={{padding:"16px 18px"}}>
+      {secTitle("📅","Próxima consulta")}
+      {d.next?<div>
+        <div style={{fontFamily:"'Cormorant Garamond'",fontSize:29,fontWeight:700,color:G.text,textTransform:"capitalize",lineHeight:1.1}}>{new Date(d.next.date+"T12:00").toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"})}</div>
+        <div style={{fontSize:15,color:GREEN,fontWeight:700,marginTop:4}}>{"🕐 "+d.next.time+(d.next.dentist?"  ·  "+d.next.dentist:"")}</div>
+        {d.next.procedure&&<div style={{fontSize:13.5,color:G.muted,marginTop:4}}>{d.next.procedure}</div>}
+        <div style={{marginTop:14}}>
+          {confirmed?<div style={{background:"#E8F5EE",border:"1.5px solid "+G.success,color:G.success,borderRadius:12,padding:"11px 14px",fontSize:14,fontWeight:700,textAlign:"center"}}>✓ Presença confirmada — até lá!</div>
+          :<button onClick={confirmar} disabled={confirming} style={{width:"100%",background:GREEN,color:"#fff",border:"none",borderRadius:12,padding:"13px",fontSize:15,fontWeight:700,cursor:confirming?"default":"pointer",opacity:confirming?.6:1,fontFamily:"'DM Sans'"}}>{confirming?"Enviando…":"✓ Confirmar minha presença"}</button>}
+        </div>
+      </div>:<div style={{fontSize:14,color:G.muted,padding:"6px 0"}}>Você não tem consultas agendadas no momento. Fale com a clínica para marcar a sua. 🙂</div>}
+      {d.upcoming&&d.upcoming.length>1&&<div style={{marginTop:14,borderTop:"1px solid "+G.border,paddingTop:10}}>
+        <div style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px",marginBottom:7}}>Também agendado</div>
+        {d.upcoming.slice(1).map(function(a){return <div key={a.id} style={{display:"flex",justifyContent:"space-between",fontSize:13,color:G.text,padding:"3px 0"}}><span>{fmt(a.date)+" · "+a.time}</span><span style={{color:G.muted}}>{a.dentist||a.procedure}</span></div>;})}
+      </div>}
+    </div></div>
+    {(d.plans&&d.plans.length||d.budgets&&d.budgets.length)?<div style={card}>{capTop()}<div style={{padding:"16px 18px"}}>
+      {secTitle("🦷","Tratamento e orçamento")}
+      {(d.plans||[]).map(function(p,ix){return <div key={"p"+ix} style={{marginBottom:12,background:G.bg,borderRadius:12,padding:"12px 13px"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:8}}><span style={{fontWeight:700,fontSize:14.5,color:G.text}}>{p.name}</span>{p.start&&<span style={{fontSize:11,color:G.muted}}>{"desde "+fmt(p.start)}</span>}</div>
+        <div style={{marginTop:8,display:"flex",flexDirection:"column",gap:4}}>{p.items.map(function(it,j){return <div key={j} style={{display:"flex",justifyContent:"space-between",fontSize:13,color:it.paid?G.muted:G.text}}><span>{(it.paid?"✓ ":"• ")+it.desc}</span><span style={{fontWeight:600,textDecoration:it.paid?"line-through":"none"}}>{cur(it.value)}</span></div>;})}</div>
+        <div style={{display:"flex",justifyContent:"space-between",marginTop:9,paddingTop:8,borderTop:"1px dashed "+G.border,fontSize:13}}><span style={{color:G.muted}}>{"Pago "+cur(p.paid)+" de "+cur(p.total)}</span>{p.pending>0?<span style={{fontWeight:700,color:G.orange}}>{"Falta "+cur(p.pending)}</span>:<span style={{fontWeight:700,color:G.success}}>Quitado ✓</span>}</div>
+      </div>;})}
+      {(d.budgets||[]).map(function(b,ix){var stl=b.status==="approved"?{t:"Aprovado",c:G.success}:{t:"Em aberto",c:G.yellow};return <div key={"b"+ix} style={{marginBottom:10,border:"1.5px solid "+G.border,borderRadius:12,padding:"12px 13px"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}><span style={{fontWeight:700,fontSize:13.5,color:G.text}}>{"Orçamento"+(b.date?" · "+fmt(b.date):"")}</span><span style={{background:stl.c+"22",color:stl.c,borderRadius:20,padding:"2px 10px",fontSize:11,fontWeight:700}}>{stl.t}</span></div>
+        {b.items.map(function(it,j){return <div key={j} style={{display:"flex",justifyContent:"space-between",fontSize:13,color:G.text,padding:"2px 0"}}><span>{it.d}</span><span style={{fontWeight:600}}>{cur(it.v)}</span></div>;})}
+        <div style={{display:"flex",justifyContent:"space-between",marginTop:7,paddingTop:7,borderTop:"1px solid "+G.border,fontSize:14}}><span style={{fontWeight:700,color:GREEN}}>Total</span><span style={{fontWeight:700,color:GREEN}}>{cur(b.total)}</span></div>
+      </div>;})}
+    </div></div>:null}
+    {d.photos&&d.photos.length?<div style={card}>{capTop()}<div style={{padding:"16px 18px"}}>
+      {secTitle("✨","Antes e depois")}
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(96px,1fr))",gap:8}}>{d.photos.map(function(im,ix){return <div key={ix} onClick={function(){setZoom(im);}} style={{cursor:"pointer"}}><img src={im.url} alt="" style={{width:"100%",height:96,objectFit:"cover",borderRadius:10,border:"1px solid "+G.border}}/>{im.date&&<div style={{fontSize:9.5,color:G.muted,textAlign:"center",marginTop:2}}>{fmt(im.date)}</div>}</div>;})}</div>
+    </div></div>:null}
+    <div style={card}>{capTop()}<div style={{padding:"16px 18px"}}>
+      {secTitle("💰","Financeiro")}
+      {d.finance&&d.finance.pending>0?<div style={{background:"#FFF6E9",border:"1.5px solid "+G.orange,borderRadius:12,padding:"13px 15px",display:"flex",justifyContent:"space-between",alignItems:"center"}}><span style={{fontSize:13.5,color:G.text,fontWeight:600}}>Saldo em aberto</span><span style={{fontSize:20,fontWeight:700,color:G.orange,fontFamily:"'Cormorant Garamond'"}}>{cur(d.finance.pending)}</span></div>
+      :<div style={{background:"#E8F5EE",border:"1.5px solid "+G.success,borderRadius:12,padding:"13px 15px",fontSize:14,fontWeight:700,color:G.success,textAlign:"center"}}>Você está em dia! 🎉</div>}
+      {d.finance&&d.finance.payments&&d.finance.payments.length>0&&<div style={{marginTop:12}}><div style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px",marginBottom:6}}>Últimos pagamentos</div>{d.finance.payments.map(function(p,ix){return <div key={ix} style={{display:"flex",justifyContent:"space-between",fontSize:13,color:G.text,padding:"3px 0",borderBottom:ix<d.finance.payments.length-1?"1px solid "+G.bg:"none"}}><span>{fmt(p.date)+(p.method?" · "+p.method:"")}</span><span style={{fontWeight:700,color:G.success}}>{cur(p.value)}</span></div>;})}</div>}
+      <div style={{fontSize:11,color:G.muted,marginTop:10,lineHeight:1.45}}>Valores referentes aos seus planos de tratamento. Dúvidas? Fale com a recepção.</div>
+    </div></div>
+    <div style={{background:GREEN,borderRadius:16,padding:"18px",color:"#fff",textAlign:"center"}}>
+      <div style={{fontFamily:"'Cormorant Garamond'",fontSize:20,fontWeight:700,marginBottom:6}}>{clinic.nome}</div>
+      {clinic.endereco&&<div style={{fontSize:12.5,opacity:.9,marginBottom:2}}>{"📍 "+clinic.endereco}</div>}
+      {clinic.telefone&&<div style={{fontSize:12.5,opacity:.9}}>{"📞 "+clinic.telefone}</div>}
+      {clinic.whatsapp&&<button onClick={function(){wa(clinic.whatsapp,"Olá! Vim pelo portal do paciente.");}} style={{marginTop:12,background:"#25D366",color:"#fff",border:"none",borderRadius:10,padding:"11px 20px",fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans'"}}>💬 Falar no WhatsApp</button>}
+    </div>
+    <div style={{textAlign:"center",fontSize:10.5,color:G.muted,marginTop:4}}>{"Atualizado em "+(d.updatedAt?fmt(d.updatedAt.slice(0,10)):"-")+" · Portal seguro Orbe"}</div>
+  </div>
+  {zoom&&<div onClick={function(){setZoom(null);}} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.85)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}><img src={zoom.url} alt="" style={{maxWidth:"100%",maxHeight:"90vh",borderRadius:10}}/></div>}
+</div>);
+}
+
+
+function PortalShareTab({pat,setPats,appts,recs,treats,budgets,dents,user}){
+const [tok,setTok]=useState(pat.portalToken||"");
+const [saving,setSaving]=useState(false);
+const [copied,setCopied]=useState(false);
+const [msg,setMsg]=useState("");
+const [regen,setRegen]=useState(false);
+const link=(window.location.origin+window.location.pathname)+"?portal="+encodeURIComponent(tok||"");
+function ativar(forceNew){var t=(!forceNew&&pat.portalToken)?pat.portalToken:genPortalToken();var snap=buildPortalSnapshot(Object.assign({},pat,{portalToken:t}),{appts:appts,recs:recs,treats:treats,budgets:budgets,dents:dents});var upd=Object.assign({},pat,{portalToken:t,_portal:snap});setSaving(true);setMsg("");setTok(t);setPats(function(prev){return prev.map(function(p){return p.id===pat.id?upd:p;});});Promise.resolve(supabase.upsertPatients([upd])).then(function(r){setSaving(false);setMsg(r&&r.ok?"Portal atualizado ✓":"Salvo no aparelho — sincroniza quando reconectar.");}).catch(function(){setSaving(false);setMsg("Salvo no aparelho — sincroniza quando reconectar.");});}
+useEffect(function(){if(pat.portalToken){ativar(false);}},[]);
+function copiar(){try{navigator.clipboard.writeText(link).then(function(){setCopied(true);setTimeout(function(){setCopied(false);},1800);});}catch(e){var ta=document.createElement("textarea");ta.value=link;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");setCopied(true);setTimeout(function(){setCopied(false);},1800);}catch(_e){}document.body.removeChild(ta);}}
+function enviarWA(){var nome=(pat.name||"").split(" ")[0];var t="Olá, "+nome+"! Esse é o seu portal de acompanhamento na "+(CLINICA_LIVE.nome||"clínica")+". Por aqui você vê sua próxima consulta, tratamento, fotos e mais:\n"+link;wa(pat.phone,t);}
+var td=today();
+var nextA=appts.filter(function(a){return Number(a.patientId)===Number(pat.id)&&!a.blocked&&a.date>=td&&["pending","confirmed","waiting","rescheduled"].indexOf(a.status)>=0;}).sort(function(a,b){return (a.date+(a.time||"")).localeCompare(b.date+(b.time||""));})[0];
+if(!tok&&!pat.portalToken){
+return <div style={{display:"flex",flexDirection:"column",gap:14}}>
+  <div style={{background:G.accent,borderRadius:12,padding:"14px 16px"}}><div style={{fontWeight:700,color:G.primary,fontSize:14,marginBottom:4}}>🔗 Portal do Paciente</div><div style={{fontSize:13,color:G.text,lineHeight:1.5}}>Um link pessoal e seguro onde {pat.name||"o paciente"} acompanha, sem login: próxima consulta (com botão de confirmar presença), tratamento e orçamento, fotos antes/depois e financeiro.</div></div>
+  <Btn ch={saving?"Ativando…":"Ativar portal e gerar link"} onClick={function(){ativar(true);}} dis={saving}/>
+</div>;
+}
+return <div style={{display:"flex",flexDirection:"column",gap:14}}>
+  <div style={{background:G.accent,borderRadius:12,padding:"12px 15px",fontSize:12.5,color:G.text,lineHeight:1.5}}>O paciente vê, sem login: <b>próxima consulta</b> (com confirmar presença), <b>tratamento e orçamento</b>, <b>fotos antes/depois</b> e <b>financeiro</b>. Os dados se atualizam sempre que você abre esta aba.</div>
+  <div>
+    <div style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px",marginBottom:6}}>Link do paciente</div>
+    <div style={{background:"#f0f4f0",borderRadius:10,padding:"10px 12px",fontSize:11.5,color:"#1B5E4A",wordBreak:"break-all",fontWeight:600,border:"1px solid "+G.border}}>{link}</div>
+  </div>
+  <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+    <Btn ch={copied?"Copiado ✓":"📋 Copiar link"} v="g" onClick={copiar}/>
+    {pat.phone&&<Btn ch="💬 Enviar no WhatsApp" v="w" onClick={enviarWA}/>}
+    <Btn ch={saving?"Atualizando…":"🔄 Atualizar dados"} v="g" onClick={function(){ativar(false);}} dis={saving}/>
+  </div>
+  {msg&&<div style={{fontSize:12,color:G.success,fontWeight:600}}>{msg}</div>}
+  {nextA&&<div style={{background:G.card,border:"1px solid "+G.border,borderRadius:11,padding:"11px 14px"}}>
+    <div style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px",marginBottom:4}}>Próxima consulta do paciente</div>
+    <div style={{fontSize:13.5,color:G.text,fontWeight:600}}>{fmt(nextA.date)+" · "+pad2(nextA.time)+(nextA.procedure?" · "+nextA.procedure:"")}</div>
+    <div style={{marginTop:5}}>{nextA.status==="confirmed"?<span style={{background:G.success+"22",color:G.success,borderRadius:20,padding:"3px 11px",fontSize:11.5,fontWeight:700}}>✓ Presença confirmada</span>:<span style={{background:G.yellow+"22",color:G.yellow,borderRadius:20,padding:"3px 11px",fontSize:11.5,fontWeight:700}}>Aguardando confirmação</span>}</div>
+  </div>}
+  <div style={{borderTop:"1px solid "+G.border,paddingTop:12}}>
+    {!regen?<button onClick={function(){setRegen(true);}} style={{border:"none",background:"none",color:G.muted,fontSize:12,cursor:"pointer",textDecoration:"underline",padding:0}}>Gerar um link novo (invalida o atual)</button>
+    :<div style={{background:"#FDECEA",border:"1.5px solid "+G.red,borderRadius:10,padding:"11px 13px"}}><div style={{fontSize:12.5,color:G.red,fontWeight:600,marginBottom:8}}>O link atual deixará de funcionar. Envie o novo ao paciente.</div><div style={{display:"flex",gap:8}}><Btn ch="Gerar novo link" v="r" sm onClick={function(){ativar(true);setRegen(false);}}/><Btn ch="Cancelar" v="g" sm onClick={function(){setRegen(false);}}/></div></div>}
+  </div>
+</div>;
+}
+
+
 function PatientFolder({pat:patProp,pats,setPats,recs,setRecs,treats,setTreats,budgets,setBudgets,appts,dents,procs,user,onClose}){
 // Always read live data from pats - this ensures saves reflect immediately
 const pat=pats.find(p=>p.id===patProp.id)||patProp;
@@ -880,7 +1025,7 @@ setPayModal(null);setPayForm({date:today(),value:"",method:"Dinheiro",inst:"1",n
 };
 const saveBudg=()=>{if(!bf.items.length)return alert("Adicione itens");const obj={...bf,patientId:pat.id,disc:pmoney(bf.disc),items:bf.items.map(function(it){return {...it,v:pmoney(it.v)};}),id:budgEdit?budgEdit.id:nid(budgets)};setBudgets(prev=>budgEdit?prev.map(b=>b.id===budgEdit.id?obj:b):[...prev,obj]);setBudgModal(false);};
 
-const TABS=[["ficha","📋 Ficha"],["anamnese","🩺 Anamnese"],["odonto","🦷 Odontograma"],["tratamento","🦷 Tratamento"],["urgencia","🚨 Urgência"],["evolucao","📝 Evolução"],["imagens","📷 Imagens"],["historico","📅 Histórico"],["atestado","📄 Atestado"],...(!isDentUser?[["financeiro","💰 Financeiro"],["nf","🧾 Nota Fiscal"]]:[])];
+const TABS=[["ficha","📋 Ficha"],["anamnese","🩺 Anamnese"],["odonto","🦷 Odontograma"],["tratamento","🦷 Tratamento"],["urgencia","🚨 Urgência"],["evolucao","📝 Evolução"],["imagens","📷 Imagens"],["historico","📅 Histórico"],["portal","🔗 Portal"],["atestado","📄 Atestado"],...(!isDentUser?[["financeiro","💰 Financeiro"],["nf","🧾 Nota Fiscal"]]:[])];
 // NF (Nota Fiscal) state
 const [nfModal,setNfModal]=useState(false);
 const [showAtestado,setShowAtestado]=useState(false);
@@ -1025,7 +1170,7 @@ return <>
   {tab==="anamnese"&&<div style={{display:"flex",flexDirection:"column",gap:14}}>
     {showWAanam&&<WAAnamneseModal pat={pf} onClose={function(){setShowWAanam(false);}}/>}
     {buscaMsg&&<div style={{background:G.accent,borderRadius:8,padding:"8px 12px",fontSize:12.5,color:G.primary}}>{buscaMsg}</div>}
-    {pat.anamPend&&<div style={{background:G.success+"18",border:"1.5px solid "+G.success,borderRadius:10,padding:"10px 13px",display:"flex",gap:8,alignItems:"center"}}><span style={{fontSize:16}}>✅</span><div style={{fontSize:12.5,color:G.success,fontWeight:600,lineHeight:1.45}}>Ficha recebida do paciente pelo WhatsApp! Revise os dados abaixo e clique em <strong>Salvar</strong> para confirmar.</div></div>}
+    {pat.anamPend&&<div style={{background:G.success+"18",border:"1.5px solid "+G.success,borderRadius:10,padding:"10px 13px",display:"flex",gap:8,alignItems:"center"}}><span style={{fontSize:16}}>\u2705</span><div style={{fontSize:12.5,color:G.success,fontWeight:600,lineHeight:1.45}}>Ficha recebida do paciente pelo WhatsApp! Revise os dados abaixo e clique em <strong>Salvar</strong> para confirmar.</div></div>}
     {fillAnam&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",zIndex:9000,display:"flex",alignItems:"flex-start",justifyContent:"center",padding:16,overflowY:"auto"}}><div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:560,margin:"16px auto",padding:"20px"}}><AnamForm patientName={pat.name} initial={pf.anamnese} onCancel={function(){setFillAnam(false);}} onSubmit={function(a){var aa=Object.assign({},a,{preenchida:true});setPf(prev=>Object.assign({},prev,{anamnese:Object.assign({},prev.anamnese||{},aa)}));setPats(prev=>prev.map(pp=>pp.id===pf.id?Object.assign({},pp,{anamnese:Object.assign({},pp.anamnese||{},aa)}):pp));setFillAnam(false);}}/></div></div>}
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
       <span style={{fontWeight:700,fontSize:15,color:G.primary}}>🩺 Anamnese Clínica</span>
@@ -1431,6 +1576,8 @@ return <>
       {(t.payments||[]).length===0&&<p style={{fontSize:12,color:G.muted,marginBottom:6}}>Nenhum pagamento</p>}
     </div>)}
   </div>}
+
+  {tab==="portal"&&<PortalShareTab pat={pat} setPats={setPats} appts={appts} recs={recs} treats={treats} budgets={budgets} dents={dents} user={user}/>}
 
   {/* ── NOTA FISCAL ── */}
   {tab==="atestado"&&(function(){
@@ -2367,11 +2514,11 @@ return (
 
   <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
     <button onClick={()=>{setCalY(new Date().getFullYear());setCalM(new Date().getMonth());setShowCal(v=>!v);}} style={{background:showCal?G.primary:G.accent,border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 10px",cursor:"pointer",fontSize:16,color:showCal?"#fff":"inherit"}}>{"📅"}</button>
-    <button onClick={function(){var d=new Date(selDate+"T12:00");if(agView==="dia")d.setDate(d.getDate()-1);else{d=new Date(week[0]+"T12:00");d.setDate(d.getDate()-7);}setSelDate(d.toISOString().split("T")[0]);}} style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 12px",cursor:"pointer",color:G.primary,fontWeight:700}}>{"<"}</button>
-    <button onClick={function(){var d=new Date(selDate+"T12:00");if(agView==="dia")d.setDate(d.getDate()+1);else{d=new Date(week[6]+"T12:00");d.setDate(d.getDate()+1);}setSelDate(d.toISOString().split("T")[0]);}} style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 12px",cursor:"pointer",color:G.primary,fontWeight:700}}>{">"}</button>
+    <button onClick={function(){var d=new Date(selDate+"T12:00");if(agView==="dia")d.setDate(d.getDate()-1);else if(agView==="mes")d.setMonth(d.getMonth()-1,1);else{d=new Date(week[0]+"T12:00");d.setDate(d.getDate()-7);}setSelDate(d.toISOString().split("T")[0]);}} style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 12px",cursor:"pointer",color:G.primary,fontWeight:700}}>{"<"}</button>
+    <button onClick={function(){var d=new Date(selDate+"T12:00");if(agView==="dia")d.setDate(d.getDate()+1);else if(agView==="mes")d.setMonth(d.getMonth()+1,1);else{d=new Date(week[6]+"T12:00");d.setDate(d.getDate()+1);}setSelDate(d.toISOString().split("T")[0]);}} style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 12px",cursor:"pointer",color:G.primary,fontWeight:700}}>{">"}</button>
     <button onClick={()=>setSelDate(td)} style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 11px",cursor:"pointer",color:G.primary,fontWeight:600,fontSize:12}}>Hoje</button>
     <div style={{display:"flex",gap:2,background:G.bg,borderRadius:9,padding:3}}>
-      {[["dia","Dia"],["semana","Semana"]].map(function(v){return <button key={v[0]} onClick={function(){if(v[0]==="semana"&&!isDent&&denF==="all"){var d1=dents.filter(function(d){return !isOrto(d);})[0]||dents[0];if(d1)setDenF(String(d1.id));}setAgView(v[0]);}} style={{border:"none",borderRadius:7,padding:"6px 12px",fontSize:12,fontWeight:700,cursor:"pointer",background:agView===v[0]?G.primary:"transparent",color:agView===v[0]?"#fff":G.muted}}>{v[1]}</button>;})}
+      {[["dia","Dia"],["semana","Semana"],["mes","Mês"]].map(function(v){return <button key={v[0]} onClick={function(){if(v[0]==="semana"&&!isDent&&denF==="all"){var d1=dents.filter(function(d){return !isOrto(d);})[0]||dents[0];if(d1)setDenF(String(d1.id));}setAgView(v[0]);}} style={{border:"none",borderRadius:7,padding:"6px 12px",fontSize:12,fontWeight:700,cursor:"pointer",background:agView===v[0]?G.primary:"transparent",color:agView===v[0]?"#fff":G.muted}}>{v[1]}</button>;})}
     </div>
     {!isDent&&<select value={denF} onChange={e=>setDenF(e.target.value)} style={{border:"1.5px solid "+G.border,borderRadius:20,padding:"6px 12px",fontSize:11,fontWeight:600,outline:"none",background:"#fff"}}>
       {agView!=="semana"&&<option value="all">Todos</option>}
@@ -2382,6 +2529,40 @@ return (
     <div style={{flex:1}}/>
   </div>
   
+
+  {agView==="mes"&&(function(){
+  var d0=new Date(selDate+"T12:00");var mY=d0.getFullYear(),mM=d0.getMonth();
+  var ym=mY+"-"+String(mM+1).padStart(2,"0");
+  var first=fd(mY,mM),ndays=dim(mY,mM);
+  var byDay={};
+  appts.forEach(function(a){
+    if(!a||a.blocked||a.status==="cancelled"||a.status==="rescheduled")return;
+    if(!a.date||a.date.slice(0,7)!==ym)return;
+    if(isDent&&a.dentistId!==user.dentistId)return;
+    if(!isDent&&denF!=="all"&&a.dentistId!==Number(denF))return;
+    (byDay[a.date]=byDay[a.date]||[]).push(a);
+  });
+  var dentColor=function(id){var x=dents.find(function(z){return z.id===Number(id);});return x&&x.color?x.color:G.primary;};
+  var cells=[];for(var b=0;b<first;b++)cells.push(null);
+  for(var dd=1;dd<=ndays;dd++)cells.push(ym+"-"+String(dd).padStart(2,"0"));
+  return <div style={{display:"flex",flexDirection:"column",gap:8}}>
+    <div style={{textAlign:"center",fontFamily:"'Cormorant Garamond'",fontSize:20,color:G.primary,fontWeight:700,textTransform:"capitalize"}}>{MONTHS[mM]+" "+mY}</div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:3}}>
+      {DAY.map(function(dn,i){return <div key={"h"+i} style={{textAlign:"center",fontSize:10.5,fontWeight:700,color:G.muted,padding:"2px 0"}}>{dn}</div>;})}
+      {cells.map(function(ds,i){
+        if(!ds)return <div key={"e"+i}/>;
+        var list=(byDay[ds]||[]).slice().sort(function(a,b){return t2m(a.time)-t2m(b.time);});
+        var isTd=ds===td;var dnum=Number(ds.slice(8));
+        return <div key={ds} onClick={function(){setSelDate(ds);setAgView("dia");}} style={{minHeight:78,background:isTd?G.accent:"#fff",border:"1.5px solid "+(isTd?G.primary:G.border),borderRadius:9,padding:"4px 4px 5px",cursor:"pointer",display:"flex",flexDirection:"column",gap:2,overflow:"hidden"}}>
+          <div style={{fontSize:12,fontWeight:700,color:isTd?G.primary:G.text,textAlign:"right",paddingRight:2}}>{dnum}</div>
+          {list.slice(0,3).map(function(a){var p=pats.find(function(x){return x.id===a.patientId;});var nm=(p&&p.name)||a.patientName||"A confirmar";return <div key={a.id} style={{fontSize:9.5,lineHeight:1.25,background:dentColor(a.dentistId)+"1A",color:dentColor(a.dentistId),borderLeft:"2.5px solid "+dentColor(a.dentistId),borderRadius:3,padding:"1px 3px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{pad2(a.time)+" "+(nm.split(" ")[0])}</div>;})}
+          {list.length>3&&<div style={{fontSize:9,fontWeight:700,color:G.muted,paddingLeft:2}}>{"+"+(list.length-3)+" mais"}</div>}
+        </div>;
+      })}
+    </div>
+    <div style={{fontSize:11,color:G.muted,textAlign:"center"}}>Toque num dia para abrir a agenda detalhada.</div>
+  </div>;
+  })()}
 
   {agView==="dia"&&<div style={{display:"grid",gridTemplateColumns:"48px repeat(7,1fr)",gap:2}}>
     <div/>
@@ -2668,7 +2849,7 @@ return <div key={ds+slot} onClick={function(){setViewA(a);}} style={{background:
 
 {showCancel&&(()=>{const a=showCancel;const p=pats.find(x=>x.id===a.patientId);return p&&<CancelWA appt={a} pat={p} onCancel={function(id){setAppts(function(prev){return prev.filter(function(x){return x.id!==id;});});}} onClose={function(){setShowCancel(null);setViewA(null);}}/>;})()}
 {viewA&&(()=>{
-const a=appts.find(x=>x.id===viewA.id)||viewA;const p=pats.find(x=>x.id===a.patientId);const d=dents.find(x=>x.id===a.dentistId)||dents[0];
+const a=viewA;const p=pats.find(x=>x.id===a.patientId);const d=dents.find(x=>x.id===a.dentistId)||dents[0];
 const _td=today();
 const _allHist=p?appts.filter(function(x){return x.patientId===p.id&&x.id!==a.id;}):[];
 // Próximas (futuras): data >= hoje, ordenadas da mais próxima para a mais distante
@@ -2908,7 +3089,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:10}}>
 <h2 style={{fontFamily:"'Cormorant Garamond'",fontSize:26}}>Pacientes</h2>
-<Btn ch="+ Novo Paciente" onClick={()=>{var mx=0;(pats||[]).forEach(function(pp){var m=String((pp&&pp.folder)||"").match(/\d+/);if(m){var n=parseInt(m[0],10);if(!isNaN(n)&&n>mx)mx=n;}});setEp(null);setPf({...b0,folder:String(mx+1)});setPm(true);}}/>
+<Btn ch="+ Novo Paciente" onClick={()=>{setEp(null);setPf(b0);setPm(true);}}/>
 </div>
 <Inp val={srch} set={v=>{setSrch(v);setPPage(0);}} ph="🔍 Nome, CPF, telefone ou nº pasta"/>
 {pageItems.map(p=><div key={p.id} style={{background:G.card,borderRadius:13,boxShadow:"0 1px 5px rgba(0,0,0,.07)",padding:"12px 15px",display:"flex",alignItems:"center",gap:11}}>
@@ -2917,7 +3098,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 <div style={{fontWeight:700,fontSize:13,cursor:"pointer"}} onClick={()=>setOpenFolder(p)}>{p.name}<span style={{fontSize:11,color:G.muted,fontWeight:400}}> · {age(p.dob)} · Ficha: {p.folder||"--"}</span></div>
 <div style={{color:G.muted,fontSize:12}}>{user.level>=2?p.phone:"••••••••••"}</div>
 {p.since&&<div style={{fontSize:11,color:G.primary,fontWeight:600}}>{"⭐ Paciente desde "+fmt(p.since)}</div>}
-{p.anamPend&&<div style={{background:G.success+"22",border:"1px solid "+G.success,borderRadius:5,padding:"2px 7px",fontSize:10,fontWeight:700,color:G.success,marginTop:2,display:"inline-block"}}>✅ Anamnese nova - revisar</div>}
+{p.anamPend&&<div style={{background:G.success+"22",border:"1px solid "+G.success,borderRadius:5,padding:"2px 7px",fontSize:10,fontWeight:700,color:G.success,marginTop:2,display:"inline-block"}}>\u2705 Anamnese nova - revisar</div>}
 {p.obs&&<div style={{background:G.red+"20",border:`1px solid ${G.red}`,borderRadius:5,padding:"2px 7px",fontSize:10,fontWeight:700,color:G.red,marginTop:2,display:"inline-block"}}>⚠ {p.obs.slice(0,45)}</div>}
 {(p.allergy&&p.allergy!=="Nenhuma"&&!p.obs)&&<div style={{background:G.yellow+"20",border:`1px solid ${G.yellow}`,borderRadius:5,padding:"2px 7px",fontSize:10,fontWeight:700,color:G.yellow,marginTop:2,display:"inline-block"}}>⚠ {p.allergy}</div>}
 </div>
@@ -7995,7 +8176,6 @@ const gastosEditRef=useRef(0);
 const waAutoSrvRef=useRef(null);
 const patTableOk=useRef(false);
 const lastSavedPats=useRef({});
-const lastSavedPatsObj=useRef({});
 const patSaveTimer=useRef(null);
 const patSaving=useRef(false);
 const patPending=useRef(false);
@@ -8003,6 +8183,8 @@ const patsRef=useRef([]);
 const lastPatPollTs=useRef(null);
 const anamSeenRef=useRef({});
 const anamPullRef=useRef(0);
+const portalSeenRef=useRef({});
+const portalPullRef=useRef(0);
 useEffect(function(){
   var pp=setInterval(async function(){
     if(!initialized.current||document.hidden)return;
@@ -8082,6 +8264,39 @@ useEffect(function(){
   return function(){clearTimeout(t0);clearInterval(iv);};
 },[]);
 
+// ── AUTO-IMPORTACAO de confirmacoes de presenca pelo Portal ──
+useEffect(function(){
+  var puxarPortal=async function(){
+    if(!SUPA_URL)return;
+    if(Date.now()-portalPullRef.current<25000)return;
+    portalPullRef.current=Date.now();
+    try{
+      var rows=await supabase.fetchPortalActions();
+      if(!rows||!rows.length)return;
+      var cur=patsRef.current||[];
+      var byTok={};cur.forEach(function(p){if(p&&p.portalToken)byTok[p.portalToken]=p;});
+      var seen=portalSeenRef.current||{};
+      var confirmIds=[];
+      rows.forEach(function(row){
+        if(!row||!row.token||!row.action)return;
+        var sig=row.token+"|"+(row.created_at||"");
+        if(seen[sig])return;
+        seen[sig]=1;
+        var p=byTok[row.token];if(!p)return;
+        var act=row.action;
+        if(act&&act.type==="confirm_appt"&&act.apptId!=null)confirmIds.push(Number(act.apptId));
+      });
+      portalSeenRef.current=seen;
+      if(confirmIds.length){
+        setAppts(function(prev){return (prev||[]).map(function(a){return (a&&confirmIds.indexOf(Number(a.id))>=0&&a.status!=="confirmed"&&a.status!=="done")?Object.assign({},a,{status:"confirmed",statusTs:new Date().toISOString(),_portalConfirm:true}):a;});});
+      }
+    }catch(e){}
+  };
+  var t0=setTimeout(function(){if(initialized.current&&!document.hidden)puxarPortal();},9000);
+  var iv=setInterval(function(){if(initialized.current&&!document.hidden)puxarPortal();},30000);
+  return function(){clearTimeout(t0);clearInterval(iv);};
+},[]);
+
 // ── CARREGAR do Supabase ──
 useEffect(()=>{
 if(!ORBE_TOKEN)return;
@@ -8144,7 +8359,7 @@ lastSaved.current=JSON.stringify(data);
 var oldPats=(data&&data.pats)||[];
 supabase.loadPatients().then(function(tp){
 if(tp===null){patTableOk.current=false;if(oldPats.length)setPats(oldPats);return;}
-if(tp.length>0){patTableOk.current=true;setPats(tp);var mm={};var mo={};tp.forEach(function(p){if(p&&p.id!=null){mm[p.id]=JSON.stringify(p);mo[p.id]=p;}});lastSavedPats.current=mm;lastSavedPatsObj.current=mo;}
+if(tp.length>0){patTableOk.current=true;setPats(tp);var mm={};tp.forEach(function(p){if(p&&p.id!=null)mm[p.id]=JSON.stringify(p);});lastSavedPats.current=mm;}
 else if(oldPats.length>0){setPats(oldPats);supabase.upsertPatients(oldPats).then(function(res){if(res&&res.ok){var mm={};oldPats.forEach(function(p){if(p&&p.id!=null)mm[p.id]=JSON.stringify(p);});lastSavedPats.current=mm;patTableOk.current=true;}else{patTableOk.current=false;}});}
 else{patTableOk.current=true;lastSavedPats.current={};}
 });
@@ -8375,14 +8590,11 @@ useEffect(function(){
       patPending.current=false;
       var cur=patsRef.current||[];
       var prev=lastSavedPats.current||{};
-      var prevObj=lastSavedPatsObj.current||{};
-      var changed=[];var newStr={};var newObj={};
-      cur.forEach(function(p){if(!p||p.id==null)return;newObj[p.id]=p;
-        if(prevObj[p.id]===p){newStr[p.id]=prev[p.id];return;}
-        var sj=JSON.stringify(p);newStr[p.id]=sj;if(prev[p.id]!==sj)changed.push(p);});
+      var changed=[];
+      cur.forEach(function(p){if(!p||p.id==null)return;var sj=JSON.stringify(p);if(prev[p.id]!==sj)changed.push(p);});
       var okAll=true;
       if(changed.length){var r=await supabase.upsertPatients(changed);if(!(r&&r.ok))okAll=false;}
-      if(okAll){lastSavedPats.current=newStr;lastSavedPatsObj.current=newObj;}
+      if(okAll){var mm={};cur.forEach(function(p){if(p&&p.id!=null)mm[p.id]=JSON.stringify(p);});lastSavedPats.current=mm;}
     }while(patPending.current);
     patSaving.current=false;
   },1000);
@@ -8485,6 +8697,8 @@ useEffect(function(){
 
 const anamToken=(function(){try{return new URLSearchParams(window.location.search).get("anam");}catch(e){return null;}})();
 if(anamToken)return <PublicAnamnese token={anamToken}/>;
+const portalToken=(function(){try{return new URLSearchParams(window.location.search).get("portal");}catch(e){return null;}})();
+if(portalToken)return <PortalPaciente token={portalToken}/>;
 // === WHATSAPP AUTO: eventos + motor diário ===
 const waRef=useRef({});
 useEffect(function(){waRef.current={appts:appts,pats:pats,recs:recs,budgets:budgets,dents:dents,user:user,waAuto:waAuto,waSent:waSent,waAutoLog:waAutoLog};});
