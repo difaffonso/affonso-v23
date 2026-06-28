@@ -1105,7 +1105,7 @@ return <>
 <div style={{padding:22}}>
   {/* ── FICHA ── */}
   {tab==="ficha"&&<div style={{display:"flex",flexDirection:"column",gap:14}}>
-    {showIARX&&<IARX pat={pf} onClose={function(){setShowIARX(false);}}/>}
+    {showIARX&&<IARX pat={pf} onClose={function(){setShowIARX(false);}} onSave={async function(d){var resp=await fetch(d.dataUrl);var blob=await resp.blob();var path="pac"+pat.id+"/"+pat.id+"_"+Date.now()+".jpg";var up=await fetch(SUPA_URL+"/storage/v1/object/imagens/"+path,{method:"POST",headers:{"apikey":SUPA_KEY,"Authorization":"Bearer "+SUPA_KEY,"Content-Type":(blob.type||"image/jpeg"),"x-upsert":"true"},body:blob});if(!up.ok){throw new Error("upload "+up.status);}var url=SUPA_URL+"/storage/v1/object/public/imagens/"+path;var nova={id:Date.now(),url:url,path:path,cat:"rx",treatId:"",date:today(),by:(user&&user.name)||"",nota:"📄 Análise IA",laudo:d.laudo};setPats(function(prev){return prev.map(function(p){return p.id===pat.id?Object.assign({},p,{imagens:(p.imagens||[]).concat([nova])}):p;});});}}/>}
     <button onClick={function(){setShowIARX(true);}} style={{background:G.blue,color:"#fff",border:"none",borderRadius:10,padding:"9px 14px",fontSize:13,fontWeight:700,cursor:"pointer"}}>{"🦷 Analisar RX com IA"}</button>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
       <span style={{fontWeight:700,fontSize:15,color:G.primary}}>📋 Dados do Paciente</span>
@@ -1458,6 +1458,7 @@ return <>
         <div style={{color:"#fff",marginTop:12,textAlign:"center",fontSize:13}}>
           {(imgView.nota||"")+(imgView.nota?" · ":"")+CAT_L(imgView.cat)+" · "+fmt(imgView.date)+(imgView.by?" · "+imgView.by:"")}
         </div>
+        {imgView.laudo&&<div onClick={function(e){e.stopPropagation();}} style={{marginTop:12,background:"#fff",borderRadius:10,padding:"12px 14px",maxWidth:560,maxHeight:"32vh",overflow:"auto",fontSize:13,lineHeight:1.6,color:"#222",whiteSpace:"pre-wrap"}}><div style={{fontWeight:700,color:G.primary,marginBottom:6}}>{"📄 Laudo (IA)"}</div>{imgView.laudo}</div>}
         <div style={{display:"flex",gap:10,marginTop:16}} onClick={function(e){e.stopPropagation();}}><button onClick={function(){baixarImagem(imgView.url,nomeArqImg(pat.name,imgView));}} style={{background:G.primary,color:"#fff",border:"none",borderRadius:10,padding:"10px 22px",fontSize:14,fontWeight:700,cursor:"pointer"}}>⬇️ Baixar</button><button onClick={function(){setImgView(null);}} style={{background:"#fff",color:"#222",border:"none",borderRadius:10,padding:"10px 24px",fontSize:14,fontWeight:700,cursor:"pointer"}}>Fechar</button></div>
       </div>}
     </div>;
@@ -6692,27 +6693,28 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex
   </div>;
 }
 
-function IARX({pat,onClose}){
+function IARX({pat,onClose,onSave}){
 const [img,setImg]=useState(null);
 const [imgData,setImgData]=useState(null);
 const [result,setResult]=useState("");
 const [loading,setLoading]=useState(false);
 const [bal,setBal]=useState(null);
+const [okResult,setOkResult]=useState(false);const [saved,setSaved]=useState(false);const [saving,setSaving]=useState(false);const [saveErr,setSaveErr]=useState("");
 useEffect(function(){var on=true;orbeApi("aiBalance").then(function(r){if(on&&r&&r.ok&&r.j&&typeof r.j.totalRemaining==="number")setBal(r.j);});return function(){on=false;};},[]);
 const onFile=function(e){
 const f=e.target.files[0];if(!f)return;
 const r=new FileReader();
-r.onload=function(ev){setImgData(ev.target.result.split(",")[1]);setImg(ev.target.result);};
+r.onload=function(ev){setImgData(ev.target.result.split(",")[1]);setImg(ev.target.result);setResult("");setOkResult(false);setSaved(false);};
 r.readAsDataURL(f);
 };
 const analyze=async function(){
-if(!imgData)return;setLoading(true);setResult("");
+if(!imgData)return;setLoading(true);setResult("");setOkResult(false);setSaved(false);
 try{
 var mt="image/jpeg";try{mt=((img||"").match(/^data:(.*?);/)||[])[1]||"image/jpeg";}catch(e){}
 var r=await orbeApi("analyzeRX",{image:imgData,media_type:mt,patient:(pat&&pat.name)||""});
 if(r&&r.j&&typeof r.j.totalRemaining==="number")setBal(r.j);
-if(r&&r.ok&&r.j&&r.j.text){setResult(r.j.text);}
-else{setResult("Não foi possível analisar: "+((r&&r.j&&r.j.msg)||("erro "+(r&&r.status))));}
+if(r&&r.ok&&r.j&&r.j.text){setResult(r.j.text);setOkResult(true);}
+else{setResult("Não foi possível analisar: "+((r&&r.j&&r.j.msg)||("erro "+(r&&r.status))));setOkResult(false);}
 }catch(e){setResult("Erro: "+String((e&&e.message)||e));}
 setLoading(false);
 };
@@ -6732,6 +6734,9 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex
 <input id="rx-up" type="file" accept="image/*" style={{display:"none"}} onChange={onFile}/>
 {img&&!result&&<button onClick={analyze} disabled={loading} style={{background:G.primary,color:"#fff",border:"none",borderRadius:12,padding:"13px",fontSize:15,fontWeight:700,cursor:"pointer",opacity:loading?.7:1}}>{loading?"Analisando...":"Analisar com IA"}</button>}
 {result&&<div style={{background:G.bg,borderRadius:12,padding:"14px 16px"}}><div style={{fontWeight:700,fontSize:13,color:G.primary,marginBottom:8}}>{"Resultado:"}</div><div style={{fontSize:13,lineHeight:1.6,whiteSpace:"pre-wrap"}}>{result}</div></div>}
+{okResult&&onSave&&!saved&&<button onClick={async function(){setSaving(true);setSaveErr("");try{await onSave({dataUrl:img,laudo:result});setSaved(true);}catch(e){setSaveErr("Erro ao salvar: "+String((e&&e.message)||e));}setSaving(false);}} disabled={saving} style={{background:G.blue,color:"#fff",border:"none",borderRadius:12,padding:"12px",fontSize:14,fontWeight:700,cursor:"pointer",opacity:saving?.7:1}}>{saving?"Salvando...":"💾 Salvar no prontuário"}</button>}
+{saved&&<div style={{textAlign:"center",fontSize:13,color:G.primary,fontWeight:700}}>{"✅ Salvo no prontuário (aba Imagens › RX)"}</div>}
+{saveErr&&<div style={{fontSize:12,color:G.red,textAlign:"center"}}>{saveErr}</div>}
 </div>
 </div>
 
