@@ -6706,10 +6706,11 @@ r.readAsDataURL(f);
 const analyze=async function(){
 if(!imgData)return;setLoading(true);setResult("");
 try{
-const resp=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:800,system:"Você é especialista em radiologia odontológica. Analise o raio-X e descreva: estruturas visíveis, achados e sugestões clínicas.",messages:[{role:"user",content:[{type:"image",source:{type:"base64",media_type:"image/jpeg",data:imgData}},{type:"text",text:"Analise este RX do paciente "+(pat&&pat.name||"")+"."}]}]})});
-const data=await resp.json();
-setResult(data.content&&data.content[0]&&data.content[0].text||"Não foi possível analisar.");
-}catch(e){setResult("Erro de conexão.");}
+var mt="image/jpeg";try{mt=((img||"").match(/^data:(.*?);/)||[])[1]||"image/jpeg";}catch(e){}
+var r=await orbeApi("analyzeRX",{image:imgData,media_type:mt,patient:(pat&&pat.name)||""});
+if(r&&r.ok&&r.j&&r.j.text){setResult(r.j.text);}
+else{setResult("Não foi possível analisar: "+((r&&r.j&&r.j.msg)||("erro "+(r&&r.status))));}
+}catch(e){setResult("Erro: "+String((e&&e.message)||e));}
 setLoading(false);
 };
 return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
