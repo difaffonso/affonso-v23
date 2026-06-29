@@ -9131,7 +9131,7 @@ return <>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",padding:"6px 4px 14px",flexShrink:0}}>
       <div>
         <div style={{fontFamily:"'Cormorant Garamond'",fontSize:18,color:"#23332b",lineHeight:1.2}}>{<><Icon n="tooth" w="fill" s={16} c="#2f5d49"/> {CLINICA_LIVE.nome}</>}</div>
-        <div style={{fontFamily:"'Cormorant Garamond'",fontSize:12,color:"#7c8a80"}}>Dr. Ricardo Mendes</div>
+        <div style={{fontFamily:"'Cormorant Garamond'",fontSize:12,color:"#7c8a80"}}>{user.name}</div>
       </div>
       <button onClick={()=>setSideOpen(false)} style={{border:"none",background:"#e8ece6",boxShadow:"2px 2px 5px #c8d0c5,-2px -2px 5px #fbfff7",borderRadius:9,color:"#39473f",fontSize:16,cursor:"pointer",padding:"4px 8px",lineHeight:1}} className="sidebar-close-btn">{lbl("✕")}</button>
     </div>
