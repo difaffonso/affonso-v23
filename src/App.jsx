@@ -2561,10 +2561,10 @@ return (
       const isTd=ds===td;const isSel=ds===selDate;
       const cnt=appts.filter(a=>a.date===ds&&a.status!=="cancelled"&&a.status!=="rescheduled"&&a.status!=="missed"&&!a.blocked).length;
       return (
-        <div key={ds} onClick={()=>setSelDate(ds)} style={{textAlign:"center",cursor:"pointer",background:isSel?G.primary:isTd?G.accent:"transparent",borderRadius:10,padding:"5px 2px",border:"2px solid "+(isSel?G.primary:isTd?G.primary:"transparent"),transition:"all .15s"}}>
-          <div style={{fontSize:10,fontWeight:700,color:isSel?"rgba(255,255,255,.8)":G.muted}}>{DAY[d.getDay()]}</div>
-          <div style={{fontSize:20,fontWeight:700,color:isSel?"#fff":isTd?G.primary:G.text}}>{d.getDate()}</div>
-          {cnt>0&&<div style={{background:isSel?"rgba(255,255,255,.4)":G.primary,color:"#fff",borderRadius:8,padding:"0 5px",fontSize:9,fontWeight:700,display:"inline-block"}}>{cnt}</div>}
+        <div key={ds} onClick={()=>setSelDate(ds)} style={{textAlign:"center",cursor:"pointer",borderRadius:13,padding:"7px 2px 6px",background:G.card,boxShadow:isSel?"inset 3px 3px 7px #c8d0c5,inset -3px -3px 7px #fbfff7":"3px 3px 8px #c8d0c5,-3px -3px 8px #fbfff7",transition:"all .15s"}}>
+          <div style={{fontSize:10,fontWeight:700,color:isSel?G.primary:G.muted,textTransform:"uppercase",letterSpacing:".3px"}}>{DAY[d.getDay()]}</div>
+          <div style={{fontFamily:"'Cormorant Garamond'",fontSize:20,fontWeight:700,color:isSel?G.primary:isTd?G.primary:G.text,lineHeight:1.15,margin:"1px 0 3px"}}>{d.getDate()}</div>
+          {cnt>0&&<div style={{background:G.primary,color:"#fff",borderRadius:999,padding:"1px 6px",fontSize:9,fontWeight:800,display:"inline-block",minWidth:18}}>{cnt}</div>}
         </div>
       );
     })}
@@ -2618,13 +2618,13 @@ if(isBlocked&&!a)return(
 // Slot ocupado por duração de consulta anterior
 const isExtraSlot=appts.some(a2=>a2.date===selDate&&a2.dentistId===d.id&&(a2.extraSlots||[]).includes(slot)&&a2.status!=="cancelled"&&a2.status!=="rescheduled"&&a2.status!=="missed");
 if(isExtraSlot&&!a)return(
-<div key={slot} style={{display:"flex",alignItems:"center",gap:5,padding:"1px 6px",borderRadius:5,background:"#F3E5F5",border:"1px solid #CE93D8"}}>
-<span style={{fontSize:11,color:"#6A1B9A",minWidth:38,fontWeight:600}}>{slot}</span>
-<span style={{fontSize:11,color:"#6A1B9A"}}>⏱️ Em consulta</span>
+<div key={slot} style={{display:"flex",alignItems:"center",gap:7,padding:"6px 12px",borderRadius:11,background:G.card,boxShadow:"inset 3px 3px 7px #c8d0c5,inset -3px -3px 7px #fbfff7"}}>
+<span style={{fontSize:11,color:G.muted,minWidth:34,fontWeight:700}}>{slot}</span>
+<span style={{display:"inline-flex",alignItems:"center",gap:5,fontSize:11.5,color:"#8a6aa0",fontWeight:700}}><Icon n="clock" w="fill" s={12}/>Em consulta</span>
 </div>
 );
 if(!a)return(
-<div key={slot} onClick={function(){if(isDent)return;setEdit(null);var _isStdC=activeSlots.indexOf(slot)>=0;setF({...blank,date:selDate,time:_isStdC?slot:"",timeCustom:_isStdC?"":slot,dentistId:d.id});setModal(true);}} style={{display:"flex",alignItems:"center",gap:4,padding:viewingOrto?"1px 6px":"1px 6px",borderRadius:5,background:"#f8fbf9",border:"1px dashed "+G.border,cursor:isDent?"default":"pointer",minHeight:viewingOrto?20:26}}>
+<div key={slot} onClick={function(){if(isDent)return;setEdit(null);var _isStdC=activeSlots.indexOf(slot)>=0;setF({...blank,date:selDate,time:_isStdC?slot:"",timeCustom:_isStdC?"":slot,dentistId:d.id});setModal(true);}} style={{display:"flex",alignItems:"center",gap:4,padding:viewingOrto?"1px 6px":"1px 6px",borderRadius:5,background:G.card,border:"1px dashed "+G.border,cursor:isDent?"default":"pointer",minHeight:viewingOrto?20:26}}>
 <span style={{fontSize:10,color:G.muted,minWidth:34,fontWeight:600}}>{slot}</span>
 {isDent
 ?<span style={{fontSize:11,color:G.border}}>──────</span>
@@ -2643,7 +2643,7 @@ if(a&&a.blocked)return(
 // Cancelado/desmarcado: libera o horário visualmente
 if(a.status==="cancelled"||a.status==="rescheduled"||a.status==="missed"){
 return(
-<div key={slot} onClick={function(){if(isDent)return;setEdit(null);var _isStdC=activeSlots.indexOf(slot)>=0;setF({...blank,date:selDate,time:_isStdC?slot:"",timeCustom:_isStdC?"":slot,dentistId:d.id});setModal(true);}} style={{display:"flex",alignItems:"center",gap:4,padding:viewingOrto?"1px 6px":"1px 6px",borderRadius:5,background:"#f8fbf9",border:"1px dashed "+G.border,cursor:isDent?"default":"pointer",minHeight:viewingOrto?20:26}}>
+<div key={slot} onClick={function(){if(isDent)return;setEdit(null);var _isStdC=activeSlots.indexOf(slot)>=0;setF({...blank,date:selDate,time:_isStdC?slot:"",timeCustom:_isStdC?"":slot,dentistId:d.id});setModal(true);}} style={{display:"flex",alignItems:"center",gap:4,padding:viewingOrto?"1px 6px":"1px 6px",borderRadius:5,background:G.card,border:"1px dashed "+G.border,cursor:isDent?"default":"pointer",minHeight:viewingOrto?20:26}}>
 <span style={{fontSize:10,color:G.muted,minWidth:34,fontWeight:600}}>{slot}</span>
 <span style={{fontSize:11,color:G.border,flex:1}}>{isDent?"":"+ agendar"}</span>
 </div>
@@ -2656,24 +2656,34 @@ if(p&&p.allergy&&p.allergy!=="Nenhuma")flags.push("💊 "+p.allergy);
 var anObj=p&&p.anamnese||{};
 ANAM_CONDS.forEach(function(c){if(anObj[c[0]])flags.push(c[1]);});
 // Card visual aprimorado por status
-var cardBg=isPartial?"#FFEBEE":SC_BG[a.status]||SC[a.status]+"15";
-var cardBorder=isPartial?G.red:SC[a.status];
-var cardBorderWidth=a.status==="pending"?"3px":"1.5px"; // pendente tem borda mais grossa
-var isPending=a.status==="pending";
+var stColor=isPartial?G.red:(SC[a.status]||G.primary);
+var GRAD={confirmed:"linear-gradient(145deg,#57bd88,#2f8f5f)",pending:"linear-gradient(145deg,#ecbf5e,#c6941f)",waiting:"linear-gradient(145deg,#ec9f4f,#bd6522)",done:"linear-gradient(145deg,#7fb89a,#4d8b6e)",cancelled:"linear-gradient(145deg,#db8f7d,#b85544)",missed:"linear-gradient(145deg,#b39ac6,#8a6aa0)",rescheduled:"linear-gradient(145deg,#9aa8b0,#6b7c84)",blocked:"linear-gradient(145deg,#cf9a94,#b06a64)"};
+var GLOW={confirmed:"rgba(50,150,100,.5)",pending:"rgba(200,150,40,.5)",waiting:"rgba(200,110,40,.55)",done:"rgba(95,140,110,.45)",cancelled:"rgba(180,90,70,.45)",missed:"rgba(140,106,160,.45)",rescheduled:"rgba(107,124,132,.4)",blocked:"rgba(176,106,100,.45)"};
+var grad=isPartial?"linear-gradient(145deg,#d98a8a,#c0392b)":(GRAD[a.status]||GRAD.confirmed);
+var glow=isPartial?"rgba(192,57,43,.45)":(GLOW[a.status]||GLOW.confirmed);
+var isWait=a.status==="waiting";
+var durMin=Number(a.duration)||30;
+var stIcon=a.status==="done"?"check":(SC_ICON[a.status]||"circle");
+var struck=a.status==="cancelled"||a.status==="missed";
 return(
-<div key={slot} onClick={function(){setViewA(a);}} style={{display:"flex",alignItems:"center",gap:8,padding:isPending?"9px 10px":"7px 10px",borderRadius:10,background:cardBg,border:cardBorderWidth+" solid "+cardBorder,cursor:"pointer",boxShadow:isPending?"0 2px 8px rgba(230,81,0,.2)":a.status==="confirmed"?"0 2px 6px rgba(21,101,192,.15)":"none"}}>
-<span style={{fontSize:12,fontWeight:700,color:isPartial?G.red:SC[a.status],minWidth:38}}>{slot}</span>
-<div style={{flex:1,minWidth:0}}>
-<div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-<span style={{fontWeight:700,fontSize:12,color:isPartial?G.red:G.text}}>{isPartial?a.patientName:(p&&p.name)}</span>
-{isPartial&&<span style={{fontSize:10,background:G.red+"20",color:G.red,borderRadius:4,padding:"1px 5px",fontWeight:700}}>⚠ Parcial</span>}
-
-<span style={{fontSize:12,fontWeight:700,color:SC[a.status],background:SC_BG[a.status],borderRadius:6,padding:"1px 7px"}}>{a.procedureCustom||a.procedure}</span>
-<span style={{fontSize:10,fontWeight:700,color:isPartial?G.red:SC[a.status],background:(isPartial?G.red:SC[a.status])+"25",borderRadius:5,padding:"2px 7px"}}>{<><Icon n={SC_ICON[a.status]} s={11}/> {SL[a.status]}</>}</span>
+<div key={slot} onClick={function(){setViewA(a);}} style={{position:"relative",display:"flex",alignItems:"stretch",gap:11,padding:"11px 13px",borderRadius:16,cursor:"pointer",background:G.card,boxShadow:isWait?"6px 6px 15px #c8d0c5,-6px -6px 15px #fbfff7":"5px 5px 12px #c8d0c5,-5px -5px 12px #fbfff7"}}>
+<div style={{display:"flex",flexDirection:"column",justifyContent:"center",minWidth:44,flexShrink:0}}>
+<span style={{fontFamily:"'Cormorant Garamond'",fontSize:19,fontWeight:700,lineHeight:1,color:stColor}}>{slot}</span>
+<span style={{fontSize:9.5,color:G.muted,fontWeight:600,marginTop:2}}>{durMin+" min"}</span>
 </div>
-{p&&anamFalta(p)&&<div style={{display:"flex",marginTop:2}}><span style={{fontSize:9.5,background:"#D81B60",color:"#fff",borderRadius:5,padding:"2px 8px",fontWeight:800,letterSpacing:".3px"}}>{"⚠ ANAMNESE NÃO CADASTRADA"}</span></div>}
-{flags.length>0&&<div style={{display:"flex",gap:3,marginTop:1,flexWrap:"wrap"}}>
-{flags.map(function(f,i){var isAlerg=f.indexOf("💊")>=0||f.indexOf("⚠️")>=0;return <span key={i} style={{fontSize:9,background:isAlerg?"#FFEBEE":"#EDE7F6",color:isAlerg?G.red:"#6A1B9A",borderRadius:4,padding:"0px 5px",fontWeight:800}}>{f}</span>;})}
+<div style={{width:isWait?9:7,borderRadius:7,flexShrink:0,alignSelf:"stretch",background:grad,boxShadow:"inset 2px 2px 4px rgba(255,255,255,.45),inset -2px -2px 5px rgba(0,0,0,.18),3px 4px 13px "+glow}}/>
+<div style={{flex:1,minWidth:0,display:"flex",flexDirection:"column",gap:4,justifyContent:"center"}}>
+<div style={{display:"flex",alignItems:"baseline",gap:8}}>
+<span style={{fontWeight:700,fontSize:14,color:isPartial?G.red:G.text,flex:1,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",textDecoration:struck?"line-through":"none"}}>{isPartial?a.patientName:(p&&p.name)}</span>
+<span style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:11,fontWeight:700,color:stColor,flexShrink:0,whiteSpace:"nowrap"}}>{isWait?<span style={{width:8,height:8,borderRadius:"50%",background:stColor,display:"inline-block",animation:"nmpulse 1.3s ease-in-out infinite"}}/>:<Icon n={stIcon} s={12}/>}{SL[a.status]}</span>
+</div>
+<div style={{display:"flex",alignItems:"center",gap:7,flexWrap:"wrap"}}>
+<span style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".3px"}}>{a.procedureCustom||a.procedure}</span>
+{isPartial&&<span style={{fontSize:9,color:G.red,fontWeight:800,letterSpacing:".3px"}}>{lbl("⚠️ Parcial")}</span>}
+</div>
+{p&&anamFalta(p)&&<div style={{display:"flex",marginTop:1}}><span style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:9.5,background:"#cf5a78",color:"#fff",borderRadius:7,padding:"3px 9px",fontWeight:800,letterSpacing:".3px",boxShadow:"2px 2px 6px rgba(180,70,100,.32)"}}><Icon n="warning" w="fill" s={11}/>ANAMNESE NÃO CADASTRADA</span></div>}
+{flags.length>0&&<div style={{display:"flex",gap:5,marginTop:1,flexWrap:"wrap"}}>
+{flags.map(function(f,i){return <span key={i} style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:9.5,fontWeight:700,color:"#9a7636",borderRadius:7,padding:"2px 7px",background:G.card,boxShadow:"inset 2px 2px 5px #c8d0c5,inset -2px -2px 5px #fbfff7"}}>{lbl(f)}</span>;})}
 </div>}
 </div>
 </div>
@@ -2722,7 +2732,7 @@ if(!a)a=appts.find(function(x){return x.date===selDate&&x.time===slot&&x.dentist
               const healthFlags=[p&&p.obs&&("⚠ "+p.obs),p&&p.allergy&&p.allergy!=="Nenhuma"&&("💊 "+p.allergy),an.allergicMeds&&("💊 Alergia Med: "+an.allergicMeds)].concat(CONDS.filter(function(c){return an[c[0]];}).map(function(c){return c[1];})).filter(Boolean);
               // Cancelado/desmarcado: libera o horário visualmente
               if(a&&(a.status==="cancelled"||a.status==="rescheduled"||a.status==="missed")){
-                return <div key={d.id} style={{background:"#f8fbf9",border:"1px dashed "+G.border,borderRadius:8,minHeight:48,display:"flex",alignItems:"center",justifyContent:"center",cursor:isDent?"default":"pointer"}}
+                return <div key={d.id} style={{background:G.card,border:"1px dashed "+G.border,borderRadius:8,minHeight:48,display:"flex",alignItems:"center",justifyContent:"center",cursor:isDent?"default":"pointer"}}
                   onClick={function(){if(isDent)return;setEdit(null);var _isStdM=activeSlots.indexOf(slot)>=0;setF({...blank,date:selDate,time:_isStdM?slot:"",timeCustom:_isStdM?"":slot,dentistId:d.id});setModal(true);}}>
                   <span style={{fontSize:9,color:G.muted}}>{"+"}</span>
                 </div>;
@@ -9182,8 +9192,8 @@ return <>
   var d=new Date((agendaSelDate||today())+"T12:00");
   var dias=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
   var meses=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
-  return <div style={{position:"fixed",top:48,left:0,right:0,background:"#164436",color:"rgba(255,255,255,.92)",padding:"5px 16px",fontSize:12,fontWeight:700,textAlign:"center",zIndex:98,boxShadow:"0 2px 6px rgba(0,0,0,.2)"}}>
-    {"📅 "+dias[d.getDay()]+", "+d.getDate()+" de "+meses[d.getMonth()]+" · "+d.getFullYear()}
+  return <div style={{position:"fixed",top:48,left:0,right:0,background:G.card,color:"#39473f",padding:"7px 16px",fontSize:12.5,fontWeight:700,textAlign:"center",zIndex:98,boxShadow:"0 7px 14px -9px #c8d0c5,inset 0 -1px 0 #d8ded3"}}>
+    {<><Icon n="calendar-blank" w="fill" s={13} c="#2f5d49"/> {dias[d.getDay()]+", "+d.getDate()+" de "+meses[d.getMonth()]+" · "+d.getFullYear()}</>}
   </div>;
 })()}
 
