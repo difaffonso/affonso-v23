@@ -31,9 +31,9 @@ async sendPortalAction(token,payload){if(!SUPA_URL)return {ok:false,msg:"Sem con
 async fetchPortalActions(){var r=await orbeApi("fetchPortalActions");return r.ok?((r.j&&r.j.rows)||[]):[];}
 };
 const G = {
-bg:"#f3f1ea",card:"#FFF",primary:"#213a30",accent:"#e9efe9",accentDark:"#bcd3c6",
-text:"#1f2e27",muted:"#6d7c72",red:"#C0392B",yellow:"#C0902E",blue:"#1A5276",
-purple:"#7a5a9e",border:"#e4e6dd",success:"#3f8163",orange:"#CA6F1E",gold:"#B7950B",
+bg:"#e8ece6",card:"#e8ece6",primary:"#2f5d49",accent:"#e0e5dc",accentDark:"#c8d0c5",
+text:"#23332b",muted:"#7c8a80",red:"#C0392B",yellow:"#C0902E",blue:"#1A5276",
+purple:"#7a5a9e",border:"#d8ded3",success:"#2f8f5f",orange:"#CA6F1E",gold:"#B7950B",
 };
 
 const PERMS0={
@@ -146,7 +146,7 @@ const getWA=(templates,key,vars)=>{
 };
 const IMPL_DATA_SEED=[];
 
-const CSS=`@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');@import url('https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css');@import url('https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css');@import url('https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css');*{box-sizing:border-box;margin:0;padding:0;} body{font-family:'Manrope',sans-serif;background:${G.bg};color:${G.text};font-variant-numeric:lining-nums;-webkit-font-smoothing:antialiased;} ::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-thumb{background:${G.accentDark};border-radius:3px;} input,select,textarea,button{font-family:'Manrope',sans-serif;} i[class^='ph-'],i[class*=' ph-']{line-height:1;vertical-align:-.125em;} @keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}} .fi{animation:fi .2s ease}`;
+const CSS=`@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');@import url('https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css');@import url('https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css');@import url('https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css');:root{--surface:#e8ece6;--nm-light:#fbfff7;--nm-dark:#c8d0c5;--brand:#2f5d49;}*{box-sizing:border-box;margin:0;padding:0;}body{font-family:'Manrope',sans-serif;background:#e8ece6;color:#23332b;font-variant-numeric:lining-nums;-webkit-font-smoothing:antialiased;}::-webkit-scrollbar{width:6px;height:6px;}::-webkit-scrollbar-thumb{background:#c8d0c5;border-radius:4px;}::-webkit-scrollbar-track{background:transparent;}input,select,textarea,button{font-family:'Manrope',sans-serif;}input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),select,textarea{background:#e8ece6 !important;border:none !important;box-shadow:inset 3px 3px 7px #c8d0c5,inset -3px -3px 7px #fbfff7 !important;border-radius:12px !important;color:#23332b;outline:none;}input:focus,select:focus,textarea:focus{box-shadow:inset 4px 4px 8px #c8d0c5,inset -4px -4px 8px #fbfff7 !important;}input::placeholder,textarea::placeholder{color:#7c8a80;}i[class^='ph-'],i[class*=' ph-']{line-height:1;vertical-align:-.125em;}.nm-raised{background:#e8ece6;box-shadow:6px 6px 14px #c8d0c5,-6px -6px 14px #fbfff7;}.nm-inset{background:#e8ece6;box-shadow:inset 5px 5px 11px #c8d0c5,inset -5px -5px 11px #fbfff7;}@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}} .fi{animation:fi .2s ease}@keyframes nmpulse{0%,100%{opacity:1}50%{opacity:.4}}`;
 
 const PAY_BASE=["Dinheiro","PIX","Cartão Crédito","Cartão Débito","Convênio","Cheque"];
 const PAY=PAY_BASE; // backward compat
@@ -342,7 +342,7 @@ return {v:1,updatedAt:new Date().toISOString(),clinic:{nome:CLINICA_LIVE.nome||"
 const Bdg=({l,col,sm})=><span style={{background:col+"22",color:col,borderRadius:20,padding:sm?"2px 7px":"3px 10px",fontSize:sm?10:11,fontWeight:700,whiteSpace:"nowrap"}}>{l}</span>;
 const Btn=({ch,onClick,v="p",sm,style,dis})=>{
 const b={cursor:dis?"not-allowed":"pointer",opacity:dis?.5:1,border:"none",borderRadius:8,fontFamily:"'Manrope'",fontWeight:600,transition:"all .15s",display:"inline-flex",alignItems:"center",gap:5,whiteSpace:"nowrap"};
-const vs={p:{background:G.primary,color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},g:{background:"transparent",color:G.primary,border:`1.5px solid ${G.primary}`,padding:sm?"4px 10px":"8px 16px",fontSize:sm?12:14},r:{background:G.red,color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},y:{background:G.yellow,color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},w:{background:"#25D366",color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},f:{background:G.accent,color:G.primary,padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14}};
+const vs={p:{background:G.primary,color:"#ead9b6",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14,boxShadow:"5px 5px 13px rgba(34,70,52,.40),-3px -3px 8px #fbfff7"},g:{background:"#e8ece6",color:G.primary,boxShadow:"4px 4px 10px #c8d0c5,-4px -4px 10px #fbfff7",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14},r:{background:G.red,color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14,boxShadow:"4px 4px 11px rgba(150,45,35,.35),-3px -3px 8px #fbfff7"},y:{background:G.yellow,color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14,boxShadow:"4px 4px 11px rgba(170,120,30,.32),-3px -3px 8px #fbfff7"},w:{background:"#25D366",color:"#fff",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14,boxShadow:"4px 4px 11px rgba(20,150,80,.32),-3px -3px 8px #fbfff7"},f:{background:"#e8ece6",color:G.primary,boxShadow:"4px 4px 10px #c8d0c5,-4px -4px 10px #fbfff7",padding:sm?"5px 11px":"9px 17px",fontSize:sm?12:14}};
 return <button style={{...b,...vs[v],...style}} onClick={onClick} disabled={dis}>{ch}</button>;
 };
 const Inp=({lb,val,set,type="text",ph,ro,style,min,max})=>(
@@ -363,7 +363,7 @@ const Txt=({lb,val,set,rows=3,ro,style})=>(
 const Sel=({lb,val,set,opts,style})=>(
   <div style={{display:"flex",flexDirection:"column",gap:4,...style}}>
     {lb&&<label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>{lb}</label>}
-    <select value={val||""} onChange={e=>set(e.target.value)} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:"#fff"}}>
+    <select value={val||""} onChange={e=>set(e.target.value)} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:G.card}}>
       {opts.map(o=><option key={o.v??o} value={o.v??o}>{o.l??o}</option>)}
     </select>
   </div>
@@ -377,7 +377,7 @@ const Modal=({open,close,title,ch,wide,xl})=>{
 if(!open)return null;
 return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:12}}>
 
-<div style={{background:G.card,borderRadius:18,width:"100%",maxWidth:xl?980:wide?720:520,maxHeight:"94vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+<div style={{background:G.card,borderRadius:18,width:"100%",maxWidth:xl?980:wide?720:520,maxHeight:"94vh",overflowY:"auto",boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`,position:"sticky",top:0,background:G.card,zIndex:1}}>
 <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>{title}</span>
 <button onClick={close} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -399,7 +399,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:4}}>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 2fr",gap:5}}>
 <input placeholder="DD" maxLength={2} value={d} onChange={e=>sd(e.target.value)} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 6px",fontSize:13,outline:"none",textAlign:"center"}}/>
 <input placeholder="MM" maxLength={2} value={m} onChange={e=>sm(e.target.value)} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 6px",fontSize:13,outline:"none",textAlign:"center"}}/>
-<select value={y} onChange={e=>sy(e.target.value)} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 5px",fontSize:12,outline:"none",background:"#fff"}}>
+<select value={y} onChange={e=>sy(e.target.value)} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 5px",fontSize:12,outline:"none",background:G.card}}>
 <option value="">Ano</option>
 {yrs.reverse().map(yr=><option key={yr} value={yr}>{yr}</option>)}
 </select>
@@ -494,7 +494,7 @@ return (
 placeholder={optional?"Opcional -- digite para buscar":"Digite nome, ficha ou telefone..."}
 style={{width:"100%",border:"1.5px solid "+(open?G.primary:G.border),borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",boxSizing:"border-box"}}/>
 {open&&res.length>0&&(
-<div style={{position:"absolute",top:"100%",left:0,right:0,background:"#fff",borderRadius:10,boxShadow:"0 8px 24px rgba(0,0,0,.15)",zIndex:999,maxHeight:260,overflowY:"auto",border:"1px solid "+G.border,marginTop:3}}>
+<div style={{position:"absolute",top:"100%",left:0,right:0,background:G.card,borderRadius:10,boxShadow:"0 8px 24px rgba(0,0,0,.15)",zIndex:999,maxHeight:260,overflowY:"auto",border:"1px solid "+G.border,marginTop:3}}>
 {res.map(function(p){return(
 <div key={p.id} onMouseDown={function(){set(String(p.id));setQ("");setOpen(false);}}
 style={{padding:"10px 14px",cursor:"pointer",borderBottom:"1px solid "+G.border,display:"flex",gap:9,alignItems:"center"}}
@@ -541,10 +541,10 @@ function SignaturePad({value,onChange,disabled}){
   function end(){if(disabled||!drawing.current)return;drawing.current=false;var c=ref.current;skip.current=true;if(onChange)onChange(c.toDataURL("image/png"));}
   function clear(){if(disabled)return;var c=ref.current;var ctx=c.getContext("2d");ctx.clearRect(0,0,c.width,c.height);skip.current=true;if(onChange)onChange("");}
   return <div>
-    <canvas ref={ref} width={520} height={170} style={{width:"100%",height:150,border:"1.5px dashed "+G.border,borderRadius:10,background:"#fff",touchAction:"none",display:"block",cursor:disabled?"default":"crosshair"}}
+    <canvas ref={ref} width={520} height={170} style={{width:"100%",height:150,border:"1.5px dashed "+G.border,borderRadius:10,background:G.card,touchAction:"none",display:"block",cursor:disabled?"default":"crosshair"}}
       onMouseDown={start} onMouseMove={move} onMouseUp={end} onMouseLeave={end}
       onTouchStart={start} onTouchMove={move} onTouchEnd={end}/>
-    {!disabled&&<div style={{display:"flex",justifyContent:"flex-end",marginTop:6}}><button onClick={clear} style={{border:"1.5px solid "+G.border,background:"#fff",color:G.muted,borderRadius:8,padding:"5px 12px",fontSize:12,fontWeight:600,cursor:"pointer"}}>Limpar assinatura</button></div>}
+    {!disabled&&<div style={{display:"flex",justifyContent:"flex-end",marginTop:6}}><button onClick={clear} style={{border:"1.5px solid "+G.border,background:G.card,color:G.muted,borderRadius:8,padding:"5px 12px",fontSize:12,fontWeight:600,cursor:"pointer"}}>Limpar assinatura</button></div>}
   </div>;
 }
 
@@ -671,7 +671,7 @@ const [confirmed,setConfirmed]=useState(false);
 const [zoom,setZoom]=useState(null);
 useEffect(function(){var alive=true;if(!SUPA_URL){setSt("error");return;}supabase.fetchPortal(token).then(function(p){if(!alive)return;if(p){setD(p);if(p.next&&p.next.confirmed)setConfirmed(true);setSt("ok");}else setSt("empty");}).catch(function(){if(alive)setSt("error");});return function(){alive=false;};},[token]);
 var GOLD="#B7950B",GREEN=G.primary;
-var card={background:"#fff",borderRadius:16,boxShadow:"0 2px 14px rgba(20,60,45,.07)",overflow:"hidden",border:"1px solid #E7EFEA"};
+var card={background:G.card,borderRadius:16,boxShadow:"0 2px 14px rgba(20,60,45,.07)",overflow:"hidden",border:"1px solid #E7EFEA"};
 var capTop=function(){return <div style={{height:3,background:"linear-gradient(90deg,"+GREEN+","+GOLD+")"}}/>;};
 var secTitle=function(ic,t){return <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}><Icon n={ic} s={18} c={GREEN}/><span style={{fontFamily:"'Cormorant Garamond'",fontSize:21,color:GREEN,fontWeight:700}}>{t}</span></div>;};
 function confirmar(){if(!d||!d.next)return;setConfirming(true);supabase.sendPortalAction(token,{type:"confirm_appt",apptId:d.next.id,at:new Date().toISOString()}).then(function(r){setConfirming(false);if(r&&r.ok)setConfirmed(true);});}
@@ -1087,7 +1087,7 @@ return <>
 <button onClick={onClose} style={{border:"none",background:"rgba(255,255,255,.2)",borderRadius:8,color:"#fff",fontSize:18,cursor:"pointer",padding:"6px 12px",fontWeight:700}}>✕ Fechar</button>
 </div>
 {/* Tabs */}
-<div style={{display:"flex",gap:6,padding:"14px 22px 0",borderBottom:`2px solid ${G.border}`,background:"#fff",flexWrap:"wrap"}}>
+<div style={{display:"flex",gap:6,padding:"14px 22px 0",borderBottom:`2px solid ${G.border}`,background:G.card,flexWrap:"wrap"}}>
 {TABS.map(([k,l])=><button key={k} onClick={()=>setTab(k)} style={{border:"none",background:tab===k?G.primary:"#f0f4f2",color:tab===k?"#fff":G.muted,borderRadius:"8px 8px 0 0",padding:"9px 16px",fontSize:12,fontWeight:700,cursor:"pointer",transition:"all .15s",marginBottom:-2,borderBottom:tab===k?`2px solid ${G.primary}`:"none"}}>{lbl(l)}</button>)}
 </div>
 
@@ -1139,7 +1139,7 @@ return <>
         {lastPaid?<>
           <div style={{display:"flex",alignItems:"center",gap:9,flexWrap:"wrap"}}>
             <span style={{fontSize:12.5,color:G.text}}>{"Retornar em"}</span>
-            <select value={ret} onChange={function(e){setRet(e.target.value);}} style={{border:"1.5px solid "+G.primary,borderRadius:9,padding:"8px 10px",fontSize:14,fontWeight:700,color:G.primary,background:"#fff",outline:"none",cursor:"pointer"}}>
+            <select value={ret} onChange={function(e){setRet(e.target.value);}} style={{border:"1.5px solid "+G.primary,borderRadius:9,padding:"8px 10px",fontSize:14,fontWeight:700,color:G.primary,background:G.card,outline:"none",cursor:"pointer"}}>
               {OPTS.map(function(m){return <option key={m} value={m}>{m+(m===1?" m\u00eas":" meses")}</option>;})}
             </select>
             {ret===6&&<span style={{fontSize:11,color:G.muted}}>{"(padr\u00e3o)"}</span>}
@@ -1246,7 +1246,7 @@ return <>
           {isDentUser
             ?<span style={{fontSize:12,color:G.text}}>{t.orcMotivo||"--"}{(t.orcMotivo==="Outro"&&t.orcMotivoObs)?(" — "+t.orcMotivoObs):""}</span>
             :<>
-              <select value={t.orcMotivo||""} onChange={e=>setTreats(prev=>prev.map(x=>x.id!==t.id?x:{...x,orcMotivo:e.target.value}))} style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"5px 9px",fontSize:12,background:"#fff",outline:"none"}}>
+              <select value={t.orcMotivo||""} onChange={e=>setTreats(prev=>prev.map(x=>x.id!==t.id?x:{...x,orcMotivo:e.target.value}))} style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"5px 9px",fontSize:12,background:G.card,outline:"none"}}>
                 <option value="">Selecione...</option>
                 {MOTIVOS_ORC.map(m=><option key={m} value={m}>{m}</option>)}
               </select>
@@ -1401,13 +1401,13 @@ return <>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
           <div style={{display:"flex",flexDirection:"column",gap:4}}>
             <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Categoria</label>
-            <select value={imgCat} onChange={function(e){setImgCat(e.target.value);}} style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",background:"#fff"}}>
+            <select value={imgCat} onChange={function(e){setImgCat(e.target.value);}} style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",background:G.card}}>
               {CATS.map(function(c){return <option key={c[0]} value={c[0]}>{c[1]}</option>;})}
             </select>
           </div>
           <div style={{display:"flex",flexDirection:"column",gap:4}}>
             <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Vincular a um plano / urgência (opcional)</label>
-            <select value={imgTreat} onChange={function(e){setImgTreat(e.target.value);}} style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",background:"#fff"}}>
+            <select value={imgTreat} onChange={function(e){setImgTreat(e.target.value);}} style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",background:G.card}}>
               <option value="">Nenhum</option>
               {patTreats.map(function(t){return <option key={t.id} value={String(t.id)}>{t.name}</option>;})}{(pat.urgencias||[]).map(function(u){return <option key={"u"+u.id} value={"u:"+u.id}>{"🚨 Urgência "+fmt(u.date)}</option>;})}
             </select>
@@ -1426,7 +1426,7 @@ return <>
       {CATS.map(function(c){
         var lista=grupos[c[0]]||[];
         if(lista.length===0)return null;
-        return <div key={c[0]} style={{background:G.card,borderRadius:12,padding:"12px 14px",boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+        return <div key={c[0]} style={{background:G.card,borderRadius:12,padding:"12px 14px",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
           <div style={{fontWeight:700,fontSize:13,color:G.primary,marginBottom:10}}>{c[1]+" ("+lista.length+")"}</div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(96px,1fr))",gap:9}}>
             {lista.map(function(im){
@@ -1447,8 +1447,8 @@ return <>
         <div style={{color:"#fff",marginTop:12,textAlign:"center",fontSize:13}}>
           {(imgView.nota||"")+(imgView.nota?" · ":"")+CAT_L(imgView.cat)+" · "+fmt(imgView.date)+(imgView.by?" · "+imgView.by:"")}
         </div>
-        {imgView.laudo&&<div onClick={function(e){e.stopPropagation();}} style={{marginTop:12,background:"#fff",borderRadius:10,padding:"12px 14px",maxWidth:560,maxHeight:"32vh",overflow:"auto",fontSize:13,lineHeight:1.6,color:"#222",whiteSpace:"pre-wrap"}}><div style={{fontWeight:700,color:G.primary,marginBottom:6}}>{"📄 Laudo (IA)"}</div>{imgView.laudo}</div>}
-        <div style={{display:"flex",gap:10,marginTop:16}} onClick={function(e){e.stopPropagation();}}><button onClick={function(){baixarImagem(imgView.url,nomeArqImg(pat.name,imgView));}} style={{background:G.primary,color:"#fff",border:"none",borderRadius:10,padding:"10px 22px",fontSize:14,fontWeight:700,cursor:"pointer"}}>⬇️ Baixar</button><button onClick={function(){setImgView(null);}} style={{background:"#fff",color:"#222",border:"none",borderRadius:10,padding:"10px 24px",fontSize:14,fontWeight:700,cursor:"pointer"}}>Fechar</button></div>
+        {imgView.laudo&&<div onClick={function(e){e.stopPropagation();}} style={{marginTop:12,background:G.card,borderRadius:10,padding:"12px 14px",maxWidth:560,maxHeight:"32vh",overflow:"auto",fontSize:13,lineHeight:1.6,color:"#222",whiteSpace:"pre-wrap"}}><div style={{fontWeight:700,color:G.primary,marginBottom:6}}>{"📄 Laudo (IA)"}</div>{imgView.laudo}</div>}
+        <div style={{display:"flex",gap:10,marginTop:16}} onClick={function(e){e.stopPropagation();}}><button onClick={function(){baixarImagem(imgView.url,nomeArqImg(pat.name,imgView));}} style={{background:G.primary,color:"#fff",border:"none",borderRadius:10,padding:"10px 22px",fontSize:14,fontWeight:700,cursor:"pointer"}}>⬇️ Baixar</button><button onClick={function(){setImgView(null);}} style={{background:G.card,color:"#222",border:"none",borderRadius:10,padding:"10px 24px",fontSize:14,fontWeight:700,cursor:"pointer"}}>Fechar</button></div>
       </div>}
     </div>;
   })()}
@@ -1590,7 +1590,7 @@ return <>
     <div style={{position:"fixed",inset:0,zIndex:9999,background:"#f5f0e8",overflowY:"auto",display:"flex",flexDirection:"column",alignItems:"center",padding:"20px 16px"}}>
       <style dangerouslySetInnerHTML={{__html:"@media print{@page{size:A4 portrait;margin:0} *{-webkit-print-color-adjust:exact;print-color-adjust:exact} .no-print{display:none!important} .print-page{box-shadow:none!important;width:100%!important;padding:20mm 25mm!important;min-height:297mm!important;box-sizing:border-box!important} body,html{margin:0!important;padding:0!important}}"}}/>
       <div className="no-print" style={{display:"flex",gap:12,marginBottom:20,width:"100%",maxWidth:620}}>
-        <button onClick={function(){setShowAtestado(false);}} style={{flex:1,padding:"12px",border:"1.5px solid #ccc",borderRadius:10,fontSize:14,cursor:"pointer",background:"#fff"}}>{"← Voltar"}</button>
+        <button onClick={function(){setShowAtestado(false);}} style={{flex:1,padding:"12px",border:"1.5px solid #ccc",borderRadius:10,fontSize:14,cursor:"pointer",background:G.card}}>{"← Voltar"}</button>
         <div style={{flex:2,display:"flex",flexDirection:"column",gap:5}}>
         <div style={{background:"#FFF3E0",border:"1px solid #FF9800",borderRadius:7,padding:"6px 9px",fontSize:10,color:"#E65100",fontWeight:700}}>{"⚙️ Na janela de impressão: desmarque Cabeçalhos e rodapés"}</div>
         <button onClick={function(){
@@ -1630,7 +1630,7 @@ return <>
 }} style={{width:"100%",padding:"12px",background:G.primary,color:"#fff",border:"none",borderRadius:10,fontSize:14,fontWeight:700,cursor:"pointer"}}>{"🖨️ Imprimir / Salvar PDF"}</button>
         </div>
       </div>
-      <div className="print-page" style={{background:"#fff",width:"100%",maxWidth:620,padding:"32px 40px",borderRadius:4,boxShadow:"0 2px 20px rgba(0,0,0,.1)",minHeight:800,display:"flex",flexDirection:"column"}}>
+      <div className="print-page" style={{background:G.card,width:"100%",maxWidth:620,padding:"32px 40px",borderRadius:4,boxShadow:"0 2px 20px rgba(0,0,0,.1)",minHeight:800,display:"flex",flexDirection:"column"}}>
         <div style={{textAlign:"center",marginBottom:20}}>
           <div style={{fontSize:13,letterSpacing:4,color:"#8B6914",textTransform:"uppercase",marginBottom:4}}>Clínica Modelo</div>
           <div style={{fontSize:9,letterSpacing:3,color:"#999",textTransform:"uppercase"}}>Clínica Especializada</div>
@@ -1699,7 +1699,7 @@ return <>
     <Txt lb="Observações adicionais (opcional)" val={atObs} set={setAtObs} rows={2}/>
     <div style={{display:"flex",flexDirection:"column",gap:4}}>
       <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Dentista responsável</label>
-      <select value={atDentId} onChange={function(e){setAtDentId(e.target.value);}} style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"10px 12px",fontSize:14,outline:"none",background:"#fff",color:G.text}}>
+      <select value={atDentId} onChange={function(e){setAtDentId(e.target.value);}} style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"10px 12px",fontSize:14,outline:"none",background:G.card,color:G.text}}>
         {dents.map(function(d){return <option key={d.id} value={String(d.id)}>{d.name}</option>;})}
       </select>
       <div style={{background:G.accent,borderRadius:10,padding:"8px 14px",fontSize:12,color:G.primary,marginTop:2}}>{"👨‍⚕️ "+dentName+" · "+dentCro}</div>
@@ -1762,7 +1762,7 @@ return <>
 
 {/* Add procedure to existing plan modal */}
 {confirmDesfazer&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex:3200,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-  <div style={{background:"#fff",borderRadius:18,width:"100%",maxWidth:380,boxShadow:"0 8px 32px rgba(0,0,0,.25)"}}>
+  <div style={{background:G.card,borderRadius:18,width:"100%",maxWidth:380,boxShadow:"0 8px 32px rgba(0,0,0,.25)"}}>
     <div style={{background:G.red,borderRadius:"18px 18px 0 0",padding:"14px 18px",display:"flex",alignItems:"center",gap:10}}>
       <span style={{fontSize:20}}>⚠️</span>
       <div style={{flex:1,fontWeight:700,color:"#fff",fontSize:15}}>Desfazer Baixa</div>
@@ -1779,7 +1779,7 @@ return <>
 </div>}
 {addProcModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3100,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:480,boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:480,boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>Adicionar Procedimento ao Plano</span>
       <button onClick={()=>setAddProcModal(null)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -1790,7 +1790,7 @@ return <>
       </div>
       <div style={{display:"flex",flexDirection:"column",gap:4}}>
         <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Procedimento</label>
-        <select value={addProcForm.procId} onChange={e=>{const id=e.target.value;const pr=procs.find(p=>String(p.id)===id);setAddProcForm(f=>({...f,procId:id,v:pr?String(pr.price):f.v}));}} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",background:"#fff"}}>
+        <select value={addProcForm.procId} onChange={e=>{const id=e.target.value;const pr=procs.find(p=>String(p.id)===id);setAddProcForm(f=>({...f,procId:id,v:pr?String(pr.price):f.v}));}} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",background:G.card}}>
           <option value="">Selecione da lista...</option>
           {[...procs].sort((a,b)=>(a.name||"").localeCompare(b.name||"","pt")).map(p=><option key={p.id} value={String(p.id)}>{p.name} -- {cur(p.price)}</option>)}
         </select>
@@ -1818,7 +1818,7 @@ var subtotal=pdfBudget.items.reduce(function(s,i){return s+i.v;},0);
 var desc0=pdfBudget.disc||0;
 var tot=subtotal-desc0;
 return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:540,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:540,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>Enviar Orçamento — {pat.name}</span>
       <button onClick={()=>setPdfBudget(null)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -1890,7 +1890,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
 
 {/* Evolução modal */}
 {evoModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:520,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:520,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>{evoEdit?"Editar Anotação":"Nova Anotação de Evolução"}</span>
       <button onClick={()=>{setEvoModal(false);setEvoEdit(null);}} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -1900,7 +1900,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
         <Inp lb="Data" val={evoF.date} set={v=>setEvoF(p=>({...p,date:v}))} type="date"/>
         <div style={{display:"flex",flexDirection:"column",gap:4}}>
           <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Dentista</label>
-          <select value={evoF.dentistId} onChange={e=>setEvoF(p=>({...p,dentistId:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:"#fff"}}>
+          <select value={evoF.dentistId} onChange={e=>setEvoF(p=>({...p,dentistId:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:G.card}}>
             <option value="">Selecione...</option>
             {dents.map(d=><option key={d.id} value={String(d.id)}>{d.name}</option>)}
           </select>
@@ -1921,7 +1921,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
 {/* NF modal */}
 {nfModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:580,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:580,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>{nfEdit?"Editar Nota Fiscal":"Nova Nota Fiscal"}</span>
       <button onClick={()=>setNfModal(false)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -1949,14 +1949,14 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
       </div>}
       {nff.payer==="dentista"&&<div style={{display:"flex",flexDirection:"column",gap:4}}>
         <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Dentista Responsável</label>
-        <select value={nff.dentistId} onChange={e=>setNff(p=>({...p,dentistId:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",background:"#fff"}}>
+        <select value={nff.dentistId} onChange={e=>setNff(p=>({...p,dentistId:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",background:G.card}}>
           <option value="">Selecione...</option>
           {dents.map(d=><option key={d.id} value={String(d.id)}>{d.name}</option>)}
         </select>
       </div>}
       <div style={{display:"flex",flexDirection:"column",gap:4}}>
         <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Status</label>
-        <select value={nff.status} onChange={e=>setNff(p=>({...p,status:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",background:"#fff"}}>
+        <select value={nff.status} onChange={e=>setNff(p=>({...p,status:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",background:G.card}}>
           <option value="pending">Pendente</option>
           <option value="issued">Emitida</option>
           <option value="cancelled">Cancelada</option>
@@ -1976,7 +1976,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
 
 {recModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:580,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:580,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>{recEdit?"Editar Atendimento":"Registrar Atendimento"}</span>
       <button onClick={()=>setRecModal(false)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -1986,7 +1986,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
         <Inp lb="Data" val={rf.date} set={upR("date")} type="date"/>
         <div style={{display:"flex",flexDirection:"column",gap:4}}>
           <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Procedimento</label>
-          <select value={rf.procedure} onChange={e=>upR("procedure")(e.target.value)} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:"#fff"}}>
+          <select value={rf.procedure} onChange={e=>upR("procedure")(e.target.value)} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:G.card}}>
             <option value="">Selecione...</option>
             {[...procs].sort((a,b)=>(a.name||"").localeCompare(b.name||"","pt")).map(p=><option key={p.id} value={p.name}>{p.name}</option>)}
           </select>
@@ -1996,7 +1996,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
         <Inp lb="Dente(s)" val={rf.tooth} set={upR("tooth")} ph="Ex: 36"/>
         <div style={{display:"flex",flexDirection:"column",gap:4}}>
           <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Dentista</label>
-          <select value={String(rf.dentistId)} onChange={e=>upR("dentistId")(e.target.value)} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:"#fff"}}>
+          <select value={String(rf.dentistId)} onChange={e=>upR("dentistId")(e.target.value)} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:G.card}}>
             {dents.map(d=><option key={d.id} value={String(d.id)}>{d.name}</option>)}
           </select>
         </div>
@@ -2008,7 +2008,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
         <Inp lb="Valor Recebido (R$)" val={String(rf.paid||"")} set={upR("paid")} type="number" ph="0,00"/>
         <div style={{display:"flex",flexDirection:"column",gap:4}}>
           <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Pagamento</label>
-          <select value={rf.payment} onChange={e=>upR("payment")(e.target.value)} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:"#fff"}}>
+          <select value={rf.payment} onChange={e=>upR("payment")(e.target.value)} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:G.card}}>
             <optgroup label="-- Clínica --">
               {PAY_BASE.map(function(o){return <option key={o} value={o}>{o}</option>;})}
             </optgroup>
@@ -2047,7 +2047,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
 
 {/* Treatment modal - inline to fix state closure issue */}
 {ortoModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:520,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:520,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
     <div style={{background:G.primary,borderRadius:"16px 16px 0 0",padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
       <span style={{fontWeight:700,color:"#fff",fontSize:16}}>{"🦷 Plano Ortodôntico"}</span>
       <button onClick={()=>setOrtoModal(false)} style={{border:"none",background:"rgba(255,255,255,.2)",borderRadius:8,color:"#fff",cursor:"pointer",padding:"5px 10px",fontSize:16}}>{"x"}</button>
@@ -2065,7 +2065,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
         <div style={{display:"flex",flexDirection:"column",gap:4}}>
           <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase"}}>Ano</label>
           <select value={ortoForm.ano} onChange={e=>setOrtoForm(p=>({...p,ano:Number(e.target.value)}))}
-            style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"9px 11px",fontSize:14,outline:"none",background:"#fff"}}>
+            style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"9px 11px",fontSize:14,outline:"none",background:G.card}}>
             {[2025,2026,2027,2028].map(y=><option key={y} value={y}>{y}</option>)}
           </select>
         </div>
@@ -2073,14 +2073,14 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
       <div style={{display:"flex",flexDirection:"column",gap:4}}>
         <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase"}}>Ortodontista</label>
         <select value={ortoForm.dentistId} onChange={e=>setOrtoForm(p=>({...p,dentistId:e.target.value}))}
-          style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"9px 11px",fontSize:14,outline:"none",background:"#fff"}}>
+          style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"9px 11px",fontSize:14,outline:"none",background:G.card}}>
           {dents.map(d=><option key={d.id} value={String(d.id)}>{d.name}</option>)}
         </select>
       </div>
       {ortoForm.valor&&Number(ortoForm.valor)>0&&<div style={{background:G.bg,borderRadius:10,padding:"10px 13px"}}>
         <div style={{fontSize:11,fontWeight:700,color:G.muted,marginBottom:8}}>{"PARCELAS GERADAS — "+ortoForm.ano}</div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:5}}>
-          {["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"].map((m,i)=><div key={m} style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:7,padding:"6px 10px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          {["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"].map((m,i)=><div key={m} style={{background:G.card,border:"1.5px solid "+G.border,borderRadius:7,padding:"6px 10px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
             <span style={{fontSize:12,fontWeight:600}}>{m}</span>
             <span style={{fontSize:12,color:G.primary,fontWeight:700}}>{cur(ortoForm.valor)} </span>
           </div>)}
@@ -2107,7 +2107,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
 
 {treatModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:520,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:520,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>Novo Plano de Tratamento</span>
       <button onClick={()=>setTreatModal(false)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -2118,7 +2118,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
       <div style={{display:"flex",flexDirection:"column",gap:4}}>
         <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Dentista Responsável</label>
         <select value={String(tf.dentistId||"")} onChange={e=>setTf(p=>({...p,dentistId:e.target.value}))}
-          style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:"#fff"}}>
+          style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:G.card}}>
           {dents.map(d=><option key={d.id} value={String(d.id)}>{d.name}</option>)}
         </select>
       </div>
@@ -2133,7 +2133,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
               const pr=procs.find(p=>String(p.id)===id);
               setTni(p=>({...p, procId:id, v:pr?String(pr.price):p.v}));
             }}
-            style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:"#fff"}}
+            style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:G.card}}
           >
             <option value="">Selecione da lista...</option>
             {[...procs].sort((a,b)=>(a.name||"").localeCompare(b.name||"","pt")).map(p=><option key={p.id} value={String(p.id)}>{p.name} -- {cur(p.price)}</option>)}
@@ -2187,7 +2187,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
 {/* Budget modal - inline render to avoid state closure bug */}
 {budgModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:560,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:560,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>Orçamento -- {pat.name}</span>
       <button onClick={()=>setBudgModal(false)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -2197,7 +2197,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
         <Inp lb="Data" val={bf.date} set={v=>setBf(p=>({...p,date:v}))} type="date"/>
         <div style={{display:"flex",flexDirection:"column",gap:4}}>
           <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Status</label>
-          <select value={bf.status} onChange={e=>setBf(p=>({...p,status:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:"#fff"}}>
+          <select value={bf.status} onChange={e=>setBf(p=>({...p,status:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:G.card}}>
             <option value="pending">Em espera</option>
             <option value="approved">Aprovado</option>
             <option value="rejected">Recusado</option>
@@ -2243,7 +2243,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
 {/* Confirm delete modal */}
 {confirmDel&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex:3200,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-  <div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:360,boxShadow:"0 16px 48px rgba(0,0,0,.25)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:360,boxShadow:"0 16px 48px rgba(0,0,0,.25)"}}>
     <div style={{background:G.red,borderRadius:"16px 16px 0 0",padding:"13px 18px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
       <span style={{fontWeight:700,color:"#fff",fontSize:14}}>Confirmar Exclusao</span>
       <button onClick={()=>setConfirmDel(null)} style={{border:"none",background:"rgba(255,255,255,.2)",borderRadius:8,color:"#fff",cursor:"pointer",padding:"4px 9px",fontSize:16}}>X</button>
@@ -2264,7 +2264,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
 </div>}
 
 {ortoPayModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex:3100,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:420,boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:420,boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
     <div style={{background:G.primary,borderRadius:"16px 16px 0 0",padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
       <div>
         <div style={{fontWeight:700,color:"#fff",fontSize:15}}>{"💳 Dar Baixa — Orto"}</div>
@@ -2324,7 +2324,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
 {/* Payment modal - inline render to avoid state closure bug */}
 {!!payModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:460,boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:460,boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>Registrar Pagamento</span>
       <button onClick={()=>setPayModal(null)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -2336,7 +2336,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex
       </div>
       <div style={{display:"flex",flexDirection:"column",gap:4}}>
         <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Forma de Pagamento</label>
-        <select value={payForm.method} onChange={e=>setPayForm(p=>({...p,method:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:"#fff"}}>
+        <select value={payForm.method} onChange={e=>setPayForm(p=>({...p,method:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:G.card}}>
           <option value="">Selecione...</option>
           <optgroup label="-- Clínica --">
             {PAY_BASE.map(function(o){return <option key={o} value={o}>{o}</option>;})}
@@ -2476,7 +2476,7 @@ return (
 {showCal&&(
 
 <div style={{position:"fixed",inset:0,zIndex:500}} onClick={()=>setShowCal(false)}>
-<div style={{position:"absolute",top:60,left:"50%",transform:"translateX(-50%)",background:"#fff",borderRadius:14,boxShadow:"0 8px 32px rgba(0,0,0,.2)",padding:16,minWidth:290,zIndex:501}} onClick={e=>e.stopPropagation()}>
+<div style={{position:"absolute",top:60,left:"50%",transform:"translateX(-50%)",background:G.card,borderRadius:14,boxShadow:"0 8px 32px rgba(0,0,0,.2)",padding:16,minWidth:290,zIndex:501}} onClick={e=>e.stopPropagation()}>
 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
 <button onClick={()=>{if(calM===0){setCalM(11);setCalY(y=>y-1);}else setCalM(m=>m-1);}} style={{border:"none",background:"none",fontSize:20,cursor:"pointer",color:G.primary,fontWeight:700}}>{"<"}</button>
 <span style={{fontWeight:700,fontSize:13}}>{MONTHS[calM]} {calY}</span>
@@ -2505,13 +2505,13 @@ return (
 
   <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
     <button onClick={()=>{setCalY(new Date().getFullYear());setCalM(new Date().getMonth());setShowCal(v=>!v);}} style={{background:showCal?G.primary:G.accent,border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 10px",cursor:"pointer",fontSize:16,color:showCal?"#fff":"inherit"}}>{lbl("📅")}</button>
-    <button onClick={function(){var d=new Date(selDate+"T12:00");if(agView==="dia")d.setDate(d.getDate()-1);else if(agView==="mes")d.setMonth(d.getMonth()-1,1);else{d=new Date(week[0]+"T12:00");d.setDate(d.getDate()-7);}setSelDate(d.toISOString().split("T")[0]);}} style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 12px",cursor:"pointer",color:G.primary,fontWeight:700}}>{"<"}</button>
-    <button onClick={function(){var d=new Date(selDate+"T12:00");if(agView==="dia")d.setDate(d.getDate()+1);else if(agView==="mes")d.setMonth(d.getMonth()+1,1);else{d=new Date(week[6]+"T12:00");d.setDate(d.getDate()+1);}setSelDate(d.toISOString().split("T")[0]);}} style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 12px",cursor:"pointer",color:G.primary,fontWeight:700}}>{">"}</button>
-    <button onClick={()=>setSelDate(td)} style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 11px",cursor:"pointer",color:G.primary,fontWeight:600,fontSize:12}}>Hoje</button>
+    <button onClick={function(){var d=new Date(selDate+"T12:00");if(agView==="dia")d.setDate(d.getDate()-1);else if(agView==="mes")d.setMonth(d.getMonth()-1,1);else{d=new Date(week[0]+"T12:00");d.setDate(d.getDate()-7);}setSelDate(d.toISOString().split("T")[0]);}} style={{background:G.card,border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 12px",cursor:"pointer",color:G.primary,fontWeight:700}}>{"<"}</button>
+    <button onClick={function(){var d=new Date(selDate+"T12:00");if(agView==="dia")d.setDate(d.getDate()+1);else if(agView==="mes")d.setMonth(d.getMonth()+1,1);else{d=new Date(week[6]+"T12:00");d.setDate(d.getDate()+1);}setSelDate(d.toISOString().split("T")[0]);}} style={{background:G.card,border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 12px",cursor:"pointer",color:G.primary,fontWeight:700}}>{">"}</button>
+    <button onClick={()=>setSelDate(td)} style={{background:G.card,border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 11px",cursor:"pointer",color:G.primary,fontWeight:600,fontSize:12}}>Hoje</button>
     <div style={{display:"flex",gap:2,background:G.bg,borderRadius:9,padding:3}}>
       {[["dia","Dia"],["semana","Semana"],["mes","Mês"]].map(function(v){return <button key={v[0]} onClick={function(){if(v[0]==="semana"&&!isDent&&denF==="all"){var d1=dents.filter(function(d){return !isOrto(d);})[0]||dents[0];if(d1)setDenF(String(d1.id));}setAgView(v[0]);}} style={{border:"none",borderRadius:7,padding:"6px 12px",fontSize:12,fontWeight:700,cursor:"pointer",background:agView===v[0]?G.primary:"transparent",color:agView===v[0]?"#fff":G.muted}}>{v[1]}</button>;})}
     </div>
-    {!isDent&&<select value={denF} onChange={e=>setDenF(e.target.value)} style={{border:"1.5px solid "+G.border,borderRadius:20,padding:"6px 12px",fontSize:11,fontWeight:600,outline:"none",background:"#fff"}}>
+    {!isDent&&<select value={denF} onChange={e=>setDenF(e.target.value)} style={{border:"1.5px solid "+G.border,borderRadius:20,padding:"6px 12px",fontSize:11,fontWeight:600,outline:"none",background:G.card}}>
       {agView!=="semana"&&<option value="all">Todos</option>}
       {dents.map(d=><option key={d.id} value={d.id}>{d.name}</option>)}
     </select>}
@@ -2572,7 +2572,7 @@ return (
 
 {agView==="dia"&&hiddenToday.length>0&&<div onClick={function(){var od=dents.find(function(d){return d.id===hiddenToday[0].dentistId;});if(od)setDenF(String(od.id));}} style={{background:"#FFF8E1",border:"1.5px solid #FFB300",borderRadius:10,padding:"9px 13px",fontSize:12,fontWeight:700,color:"#E65100",cursor:"pointer",display:"flex",alignItems:"center",gap:6,margin:"2px 0"}}>{"⚠ "+hiddenToday.length+" consulta(s) de Ortodontia neste dia não aparecem aqui. Toque para ver →"}</div>}
 
-{agView==="dia"&&denF==="all"&&!isDent&&vd.length===0&&<div style={{background:G.card,borderRadius:12,padding:24,textAlign:"center",color:G.muted,fontSize:13,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>{"Nenhum dentista clínico trabalhando neste dia. Selecione um dentista no filtro para agendar."}</div>}
+{agView==="dia"&&denF==="all"&&!isDent&&vd.length===0&&<div style={{background:G.card,borderRadius:12,padding:24,textAlign:"center",color:G.muted,fontSize:13,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>{"Nenhum dentista clínico trabalhando neste dia. Selecione um dentista no filtro para agendar."}</div>}
 
 
 
@@ -2684,7 +2684,7 @@ var _cancelled=doCancelados.length>0?<div style={{marginTop:8,background:"#FFEBE
 <div style={{fontWeight:700,fontSize:12,color:SC.cancelled,marginBottom:8}}>{"❌ "+doCancelados.length+" cancelado(s)/desmarcado(s) -- horário liberado"}</div>
 {doCancelados.map(function(a){
 var p=pats.find(function(x){return x.id===a.patientId;});
-return <div key={a.id} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 8px",background:"#fff",borderRadius:8,marginBottom:4,border:"1px solid #FFCDD2",flexWrap:"wrap"}}>
+return <div key={a.id} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 8px",background:G.card,borderRadius:8,marginBottom:4,border:"1px solid #FFCDD2",flexWrap:"wrap"}}>
 <span style={{fontSize:12,fontWeight:700,color:SC[a.status],minWidth:38}}>{a.time}</span>
 <span style={{flex:1,fontSize:12,fontWeight:600}}>{p&&p.name||"--"}</span>
 <span style={{fontSize:11,color:G.muted}}>{a.procedure}</span>
@@ -2743,7 +2743,7 @@ if(!a)a=appts.find(function(x){return x.date===selDate&&x.time===slot&&x.dentist
 {p&&anamFalta(p)&&<div style={{marginTop:2}}><span style={{fontSize:8,background:"#D81B60",color:"#fff",borderRadius:3,padding:"1px 5px",fontWeight:800,display:"inline-block",lineHeight:1.2}}>{"⚠ SEM ANAMNESE"}</span></div>}
                   {healthFlags.length>0&&<div style={{display:"flex",flexWrap:"wrap",gap:2,marginTop:2}}>{healthFlags.map(function(f,i){return <span key={i} style={{fontSize:8,background:f.startsWith("⚠")?G.red+"20":f.startsWith("💊")?G.yellow+"20":G.blue+"15",color:f.startsWith("⚠")?G.red:f.startsWith("💊")?G.yellow:G.blue,borderRadius:3,padding:"1px 4px",fontWeight:700}}>{f}</span>;})}</div>}
                   {!isDent&&<div style={{display:"flex",gap:3,marginTop:3}}>
-                    <select value={a.status} onClick={e=>e.stopPropagation()} onChange={e=>{e.stopPropagation();chSt(a.id,e.target.value);}} style={{border:"1px solid "+SC[a.status],background:"#fff",borderRadius:5,padding:"1px 4px",fontSize:9,color:SC[a.status],fontWeight:700,cursor:"pointer",outline:"none"}}>
+                    <select value={a.status} onClick={e=>e.stopPropagation()} onChange={e=>{e.stopPropagation();chSt(a.id,e.target.value);}} style={{border:"1px solid "+SC[a.status],background:G.card,borderRadius:5,padding:"1px 4px",fontSize:9,color:SC[a.status],fontWeight:700,cursor:"pointer",outline:"none"}}>
                       {Object.entries(SL).map(([k,l])=><option key={k} value={k}>{l}</option>)}
                     </select>
                     {p&&p.phone&&<button onClick={e=>{e.stopPropagation();wa(p.phone,"Olá, "+(p.name||"")+"! ✅ Consulta confirmada: "+fmt(a.date)+" às "+a.time+". Clínica Modelo 🦷");}} style={{background:"#25D366",color:"#fff",border:"none",borderRadius:5,padding:"1px 6px",fontSize:9,fontWeight:700,cursor:"pointer"}}>WA</button>}
@@ -2818,7 +2818,7 @@ off=isOff||isAlm||isOut;kind=isOff?"folga":isAlm?"almoco":"fechado";
 }
 if(off)return <div key={ds+slot} style={{background:kind==="folga"?"#FFEBEE":kind==="almoco"?"#FFF8E1":"#F3E5F5",borderRadius:5,minHeight:24,opacity:.5}}/>;
 var dId=single?single.id:(wkDents[0]&&wkDents[0].id);
-return <div key={ds+slot} onClick={function(){if(isDent||!dId)return;setEdit(null);var _s=activeSlots.indexOf(slot)>=0;setF({...blank,date:ds,time:_s?slot:"",timeCustom:_s?"":slot,dentistId:dId});setModal(true);}} style={{background:"#fff",border:"1px dashed "+G.border,borderRadius:5,minHeight:24,cursor:isDent?"default":"pointer"}}/>;
+return <div key={ds+slot} onClick={function(){if(isDent||!dId)return;setEdit(null);var _s=activeSlots.indexOf(slot)>=0;setF({...blank,date:ds,time:_s?slot:"",timeCustom:_s?"":slot,dentistId:dId});setModal(true);}} style={{background:G.card,border:"1px dashed "+G.border,borderRadius:5,minHeight:24,cursor:isDent?"default":"pointer"}}/>;
 }
 if(a.blocked)return <div key={ds+slot} style={{background:"#FFEBEE",border:"1px solid "+G.red,borderRadius:5,minHeight:24,display:"flex",alignItems:"center",justifyContent:"center",fontSize:11}}>🔒</div>;
 var nm=a.patientName||((pats.find(function(x){return x.id===a.patientId;})||{}).name)||"?";
@@ -2941,7 +2941,7 @@ setF(fdata);setViewA(null);setModal(true);}}/>}
 <R2 a={<Inp lb="Data" val={f.date} set={upd("date")} type="date"/>} b={
 <div style={{display:"flex",flexDirection:"column",gap:4}}>
 <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Horário</label>
-<select value={f.time} onChange={e=>upd("time")(e.target.value)} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 8px",fontSize:13,outline:"none",background:"#fff"}}>
+<select value={f.time} onChange={e=>upd("time")(e.target.value)} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 8px",fontSize:13,outline:"none",background:G.card}}>
 {[{v:"",l:"Selecione..."},...activeSlots].map(o=><option key={o.v??o} value={o.v??o}>{o.l??o}</option>)}
 </select>
 <input value={f.timeCustom||""} onChange={e=>upd("timeCustom")(e.target.value)} placeholder="Horário personalizado ex: 09:15" style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"7px 8px",fontSize:12,outline:"none"}}/>
@@ -2950,7 +2950,7 @@ setF(fdata);setViewA(null);setModal(true);}}/>}
 {/* Duração */}
 <div style={{display:"flex",flexDirection:"column",gap:4}}>
 <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Duração da Consulta</label>
-<select value={String(f.duration||30)} onChange={e=>{const d=Number(e.target.value);setF(p=>({...p,duration:d}));}} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"9px 12px",fontSize:14,outline:"none",background:"#fff"}}>
+<select value={String(f.duration||30)} onChange={e=>{const d=Number(e.target.value);setF(p=>({...p,duration:d}));}} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"9px 12px",fontSize:14,outline:"none",background:G.card}}>
 <option value="30">30 minutos</option>
 <option value="60">1 hora</option>
 <option value="90">1h 30min</option>
@@ -2963,7 +2963,7 @@ setF(fdata);setViewA(null);setModal(true);}}/>}
 {/* Procedimento com opção manual */}
 <div style={{display:"flex",flexDirection:"column",gap:4}}>
 <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Procedimento</label>
-<select value={f.procedure} onChange={e=>{upd("procedure")(e.target.value);const pr=procs.find(p=>p.name===e.target.value);if(pr&&!f.value)upd("value")(String(pr.price));}} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 8px",fontSize:13,outline:"none",background:"#fff"}}>
+<select value={f.procedure} onChange={e=>{upd("procedure")(e.target.value);const pr=procs.find(p=>p.name===e.target.value);if(pr&&!f.value)upd("value")(String(pr.price));}} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 8px",fontSize:13,outline:"none",background:G.card}}>
 <option value="">Selecione...</option>
 <option value="Avaliação">Avaliação</option>
 <option value="Retorno">Retorno</option>
@@ -2987,7 +2987,7 @@ setF(fdata);setViewA(null);setModal(true);}}/>}
 }/>
 {/* Modal de bloqueio de horário */}
 {blockModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-<div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:420,boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+<div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:420,boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
 <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>🔒 Bloquear Horário</span>
 <button onClick={()=>setBlockModal(null)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -3109,7 +3109,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 
 {dupModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-<div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:460,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+<div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:460,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
 <div style={{background:"#D68910",borderRadius:"16px 16px 0 0",padding:"14px 18px"}}><div style={{fontWeight:700,color:"#fff",fontSize:15}}>⚠️ Possível Duplicidade</div></div>
 <div style={{padding:20,display:"flex",flexDirection:"column",gap:12}}>
 <div style={{fontSize:13}}>Paciente(s) com dados similares encontrado(s):</div>
@@ -3123,7 +3123,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 <button onClick={dupModal.onConfirm} style={{background:"#D68910",color:"#fff",border:"none",borderRadius:8,padding:"9px 18px",fontSize:14,fontWeight:700,cursor:"pointer"}}>Cadastrar Mesmo Assim</button>
 </div></div></div></div>}
 {delModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-<div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:420,boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+<div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:420,boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
 <div style={{background:"#C0392B",borderRadius:"16px 16px 0 0",padding:"14px 18px"}}><div style={{fontWeight:700,color:"#fff",fontSize:15}}>🗑️ Excluir Paciente</div></div>
 <div style={{padding:20,display:"flex",flexDirection:"column",gap:12}}>
 <div style={{fontWeight:700,fontSize:14}}>{delModal.pat.name}</div>
@@ -3155,7 +3155,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
   <Txt lb="Observações Gerais" val={pf.notes} set={fp("notes")} rows={2}/>
   <div style={{display:"flex",flexDirection:"column",gap:4}}>
     <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Como nos conheceu?</label>
-    <select value={pf.origem||""} onChange={e=>setPf(p=>({...p,origem:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"9px 12px",fontSize:14,outline:"none",background:"#fff"}}>
+    <select value={pf.origem||""} onChange={e=>setPf(p=>({...p,origem:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"9px 12px",fontSize:14,outline:"none",background:G.card}}>
       <option value="">Não informado</option>
       {["Indicação","Instagram","Já era paciente","Urgência","Passando na rua","Google","Outro"].map(o=><option key={o} value={o}>{o}</option>)}
     </select>
@@ -3195,12 +3195,12 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
 {[{k:"today",l:`Hoje (${todP.length})`,c:G.orange},{k:"waiting",l:"Aguardando",c:G.yellow},{k:"returned",l:"Retornou",c:G.blue},{k:"placed",l:"Instaladas",c:G.success},{k:"all",l:"Todas",c:G.muted}].map(({k,l,c})=><button key={k} onClick={()=>setFilt(k)} style={{border:`2px solid ${filt===k?c:G.border}`,background:filt===k?c:"#fff",color:filt===k?"#fff":G.muted,borderRadius:20,padding:"5px 12px",fontSize:11,fontWeight:700,cursor:"pointer"}}>{lbl(l)}</button>)}
 </div>
-{filt==="today"&&todP.length===0&&<div style={{background:G.card,borderRadius:12,padding:28,textAlign:"center",boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}><div style={{fontSize:28,marginBottom:6}}>✅</div><div style={{fontWeight:700,color:G.success}}>Nenhum trabalho previsto para hoje!</div></div>}
+{filt==="today"&&todP.length===0&&<div style={{background:G.card,borderRadius:12,padding:28,textAlign:"center",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}><div style={{fontSize:28,marginBottom:6}}>✅</div><div style={{fontWeight:700,color:G.success}}>Nenhum trabalho previsto para hoje!</div></div>}
 {filt==="today"&&lateP.length>0&&<div style={{background:G.red,borderRadius:10,padding:"11px 14px",boxShadow:`0 2px 10px ${G.red}55`}}><div style={{fontWeight:700,color:"#fff",fontSize:14}}>⚠️ {lateP.length} prótese(s) ATRASADA(S)!</div><div style={{color:"#fff",opacity:.85,fontSize:12,marginTop:2}}>Cobrar o laboratório com urgência</div></div>}
 {filt==="today"&&todayOnly.length>0&&<div style={{background:G.orange+"15",border:`2px solid ${G.orange}`,borderRadius:10,padding:"10px 14px"}}><div style={{fontWeight:700,color:G.orange}}>🔔 {todayOnly.length} trabalho(s) para fechar hoje</div></div>}
 <div style={{display:"flex",flexDirection:"column",gap:9}}>
 {flt.map(p=>{const pat=pats.find(x=>x.id===p.patientId);const den=dents.find(x=>x.id===p.dentistId)||dents[0];const lab=labs.find(x=>x.id===p.labId);const late=p.status==="waiting"&&p.due&&p.due<t;const isT=p.due===t&&p.status==="waiting";
-return <div key={p.id} style={late?{background:G.red+"10",borderRadius:12,padding:"13px 15px",border:`2px solid ${G.red}`,boxShadow:`0 2px 12px ${G.red}40`}:{background:G.card,borderRadius:12,padding:"13px 15px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:`4px solid ${isT?G.orange:PROS_SC[p.status]}`}}>
+return <div key={p.id} style={late?{background:G.red+"10",borderRadius:12,padding:"13px 15px",border:`2px solid ${G.red}`,boxShadow:`0 2px 12px ${G.red}40`}:{background:G.card,borderRadius:12,padding:"13px 15px",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",borderLeft:`4px solid ${isT?G.orange:PROS_SC[p.status]}`}}>
 <div style={{display:"flex",gap:11,flexWrap:"wrap"}}>
 <div style={{flex:1,minWidth:170}}>
 <div style={{display:"flex",gap:6,alignItems:"center",marginBottom:3,flexWrap:"wrap"}}><span style={{fontWeight:700,fontSize:13,color:late?G.red:G.text}}>{pat?.name}</span><span style={{fontSize:11,color:G.muted}}>P.{pat?.folder}</span><Bdg l={PROS_SL[p.status]} col={PROS_SC[p.status]} sm/>{late&&<Bdg l="⚠ ATRASADO" col={G.red} sm/>}{isT&&!late&&<Bdg l="📅 HOJE" col={G.orange} sm/>}</div>
@@ -3221,7 +3221,7 @@ return <div key={p.id} style={late?{background:G.red+"10",borderRadius:12,paddin
 </div>;})}
 </div>
 {modal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-<div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:620,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+<div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:620,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
 <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>{edit?"Editar Prótese":"Nova Prótese"}</span>
 <button onClick={()=>setModal(false)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -3231,7 +3231,7 @@ return <div key={p.id} style={late?{background:G.red+"10",borderRadius:12,paddin
 <PatSearch lb="Paciente" val={f.patientId} set={v=>setF(p=>({...p,patientId:v}))} pats={pats}/>
 <div style={{display:"flex",flexDirection:"column",gap:4}}>
 <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Dentista</label>
-<select value={f.dentistId} onChange={e=>setF(p=>({...p,dentistId:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:"#fff"}}>
+<select value={f.dentistId} onChange={e=>setF(p=>({...p,dentistId:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:G.card}}>
 {dents.map(d=><option key={d.id} value={String(d.id)}>{d.name}</option>)}
 </select>
 </div>
@@ -3239,7 +3239,7 @@ return <div key={p.id} style={late?{background:G.red+"10",borderRadius:12,paddin
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:11}}>
 <div style={{display:"flex",flexDirection:"column",gap:4}}>
 <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Laboratório</label>
-<select value={f.labId} onChange={e=>setF(p=>({...p,labId:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:"#fff"}}>
+<select value={f.labId} onChange={e=>setF(p=>({...p,labId:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:G.card}}>
 <option value="">Selecione...</option>
 {labs.map(l=><option key={l.id} value={String(l.id)}>{l.name}</option>)}
 </select>
@@ -3249,7 +3249,7 @@ return <div key={p.id} style={late?{background:G.red+"10",borderRadius:12,paddin
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:11}}>
 <div style={{display:"flex",flexDirection:"column",gap:4}}>
 <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Tipo de Prótese</label>
-<select value={f.type} onChange={e=>setF(p=>({...p,type:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:"#fff"}}>
+<select value={f.type} onChange={e=>setF(p=>({...p,type:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:G.card}}>
 {PROS_T.map(t=><option key={t} value={t}>{t}</option>)}
 </select>
 </div>
@@ -3257,7 +3257,7 @@ return <div key={p.id} style={late?{background:G.red+"10",borderRadius:12,paddin
 </div>
 <div style={{display:"flex",flexDirection:"column",gap:4}}>
 <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Procedimento a Realizar</label>
-<select value={prosProcs.find(p=>p.name===f.proc)?f.proc:(f.proc?"__custom__":"")} onChange={e=>{const v=e.target.value;if(v==="__custom__"){setF(p=>({...p,proc:""}));}else if(v===""){setF(p=>({...p,proc:""}));}else{const selP=prosProcs.find(pp=>pp.name===v);setF(p=>({...p,proc:v,price:(selP&&selP.price>0)?String(selP.price):p.price}));}}} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:"#fff"}}>
+<select value={prosProcs.find(p=>p.name===f.proc)?f.proc:(f.proc?"__custom__":"")} onChange={e=>{const v=e.target.value;if(v==="__custom__"){setF(p=>({...p,proc:""}));}else if(v===""){setF(p=>({...p,proc:""}));}else{const selP=prosProcs.find(pp=>pp.name===v);setF(p=>({...p,proc:v,price:(selP&&selP.price>0)?String(selP.price):p.price}));}}} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:G.card}}>
 <option value="">Selecione o procedimento...</option>
 {prosProcs.map(p=><option key={p.id} value={p.name}>{p.name}{p.price>0?" — "+cur(p.price):""}</option>)}
 <option value="__custom__">✏️ Escrever manualmente...</option>
@@ -3272,7 +3272,7 @@ return <div key={p.id} style={late?{background:G.red+"10",borderRadius:12,paddin
 <Inp lb="Data Retorno Real" val={f.returned} set={v=>setF(p=>({...p,returned:v}))} type="date"/>
 <div style={{display:"flex",flexDirection:"column",gap:4}}>
 <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Status</label>
-<select value={f.status} onChange={e=>setF(p=>({...p,status:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:"#fff"}}>
+<select value={f.status} onChange={e=>setF(p=>({...p,status:e.target.value}))} style={{border:`1.5px solid ${G.border}`,borderRadius:8,padding:"8px 11px",fontSize:14,outline:"none",color:G.text,background:G.card}}>
 {Object.entries(PROS_SL).map(([v,l])=><option key={v} value={v}>{l}</option>)}
 </select>
 </div>
@@ -3293,7 +3293,7 @@ setModal(false);
 </div>
 </div>}
 {procModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-<div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:440,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+<div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:440,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
 <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>Procedimentos de Prótese</span>
 <button onClick={()=>setProcModal(false)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -3411,7 +3411,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:0}} className="fi"
     <button onClick={function(){setShowCal(function(v){return !v;});}} style={{background:showCal?G.primary:G.accent,border:"1.5px solid "+G.border,borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:700,cursor:"pointer",color:showCal?"#fff":G.primary}}>{"📅 "+selMes}</button>
     <span style={{fontSize:11,color:G.muted}}>{"← 2 antes · atual · 9 à frente →"}</span>
   </div>
-  {showCal&&<div style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:12,padding:14,marginBottom:8,boxShadow:"0 4px 16px rgba(0,0,0,.1)"}}>
+  {showCal&&<div style={{background:G.card,border:"1.5px solid "+G.border,borderRadius:12,padding:14,marginBottom:8,boxShadow:"0 4px 16px rgba(0,0,0,.1)"}}>
     <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}}>
       <button onClick={function(){setCalY(function(y){return y-1;});}} style={{border:"none",background:G.accent,borderRadius:6,padding:"4px 12px",cursor:"pointer",fontSize:16,fontWeight:700,color:G.primary}}>{"<"}</button>
       <span style={{fontWeight:700,fontSize:14}}>{calY}</span>
@@ -3455,7 +3455,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:0}} className="fi"
   {/* Resumo */}
   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:12}}>
     {[["🔴 Não marcado",pending,G.red],["🟢 Marcado",scheduled,G.success],["⚫ Finalizado",done,"#333"]].map(function([l,v,c]){
-      return <div key={l} style={{background:"#fff",borderRadius:10,padding:"8px 10px",textAlign:"center",borderTop:"3px solid "+c,boxShadow:"0 1px 4px rgba(0,0,0,.06)"}}>
+      return <div key={l} style={{background:G.card,borderRadius:10,padding:"8px 10px",textAlign:"center",borderTop:"3px solid "+c,boxShadow:"0 1px 4px rgba(0,0,0,.06)"}}>
         <div style={{fontFamily:"'Cormorant Garamond'",fontSize:22,color:c}}>{v}</div>
         <div style={{fontSize:9,color:G.muted,fontWeight:700}}>{l}</div>
       </div>;
@@ -3477,7 +3477,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:0}} className="fi"
   </div>
 
   {/* Tabela */}
-  <div style={{background:"#fff",borderRadius:12,boxShadow:"0 2px 8px rgba(0,0,0,.08)",overflow:"hidden"}}>
+  <div style={{background:G.card,borderRadius:12,boxShadow:"0 2px 8px rgba(0,0,0,.08)",overflow:"hidden"}}>
     <div style={{overflowX:"auto"}}>
       <table style={{borderCollapse:"collapse",width:"100%",fontSize:12}}>
         <thead>
@@ -3514,7 +3514,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:0}} className="fi"
 
   {/* Modal de detalhe/edição */}
   {editRow&&editForm&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-    <div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:500,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+    <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:500,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
       <div style={{background:ST_COLOR[editForm.status],borderRadius:"16px 16px 0 0",padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
         <div>
           <div style={{fontWeight:700,color:"#fff",fontSize:14}}>{editRow.paciente}</div>
@@ -3544,7 +3544,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:0}} className="fi"
             <div style={{display:"flex",flexDirection:"column",gap:4}}>
               <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase"}}>Mês do Retorno</label>
               <select value={editForm.retornoMes||""} onChange={function(e){setEditForm(function(p){return{...p,retornoMes:e.target.value};});}}
-                style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"8px 10px",fontSize:13,outline:"none",background:"#fff"}}>
+                style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"8px 10px",fontSize:13,outline:"none",background:G.card}}>
                 <option value="">Selecione o mês...</option>
                 {(function(){
                   var MN=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
@@ -3613,7 +3613,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:0}} className="fi"
     </div>
   </div>}
 {showAdd&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-  <div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:480,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:480,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
     <div style={{background:G.primary,borderRadius:"16px 16px 0 0",padding:"14px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
       <span style={{fontWeight:700,color:"#fff",fontSize:15}}>{"+ Novo Paciente"}</span>
       <button onClick={function(){setShowAdd(false);}} style={{border:"none",background:"rgba(255,255,255,.2)",borderRadius:8,color:"#fff",cursor:"pointer",padding:"5px 10px",fontSize:16}}>{"x"}</button>
@@ -3625,7 +3625,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:0}} className="fi"
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
         <div style={{display:"flex",flexDirection:"column",gap:4}}>
           <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase"}}>Mês</label>
-          <select value={addForm.mes} onChange={function(e){setAddForm(function(p){return{...p,mes:e.target.value};});}} style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"8px 10px",fontSize:13,outline:"none",background:"#fff"}}>
+          <select value={addForm.mes} onChange={function(e){setAddForm(function(p){return{...p,mes:e.target.value};});}} style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"8px 10px",fontSize:13,outline:"none",background:G.card}}>
             {MONTHS_ORDER.map(function(m){return <option key={m} value={m}>{m}</option>;})}
           </select>
         </div>
@@ -3718,7 +3718,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 </div>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
   {[["Total",total,G.primary],["Pago",pago,G.success],["Pendente",total-pago,G.red]].map(function([l,v,c]){return(
-    <div key={l} style={{background:G.card,borderRadius:10,padding:"12px",textAlign:"center",borderTop:"3px solid "+c,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+    <div key={l} style={{background:G.card,borderRadius:10,padding:"12px",textAlign:"center",borderTop:"3px solid "+c,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
       <div style={{fontSize:10,color:G.muted,fontWeight:700}}>{l}</div>
       <div style={{fontSize:18,fontWeight:700,color:c,marginTop:4}}>{cur(v)}</div>
     </div>
@@ -3727,7 +3727,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 <div style={{display:"flex",flexDirection:"column",gap:8}}>
   {moList.length===0&&<div style={{background:G.card,borderRadius:12,padding:24,textAlign:"center",color:G.muted}}>{"Nenhum gasto em "+mo}</div>}
   {moList.map(function(e){var pg=isPago(e);var pk=e.parcelado?parcelaK(e)+1:0;return(
-    <div key={e.id} style={{background:G.card,borderRadius:11,padding:"12px 14px",display:"flex",alignItems:"center",gap:10,boxShadow:"0 1px 4px rgba(0,0,0,.07)",opacity:pg?.75:1}}>
+    <div key={e.id} style={{background:G.card,borderRadius:11,padding:"12px 14px",display:"flex",alignItems:"center",gap:10,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",opacity:pg?.75:1}}>
       <input type="checkbox" checked={pg} onChange={function(){togglePago(e);}} style={{width:18,height:18,accentColor:G.primary,cursor:"pointer",flexShrink:0}}/>
       <div style={{flex:1,minWidth:0}}>
         <div style={{display:"flex",alignItems:"center",gap:5,flexWrap:"wrap"}}>
@@ -3745,7 +3745,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
   );})}
 </div>
 {modal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-  <div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:460,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.2)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:460,maxHeight:"90vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.2)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:"1px solid "+G.border}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>{edit?"Editar Gasto":"Novo Gasto"}</span>
       <button onClick={function(){setModal(false);}} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>{"x"}</button>
@@ -4170,21 +4170,21 @@ return <div style={{display:"flex",flexDirection:"column",gap:13}}>
 
 <div style={{background:G.accent,borderRadius:14,padding:"7px 13px",fontSize:12,fontWeight:600,color:G.primary,alignSelf:"flex-start"}}>📅 Próximos 12 meses</div>
 
-{!temAlgo&&<div style={{background:G.card,borderRadius:12,padding:26,textAlign:"center",color:G.muted,fontSize:13,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}><div style={{fontSize:26,marginBottom:6}}>📈</div>Sem recebimentos futuros lançados ainda.<div style={{fontSize:11,marginTop:5}}>Cartão parcelado, orto e planos em aberto aparecem aqui automaticamente.</div></div>}
+{!temAlgo&&<div style={{background:G.card,borderRadius:12,padding:26,textAlign:"center",color:G.muted,fontSize:13,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}><div style={{fontSize:26,marginBottom:6}}>📈</div>Sem recebimentos futuros lançados ainda.<div style={{fontSize:11,marginTop:5}}>Cartão parcelado, orto e planos em aberto aparecem aqui automaticamente.</div></div>}
 
 {temAlgo&&<>
 <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:11}}>
-<div style={{background:G.card,borderRadius:11,padding:"12px 14px",textAlign:"center",borderTop:"4px solid "+G.primary,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+<div style={{background:G.card,borderRadius:11,padding:"12px 14px",textAlign:"center",borderTop:"4px solid "+G.primary,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
 <div style={{fontSize:9.5,color:G.muted,fontWeight:700,letterSpacing:".3px"}}>A RECEBER (12 MESES)</div>
 <div style={{fontFamily:"'Cormorant Garamond'",fontSize:24,color:G.primary,fontWeight:700}}>{cur(totReceber)}</div>
 </div>
-<div style={{background:G.card,borderRadius:11,padding:"12px 14px",textAlign:"center",borderTop:"4px solid "+(totSaldo>=0?G.success:G.red),boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+<div style={{background:G.card,borderRadius:11,padding:"12px 14px",textAlign:"center",borderTop:"4px solid "+(totSaldo>=0?G.success:G.red),boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
 <div style={{fontSize:9.5,color:G.muted,fontWeight:700,letterSpacing:".3px"}}>SALDO PROJETADO</div>
 <div style={{fontFamily:"'Cormorant Garamond'",fontSize:24,color:totSaldo>=0?G.success:G.red,fontWeight:700}}>{(totSaldo>=0?"+":"")+cur(totSaldo)}</div>
 </div>
 </div>
 
-<div style={{background:G.card,borderRadius:12,padding:14,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+<div style={{background:G.card,borderRadius:12,padding:14,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
 <div style={{fontWeight:700,fontSize:13,marginBottom:8}}>Entradas previstas por mês</div>
 <div style={{display:"flex",gap:14,marginBottom:10,flexWrap:"wrap"}}>
 {[["Cartão",G.blue],["Orto/carnê",G.primary]].map(row=><div key={row[0]} style={{display:"flex",alignItems:"center",gap:5}}><span style={{width:8,height:8,borderRadius:8,background:row[1],display:"inline-block"}}/><span style={{fontSize:10,color:G.muted}}>{row[0]}</span></div>)}
@@ -4203,7 +4203,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:13}}>
 </div>
 </div>
 
-{cardMonths.length>0&&<div style={{background:G.card,borderRadius:12,padding:"12px 14px",boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+{cardMonths.length>0&&<div style={{background:G.card,borderRadius:12,padding:"12px 14px",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
 <div style={{fontWeight:700,fontSize:13}}>💳 Cartão a compensar</div>
 <div style={{fontSize:10.5,color:G.muted,marginBottom:9}}>Cada parcela no mês em que vence (data + nº de parcelas)</div>
 <div style={{display:"flex",gap:7,flexWrap:"wrap"}}>
@@ -4211,7 +4211,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:13}}>
 </div>
 </div>}
 
-{months.map(m=>{var open=openMo===m;var e=entrada(m),s=saldo(m);return <div key={m} style={{background:G.card,borderRadius:12,padding:open?"13px 15px":"10px 15px",boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+{months.map(m=>{var open=openMo===m;var e=entrada(m),s=saldo(m);return <div key={m} style={{background:G.card,borderRadius:12,padding:open?"13px 15px":"10px 15px",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
 <div onClick={()=>setOpenMo(open?null:m)} style={{display:"flex",justifyContent:"space-between",alignItems:"center",cursor:"pointer",gap:8}}>
 <div>
 <div style={{fontWeight:700,fontSize:13.5}}>{mFull(m)}</div>
@@ -4301,9 +4301,9 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 {modo==="diario"&&(
 
   <div style={{display:"flex",alignItems:"center",gap:8}}>
-    <button onClick={prevDia} style={{border:"1.5px solid "+G.border,background:"#fff",borderRadius:8,padding:"7px 13px",fontWeight:700,cursor:"pointer",color:G.primary,fontSize:16}}>{"<"}</button>
+    <button onClick={prevDia} style={{border:"1.5px solid "+G.border,background:G.card,borderRadius:8,padding:"7px 13px",fontWeight:700,cursor:"pointer",color:G.primary,fontSize:16}}>{"<"}</button>
     <input type="date" value={dia} onChange={e=>setDia(e.target.value)} style={{flex:1,border:"1.5px solid "+G.border,borderRadius:8,padding:"9px 12px",fontSize:14,outline:"none",textAlign:"center"}}/>
-    <button onClick={nextDia} style={{border:"1.5px solid "+G.border,background:"#fff",borderRadius:8,padding:"7px 13px",fontWeight:700,cursor:"pointer",color:G.primary,fontSize:16}}>{">"}</button>
+    <button onClick={nextDia} style={{border:"1.5px solid "+G.border,background:G.card,borderRadius:8,padding:"7px 13px",fontWeight:700,cursor:"pointer",color:G.primary,fontSize:16}}>{">"}</button>
     <button onClick={()=>setDia(today())} style={{border:"1.5px solid "+G.border,background:dia===today()?G.primary:"#fff",color:dia===today()?"#fff":G.primary,borderRadius:8,padding:"7px 11px",fontSize:12,fontWeight:700,cursor:"pointer"}}>Hoje</button>
   </div>
 )}
@@ -4314,7 +4314,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 {/* Cards resumo */}
 {modo!=="fluxo"&&<div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:11}}>
   {[["Receita Bruta",raw,G.primary],["Receita Líquida",liq,G.success],["Gastos Clínica",clinicExp,G.red],["Resultado",liq-clinicExp,liq-clinicExp>=0?G.success:G.red]].map(([l,v,c])=>(
-    <div key={l} style={{background:G.card,borderRadius:10,padding:"12px 14px",textAlign:"center",borderTop:"4px solid "+c,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+    <div key={l} style={{background:G.card,borderRadius:10,padding:"12px 14px",textAlign:"center",borderTop:"4px solid "+c,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
       <div style={{fontSize:10,color:G.muted,fontWeight:700,marginBottom:4}}>{l}</div>
       <div style={{fontFamily:"'Cormorant Garamond'",fontSize:22,color:c}}>{cur(v)}</div>
     </div>
@@ -4322,7 +4322,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 </div>}
 
 {/* Por forma de pagamento */}
-{modo!=="fluxo"&&byP.length>0&&<div style={{background:G.card,borderRadius:12,padding:14,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+{modo!=="fluxo"&&byP.length>0&&<div style={{background:G.card,borderRadius:12,padding:14,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
 
   <div style={{fontWeight:700,marginBottom:11,fontSize:13}}>Por Forma de Pagamento</div>
   {byP.map(({pt,v})=><div key={pt} style={{marginBottom:10}}>
@@ -4338,7 +4338,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 </div>}
 
 {/* MODO MENSAL: lista agrupada por dia */}
-{modo==="mensal"&&<div style={{background:G.card,borderRadius:12,padding:14,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+{modo==="mensal"&&<div style={{background:G.card,borderRadius:12,padding:14,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
 
   <div style={{fontWeight:700,marginBottom:11,fontSize:13}}>{"Dias com recebimento ("+Object.keys(porDia).length+")"}</div>
   {Object.keys(porDia).length===0&&<p style={{color:G.muted,fontSize:12}}>Nenhum recebimento neste mês</p>}
@@ -4388,7 +4388,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 </div>}
 
 {/* MODO DIARIO: lista detalhada do dia */}
-{modo==="diario"&&<div style={{background:G.card,borderRadius:12,padding:14,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+{modo==="diario"&&<div style={{background:G.card,borderRadius:12,padding:14,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
 
   <div style={{fontWeight:700,marginBottom:11,fontSize:13}}>{"Atendimentos - "+fmt(dia)+" ("+mr.length+")"}</div>
   {mr.length===0&&<div style={{textAlign:"center",padding:24,color:G.muted,fontSize:13}}>
@@ -4548,7 +4548,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
   {ALL_TPLS.map(function(tpl){
     var isEditing=editKey===tpl.key;
     var isCustom=waTemplates&&waTemplates[tpl.key];
-    return <div key={tpl.key} style={{background:G.card,borderRadius:12,padding:"13px 15px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",border:isCustom?"2px solid "+G.primary:"1px solid "+G.border}}>
+    return <div key={tpl.key} style={{background:G.card,borderRadius:12,padding:"13px 15px",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",border:isCustom?"2px solid "+G.primary:"1px solid "+G.border}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8,gap:8}}>
         <div>
           <div style={{fontWeight:700,fontSize:13}}>{tpl.label}</div>
@@ -4578,7 +4578,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 {/* Preview Modal */}
 {preview&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.6)",zIndex:9999,display:"flex",alignItems:"flex-end",justifyContent:"center"}}>
 
-  <div style={{background:"#fff",borderRadius:"20px 20px 0 0",width:"100%",maxWidth:560,maxHeight:"90vh",display:"flex",flexDirection:"column",boxShadow:"0 -8px 32px rgba(0,0,0,.2)"}}>
+  <div style={{background:G.card,borderRadius:"20px 20px 0 0",width:"100%",maxWidth:560,maxHeight:"90vh",display:"flex",flexDirection:"column",boxShadow:"0 -8px 32px rgba(0,0,0,.2)"}}>
     {/* WA header */}
     <div style={{background:"#075E54",borderRadius:"20px 20px 0 0",padding:"14px 18px",display:"flex",alignItems:"center",gap:12,flexShrink:0}}>
       <div style={{width:38,height:38,borderRadius:"50%",background:"#25D366",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>📱</div>
@@ -4593,7 +4593,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
     </div>
     {/* Message bubble preview */}
     <div style={{background:"#ECE5DD",padding:"14px 12px",flex:1,overflowY:"auto",minHeight:120}}>
-      <div style={{background:"#fff",borderRadius:"0 12px 12px 12px",padding:"10px 14px",maxWidth:"88%",boxShadow:"0 1px 2px rgba(0,0,0,.15)",fontSize:13,lineHeight:1.65,whiteSpace:"pre-wrap",color:"#111",wordBreak:"break-word"}}>
+      <div style={{background:G.card,borderRadius:"0 12px 12px 12px",padding:"10px 14px",maxWidth:"88%",boxShadow:"0 1px 2px rgba(0,0,0,.15)",fontSize:13,lineHeight:1.65,whiteSpace:"pre-wrap",color:"#111",wordBreak:"break-word"}}>
         {preview.editText}
       </div>
     </div>
@@ -4622,7 +4622,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 
 {/* Datas Especiais */}
 
-<div style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+<div style={{background:G.card,borderRadius:13,padding:15,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
   <div style={{fontWeight:700,fontSize:14,color:G.primary,marginBottom:4}}>🎊 Datas Especiais</div>
   <div style={{fontSize:12,color:G.muted,marginBottom:11}}>Clique em "Ver mensagem" para revisar e editar antes de enviar para cada paciente</div>
   <div style={{display:"flex",flexDirection:"column",gap:8}}>
@@ -4648,7 +4648,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 {bdayToday.length>0&&<div style={{background:G.gold+"15",border:`2px solid ${G.gold}`,borderRadius:13,padding:14}}>
 
   <div style={{fontWeight:700,fontSize:14,color:G.gold,marginBottom:10}}>🎂 Aniversariantes HOJE ({bdayToday.length})</div>
-  {bdayToday.map(p=><div key={p.id} style={{display:"flex",gap:10,alignItems:"center",background:"#fff",borderRadius:9,padding:"9px 13px",marginBottom:6}}>
+  {bdayToday.map(p=><div key={p.id} style={{display:"flex",gap:10,alignItems:"center",background:G.card,borderRadius:9,padding:"9px 13px",marginBottom:6}}>
     <div style={{flex:1}}>
       <div style={{fontWeight:700,fontSize:13}}>{p.name}</div>
       <div style={{fontSize:11,color:G.muted}}>{age(p.dob)} · {p.phone}</div>
@@ -4662,7 +4662,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 
 {/* Envio Personalizado */}
 
-<div style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+<div style={{background:G.card,borderRadius:13,padding:15,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
   <div style={{fontWeight:700,fontSize:14,color:G.primary,marginBottom:11}}>✉️ Envio Personalizado</div>
   {/* Template tabs */}
   <div style={{display:"flex",gap:6,flexWrap:"wrap",marginBottom:11}}>
@@ -4671,7 +4671,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
   {/* Live preview bubble */}
   <div style={{background:"#ECE5DD",borderRadius:10,padding:"12px",marginBottom:11}}>
     <div style={{fontSize:10,color:"#888",fontWeight:700,marginBottom:6}}>PRÉ-VISUALIZAÇÃO (com nome do paciente)</div>
-    <div style={{background:"#fff",borderRadius:"0 10px 10px 10px",padding:"9px 13px",fontSize:12,lineHeight:1.6,whiteSpace:"pre-wrap",color:"#111",maxHeight:140,overflowY:"auto",boxShadow:"0 1px 2px rgba(0,0,0,.1)"}}>
+    <div style={{background:G.card,borderRadius:"0 10px 10px 10px",padding:"9px 13px",fontSize:12,lineHeight:1.6,whiteSpace:"pre-wrap",color:"#111",maxHeight:140,overflowY:"auto",boxShadow:"0 1px 2px rgba(0,0,0,.1)"}}>
       {resolveTemplate(activeMsg,withPhone[0]||{name:"Paciente",genero:"F"})}
     </div>
   </div>
@@ -4764,7 +4764,7 @@ const PatCard=({p,badge,badgeCol,extra,listId,waMsg,treatId,overdue,todayB})=>{
 const pid=p.id+(treatId||"");
 const d=dents.find(x=>x.id===recs.filter(r=>r.patientId===p.id).sort((a,b)=>b.date.localeCompare(a.date))[0]?.dentistId)||dents[0];
 return <div style={{background:overdue||todayB?"#FDECEA":G.card,borderRadius:10,padding:"10px 13px",borderLeft:`4px solid ${badgeCol}`,display:"flex",gap:9,alignItems:"flex-start",boxShadow:overdue?"0 0 0 2px "+G.red:"0 1px 4px rgba(0,0,0,.05)",transition:"all .2s",marginBottom:6}}>
-<button onClick={()=>doTick(listId,pid)} title="Concluir e remover" style={{width:24,height:24,borderRadius:"50%",border:`2px solid ${G.border}`,background:"#fff",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:13,flexShrink:0,marginTop:1,transition:"all .2s"}}></button>
+<button onClick={()=>doTick(listId,pid)} title="Concluir e remover" style={{width:24,height:24,borderRadius:"50%",border:`2px solid ${G.border}`,background:G.card,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",fontSize:13,flexShrink:0,marginTop:1,transition:"all .2s"}}></button>
 
 <div style={{flex:1}}>
 {overdue&&<div style={{display:"inline-block",background:G.red,color:"#fff",borderRadius:6,padding:"1px 7px",fontSize:10,fontWeight:700,marginBottom:3}}>⚠️ ATRASADO</div>}
@@ -4801,7 +4801,7 @@ const doneItems=sec.list.filter(x=>{const p=sec.isTreat?pats.find(pt=>pt.id===x.
 const pendItems=sec.list.filter(x=>{const p=sec.isTreat?pats.find(pt=>pt.id===x.patientId):x;return p&&!isHandled(sec.id,p.id+(sec.isTreat?x.id:""));});
 const sdone=!!showDone[sec.id];
 const open=!!openSec[sec.id];
-return <div key={sec.id} style={{background:G.card,borderRadius:13,padding:"2px 14px",boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+return <div key={sec.id} style={{background:G.card,borderRadius:13,padding:"2px 14px",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
 <button onClick={function(){setOpenSec(function(prev){var n=Object.assign({},prev);n[sec.id]=!prev[sec.id];return n;});}} style={{width:"100%",border:"none",background:"none",padding:"11px 0",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center",gap:8}}>
 <div style={{textAlign:"left"}}><span style={{fontWeight:700,fontSize:14,color:sec.col}}>{sec.label} ({pendItems.length})</span>{sec.sub&&<div style={{fontSize:11,color:G.muted,fontWeight:400}}>{sec.sub}</div>}</div>
 <span style={{color:sec.col,fontSize:15,fontWeight:700,transform:open?"rotate(90deg)":"none",transition:"transform .15s"}}>{">"}</span>
@@ -4830,7 +4830,7 @@ return <div key={"d"+(sec.isTreat?x.id:p.id)} style={{background:"#f0faf4",borde
 </div>;
 })}
 {noteModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-<div style={{background:"#fff",borderRadius:14,width:"100%",maxWidth:400,boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+<div style={{background:G.card,borderRadius:14,width:"100%",maxWidth:400,boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"13px 18px",borderBottom:`1px solid ${G.border}`}}>
 <span style={{fontFamily:"'Cormorant Garamond'",fontSize:18}}>Marcar como resolvido</span>
 <button onClick={()=>setNoteModal(null)} style={{border:"none",background:"none",fontSize:22,cursor:"pointer",color:G.muted}}>×</button>
@@ -4932,7 +4932,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 {TABS.map(([k,l])=><button key={k} onClick={()=>setTab(k)} style={{border:"none",background:"none",padding:"9px 15px",fontFamily:"'Manrope'",fontWeight:700,fontSize:12,cursor:"pointer",color:tab===k?G.primary:G.muted,borderBottom:`3px solid ${tab===k?G.primary:"transparent"}`,marginBottom:-2}}>{lbl(l)}</button>)}
 </div>
 {tab==="dent"&&<div style={{display:"flex",flexDirection:"column",gap:14}}>
-{dr.map(({d,rs,raw,liq,com,cf,donedItems,doneLiq,doneCom})=>{const aberto=!!openDent[d.id];return <div key={d.id} style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:`4px solid ${d.color}`}}>
+{dr.map(({d,rs,raw,liq,com,cf,donedItems,doneLiq,doneCom})=>{const aberto=!!openDent[d.id];return <div key={d.id} style={{background:G.card,borderRadius:13,padding:15,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",borderLeft:`4px solid ${d.color}`}}>
 <div onClick={()=>setOpenDent(p=>Object.assign({},p,{[d.id]:!p[d.id]}))} style={{display:"flex",justifyContent:"space-between",flexWrap:"wrap",gap:10,marginBottom:aberto?11:0,cursor:"pointer",alignItems:"center"}}>
 <div style={{display:"flex",alignItems:"center",gap:9}}><span style={{fontSize:13,color:d.color,transition:"transform .2s",transform:aberto?"rotate(90deg)":"none"}}>▶</span><div><div style={{fontWeight:700,fontSize:15,color:d.color}}>{d.name}</div><div style={{fontSize:11,color:G.muted}}>{d.specialty} · {rs.length} atend.{aberto?"":" · toque para abrir"}</div></div></div>
 <div style={{textAlign:"right"}}><div style={{fontWeight:700,fontSize:17,color:G.primary}}>{cur(com+doneCom)}</div><div style={{fontSize:11,color:G.muted}}>Comissão total ({d.commission}%)</div></div>
@@ -4985,7 +4985,7 @@ return <div key={i} style={{display:"flex",gap:8,fontSize:11,padding:"5px 0",bor
 </div>;})}
 </div>}
 {tab==="prot"&&<div style={{display:"flex",flexDirection:"column",gap:14}}>
-{lr.map(({l,ps,tot,done,wait,cost})=>{const aberto=!!openProt[l.id];return <div key={l.id} style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+{lr.map(({l,ps,tot,done,wait,cost})=>{const aberto=!!openProt[l.id];return <div key={l.id} style={{background:G.card,borderRadius:13,padding:15,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
 <div onClick={()=>setOpenProt(p=>Object.assign({},p,{[l.id]:!p[l.id]}))} style={{display:"flex",justifyContent:"space-between",flexWrap:"wrap",gap:10,marginBottom:aberto?11:0,cursor:"pointer",alignItems:"center"}}>
 <div style={{display:"flex",alignItems:"center",gap:9}}><span style={{fontSize:13,color:G.primary,transition:"transform .2s",transform:aberto?"rotate(90deg)":"none"}}>▶</span><div><div style={{fontWeight:700,fontSize:15}}>{l.name}</div><div style={{fontSize:11,color:G.muted}}>{l.contact} · {l.phone}{aberto?"":" · toque para abrir"}</div></div></div>
 <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
@@ -4997,7 +4997,7 @@ return <div key={i} style={{display:"flex",gap:8,fontSize:11,padding:"5px 0",bor
 </div>}
 {tab==="orc"&&<div style={{display:"flex",flexDirection:"column",gap:14}}>
 {/* Origem summary */}
-<div style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+<div style={{background:G.card,borderRadius:13,padding:15,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
 <div style={{fontWeight:700,fontSize:14,marginBottom:12,color:G.primary}}>📊 Origem dos Pacientes</div>
 <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
 {["Indicação","Instagram","Já era paciente","Urgência","Passando na rua","Google","Outro","Não informado"].map(o=>{
@@ -5010,7 +5010,7 @@ return <div key={o} style={{background:G.accent,borderRadius:9,padding:"8px 14px
 {/* Filtro dentista */}
 <div style={{display:"flex",flexDirection:"column",gap:4}}>
 <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Filtrar dentista</label>
-<select value={orcDent} onChange={e=>setOrcDent(e.target.value)} style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"8px 11px",fontSize:13,outline:"none",background:"#fff",maxWidth:250}}>
+<select value={orcDent} onChange={e=>setOrcDent(e.target.value)} style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"8px 11px",fontSize:13,outline:"none",background:G.card,maxWidth:250}}>
 <option value="all">Todos os dentistas</option>
 {dents.map(d=><option key={d.id} value={d.id}>{d.name}</option>)}
 </select>
@@ -5044,7 +5044,7 @@ return <>
 <div style={{fontSize:10,color:active?STCOLOR[sv]:G.muted,fontWeight:700,marginTop:3}}>{active?"✓ filtrando":"toque p/ ver"}</div>
 </div>;})}
 </div>
-{Object.keys(byDent).length>0&&<div style={{background:G.card,borderRadius:12,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+{Object.keys(byDent).length>0&&<div style={{background:G.card,borderRadius:12,padding:15,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
 <div style={{fontWeight:700,fontSize:14,marginBottom:10,color:G.primary}}>🦷 Orçamentos por dentista</div>
 <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
 {Object.keys(byDent).map(id=>{var d=dents.find(x=>String(x.id)===String(id));return <div key={id} style={{background:((d&&d.color)||G.primary)+"15",borderRadius:9,padding:"7px 13px",display:"flex",alignItems:"center",gap:8}}>
@@ -5053,7 +5053,7 @@ return <>
 </div>;})}
 </div>
 </div>}
-{byStatus.naofechado.length>0&&<div style={{background:G.card,borderRadius:12,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:"4px solid "+G.red}}>
+{byStatus.naofechado.length>0&&<div style={{background:G.card,borderRadius:12,padding:15,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",borderLeft:"4px solid "+G.red}}>
 <div style={{fontWeight:700,fontSize:14,marginBottom:10,color:G.red}}>❌ Por que não fecharam ({byStatus.naofechado.length})</div>
 <div style={{display:"flex",flexDirection:"column",gap:7}}>
 {Object.keys(motivos).sort((a,b)=>motivos[b]-motivos[a]).map(m=><div key={m} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 12px",background:G.red+"12",borderRadius:8}}>
@@ -5063,10 +5063,10 @@ return <>
 </div>
 </div>}
 <div style={{display:"flex",flexDirection:"column",gap:7}}>
-{orcFilter&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",background:STCOLOR[orcFilter]+"15",borderRadius:10,padding:"9px 14px",borderLeft:"4px solid "+STCOLOR[orcFilter]}}><span style={{fontSize:13,fontWeight:700,color:STCOLOR[orcFilter]}}>{STLABEL[orcFilter]+" · "+orcs.filter(t=>stOf(t)===orcFilter).length}</span><button onClick={function(){setOrcFilter(null);}} style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:8,padding:"5px 12px",fontSize:12,fontWeight:700,color:G.primary,cursor:"pointer"}}>{"✕ Ver todos"}</button></div>}
+{orcFilter&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",background:STCOLOR[orcFilter]+"15",borderRadius:10,padding:"9px 14px",borderLeft:"4px solid "+STCOLOR[orcFilter]}}><span style={{fontSize:13,fontWeight:700,color:STCOLOR[orcFilter]}}>{STLABEL[orcFilter]+" · "+orcs.filter(t=>stOf(t)===orcFilter).length}</span><button onClick={function(){setOrcFilter(null);}} style={{background:G.card,border:"1.5px solid "+G.border,borderRadius:8,padding:"5px 12px",fontSize:12,fontWeight:700,color:G.primary,cursor:"pointer"}}>{"✕ Ver todos"}</button></div>}
 {(orcFilter?orcs.filter(t=>stOf(t)===orcFilter):orcs).length===0&&<div style={{background:G.card,borderRadius:10,padding:20,textAlign:"center",color:G.muted,fontSize:13}}>{orcFilter?"Nenhum orçamento "+STLABEL[orcFilter].toLowerCase()+" neste mês":"Nenhum orçamento neste mês"}</div>}
 {(orcFilter?orcs.filter(t=>stOf(t)===orcFilter):orcs).slice().sort((a,b)=>(b.start||"").localeCompare(a.start||"")).map(t=>{var pat=pats.find(p=>p.id===t.patientId);var den=dents.find(d=>String(d.id)===String(t.dentistId));var sv=stOf(t);var v=dispVal(t);var tt=totOf(t);
-return <div key={t.id} style={{background:G.card,borderRadius:10,padding:"11px 14px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:"4px solid "+STCOLOR[sv]}}>
+return <div key={t.id} style={{background:G.card,borderRadius:10,padding:"11px 14px",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",borderLeft:"4px solid "+STCOLOR[sv]}}>
 <div style={{display:"flex",justifyContent:"space-between",flexWrap:"wrap",gap:6}}>
 <div><div onClick={function(){if(pat)abrirFicha&&abrirFicha(pat);}} title={pat?"Abrir ficha clínica":""} style={{fontWeight:700,fontSize:13,color:pat?G.primary:G.text,cursor:pat?"pointer":"default",textDecoration:pat?"underline":"none",display:"inline-block"}}>{pat?pat.name:"--"}</div><div style={{fontSize:11,color:G.muted}}>{fmt(t.start)}{den?(" · "+den.name):""}{t.name?(" · "+t.name):""}</div></div>
 <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:3}}><div style={{display:"flex",gap:7,alignItems:"center"}}><Bdg l={BADGE[sv]} col={STCOLOR[sv]} sm/><span style={{fontWeight:700,color:G.primary}}>{cur(v)}</span></div>{sv==="parcial"&&<span style={{fontSize:10,color:G.blue,fontWeight:700}}>{"pago · de "+cur(tt)}</span>}</div>
@@ -5102,7 +5102,7 @@ return <div key={t.id} style={{background:G.card,borderRadius:10,padding:"11px 1
         if(!byWeek[week])byWeek[week]=[];
         byWeek[week].push(a);
       });
-      return <div key={d.id} style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:"4px solid "+d.color}}>
+      return <div key={d.id} style={{background:G.card,borderRadius:13,padding:15,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",borderLeft:"4px solid "+d.color}}>
         <div onClick={function(){setOpenOrto(function(p){var n={...p};n[d.id]=!n[d.id];return n;});}} style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:isOp?12:0,flexWrap:"wrap",gap:8,cursor:"pointer"}}>
           <div style={{display:"flex",alignItems:"center",gap:8}}>
             <span style={{fontSize:13,color:d.color,fontWeight:700}}>{isOp?"▾":"▸"}</span>
@@ -5146,7 +5146,7 @@ return <div key={t.id} style={{background:G.card,borderRadius:10,padding:"11px 1
 
 {tab==="gastos"&&user.level>=3&&<div style={{display:"flex",flexDirection:"column",gap:14}}>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
-{[["Gastos Clínica",clinicaG,G.red],["Gastos Pessoais",pessoalG,G.purple]].map(([title,list,color])=><div key={title} style={{background:G.card,borderRadius:13,padding:15,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+{[["Gastos Clínica",clinicaG,G.red],["Gastos Pessoais",pessoalG,G.purple]].map(([title,list,color])=><div key={title} style={{background:G.card,borderRadius:13,padding:15,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
 <div style={{fontWeight:700,fontSize:14,color,marginBottom:10}}>{title}</div>
 <div style={{fontFamily:"'Cormorant Garamond'",fontSize:22,color,marginBottom:12}}>{cur(list.reduce((s,e)=>s+Number(e.value||0),0))}</div>
 {list.map(e=><div key={e.id} style={{display:"flex",gap:8,fontSize:12,padding:"4px 0",borderBottom:`1px solid ${G.border}`,flexWrap:"wrap",alignItems:"center"}}>
@@ -5192,7 +5192,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 <Btn ch="+ Novo Item" onClick={()=>{setEdit(null);setF(b0);setModal(true);}}/>
 </div>
 <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(250px,1fr))",gap:11}}>
-{[...stock].sort((a,b)=>a.name.localeCompare(b.name,"pt-BR",{sensitivity:"base"})).map(s=>{const low=s.qty<=s.min;return <div key={s.id} style={{background:G.card,borderRadius:12,padding:13,boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:`4px solid ${low?G.red:G.success}`}}>
+{[...stock].sort((a,b)=>a.name.localeCompare(b.name,"pt-BR",{sensitivity:"base"})).map(s=>{const low=s.qty<=s.min;return <div key={s.id} style={{background:G.card,borderRadius:12,padding:13,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",borderLeft:`4px solid ${low?G.red:G.success}`}}>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
 <div><div style={{fontWeight:700,fontSize:13}}>{s.name}</div><div style={{fontSize:11,color:G.muted}}>Custo: {cur(s.price)}/{s.unit}</div></div>
 <div style={{textAlign:"right"}}><div style={{fontFamily:"'Cormorant Garamond'",fontSize:24,color:low?G.red:G.success,lineHeight:1}}>{s.qty}</div><div style={{fontSize:10,color:G.muted}}>{s.unit}</div></div>
@@ -5405,7 +5405,7 @@ function ImportWizard({pats,setPats}){
     var a=document.createElement("a");a.href=url;a.download="modelo_pacientes.csv";document.body.appendChild(a);a.click();setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},120);
   }
 
-  var card={background:G.card,borderRadius:13,padding:"16px 18px",boxShadow:"0 1px 4px rgba(0,0,0,.07)"};
+  var card={background:G.card,borderRadius:13,padding:"16px 18px",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"};
   var btnPrimary={background:G.primary,color:"#fff",border:"2px solid "+G.primary,borderRadius:9,padding:"10px 20px",fontSize:14,fontWeight:700,cursor:"pointer"};
   var btnGhost={background:"transparent",color:G.primary,border:"1.5px solid "+G.primary,borderRadius:9,padding:"9px 18px",fontSize:14,fontWeight:600,cursor:"pointer"};
   var mapped=step>=3?buildMapped():[];
@@ -5422,7 +5422,7 @@ function ImportWizard({pats,setPats}){
       <div style={{background:G.accent,borderRadius:10,padding:"11px 14px",fontSize:12.5,color:G.primary,lineHeight:1.5}}>
         Migre os pacientes do seu sistema antigo. No outro programa, exporte a lista de pacientes em <b>CSV</b> (formato mais garantido) ou <b>Excel</b> e envie o arquivo aqui. O sistema identifica as colunas automaticamente.
       </div>
-      <label style={{border:"2px dashed "+G.accentDark,borderRadius:14,padding:"28px 18px",textAlign:"center",cursor:"pointer",background:"#fff",display:"block"}}>
+      <label style={{border:"2px dashed "+G.accentDark,borderRadius:14,padding:"28px 18px",textAlign:"center",cursor:"pointer",background:G.card,display:"block"}}>
         <input type="file" accept=".csv,.txt,.xlsx,.xls,text/csv,text/plain,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/excel" style={{display:"none"}} onChange={function(e){var fl=e.target.files&&e.target.files[0];onFile(fl);e.target.value="";}}/>
         <div style={{fontSize:34,marginBottom:6}}>{"\uD83D\uDCC2"}</div>
         <div style={{fontWeight:700,color:G.primary,fontSize:15}}>{loading?"Lendo arquivo...":"Toque para escolher o arquivo"}</div>
@@ -5442,7 +5442,7 @@ function ImportWizard({pats,setPats}){
       <div style={card}>
         {FIELDS.map(function(f){return <div key={f.k} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0",borderBottom:"1px solid "+G.border}}>
           <div style={{flex:"0 0 42%",fontSize:13,fontWeight:f.req?700:600,color:f.req?G.primary:G.text}}>{f.label}{f.req?" *":""}</div>
-          <select value={mapping[f.k]==null?"":mapping[f.k]} onChange={function(e){var v=e.target.value;setMapping(function(m){var n=Object.assign({},m);n[f.k]=v;return n;});}} style={{flex:1,minWidth:0,border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 9px",fontSize:13,background:"#fff",color:G.text,outline:"none"}}>
+          <select value={mapping[f.k]==null?"":mapping[f.k]} onChange={function(e){var v=e.target.value;setMapping(function(m){var n=Object.assign({},m);n[f.k]=v;return n;});}} style={{flex:1,minWidth:0,border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 9px",fontSize:13,background:G.card,color:G.text,outline:"none"}}>
             <option value="">— ignorar —</option>
             {headers.map(function(h,idx){return <option key={idx} value={String(idx)}>{h||("Coluna "+(idx+1))}</option>;})}
           </select>
@@ -5459,7 +5459,7 @@ function ImportWizard({pats,setPats}){
       <div style={{background:G.accent,borderRadius:10,padding:"10px 13px",fontSize:13,color:G.primary}}>
         <b>{validRows.length}</b> paciente(s) prontos para importar.{noName>0?" "+noName+" linha(s) sem nome serao ignoradas.":""}
       </div>
-      <div style={{background:G.card,borderRadius:13,boxShadow:"0 1px 4px rgba(0,0,0,.07)",overflowX:"auto"}}>
+      <div style={{background:G.card,borderRadius:13,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",overflowX:"auto"}}>
         <table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}>
           <thead><tr style={{background:G.bg}}>
             {["Nome","Telefone","Nascimento","Convenio"].map(function(h){return <th key={h} style={{textAlign:"left",padding:"8px 10px",color:G.muted,fontWeight:700,whiteSpace:"nowrap"}}>{h}</th>;})}
@@ -5518,7 +5518,7 @@ const bd={name:"",specialty:"Clinico Geral",commission:40,cro:"",color:UCOLS[0],
 const [uf,setUf]=useState(b0);const [pf,setPf]=useState(bp);const [lf,setLf]=useState(bl);const [df,setDf]=useState(bd);
 const fu=k=>v=>setUf(p=>({...p,[k]:v}));const fp=k=>v=>setPf(p=>({...p,[k]:v}));const fl=k=>v=>setLf(p=>({...p,[k]:v}));
 const upDf=k=>v=>setDf(p=>({...p,[k]:v}));
-if(user.level<3)return <div style={{background:G.card,borderRadius:13,padding:30,textAlign:"center",boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}><p style={{color:G.red,fontSize:15}}>Acesso restrito ao Administrador</p></div>;
+if(user.level<3)return <div style={{background:G.card,borderRadius:13,padding:30,textAlign:"center",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}><p style={{color:G.red,fontSize:15}}>Acesso restrito ao Administrador</p></div>;
 const saveU=()=>{
 if(!uf.name||!uf.login)return alert("Preencha nome e login");
 let dentId=uf.dentistId?Number(uf.dentistId):null;
@@ -5577,7 +5577,7 @@ Para adicionar dentista use a aba <strong>Dentistas</strong>. Aqui crie apenas c
 <div style={{textAlign:"right"}}><Btn ch="+ Novo Usuario" sm onClick={()=>{setEu(null);setUf(b0);setUm(true);}}/></div>
 {users.map(u=>{
 const linkedDent=u.dentistId?dents.find(d=>d.id===u.dentistId):null;
-return <div key={u.id} style={{background:G.card,borderRadius:11,padding:"11px 14px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",display:"flex",alignItems:"center",gap:11,borderLeft:"4px solid "+u.color}}>
+return <div key={u.id} style={{background:G.card,borderRadius:11,padding:"11px 14px",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",display:"flex",alignItems:"center",gap:11,borderLeft:"4px solid "+u.color}}>
 <div style={{width:34,height:34,borderRadius:"50%",background:u.color,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:700,fontSize:13,flexShrink:0}}>{u.name[0]}</div>
 <div style={{flex:1,minWidth:0}}>
 <div style={{fontWeight:700,fontSize:13}}>{u.name}</div>
@@ -5598,7 +5598,7 @@ Cada dentista adicionado aqui aparece na <strong>agenda</strong> e nos <strong>h
 {dents.length===0&&<div style={{background:G.bg,borderRadius:10,padding:20,textAlign:"center",color:G.muted,fontSize:13}}>Nenhum dentista cadastrado</div>}
 {dents.map(d=>{
 const linkedUser=users.find(u=>u.dentistId===d.id);
-return <div key={d.id} style={{background:G.card,borderRadius:12,padding:"12px 14px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:"4px solid "+d.color}}>
+return <div key={d.id} style={{background:G.card,borderRadius:12,padding:"12px 14px",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",borderLeft:"4px solid "+d.color}}>
 <div style={{display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
 <div style={{width:36,height:36,borderRadius:"50%",background:d.color,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:700,fontSize:14,flexShrink:0}}>{d.name[0]}</div>
 <div style={{flex:1,minWidth:0}}>
@@ -5621,14 +5621,14 @@ if(lu)setUsers(prev=>prev.map(u=>u.dentistId===d.id?{...u,dentistId:null}:u));
 </div>}
 {tab==="procs"&&<div style={{display:"flex",flexDirection:"column",gap:9}}>
 <div style={{textAlign:"right"}}><Btn ch="+ Novo" sm onClick={()=>{setEp(null);setPf(bp);setPm(true);}}/></div>
-{procs.map(p=><div key={p.id} style={{background:G.card,borderRadius:10,padding:"9px 14px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",display:"flex",alignItems:"center",gap:11}}>
+{procs.map(p=><div key={p.id} style={{background:G.card,borderRadius:10,padding:"9px 14px",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",display:"flex",alignItems:"center",gap:11}}>
 <span style={{flex:1,fontWeight:700,fontSize:13}}>{p.name}</span><span style={{fontWeight:700,color:G.primary}}>{cur(p.price)}</span>
 <Btn ch="Editar" v="g" sm onClick={()=>{setEp(p);setPf({...p});setPm(true);}}/><Btn ch="✕" v="r" sm onClick={()=>{if(window.confirm("Remover?"))setProcs(prev=>prev.filter(x=>x.id!==p.id));}}/>
 </div>)}
 </div>}
 {tab==="labs"&&<div style={{display:"flex",flexDirection:"column",gap:9}}>
 <div style={{textAlign:"right"}}><Btn ch="+ Novo Laboratório" sm onClick={()=>{setEl(null);setLf(bl);setLm(true);}}/></div>
-{labs.map(l=><div key={l.id} style={{background:G.card,borderRadius:10,padding:"11px 14px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",display:"flex",alignItems:"center",gap:11}}>
+{labs.map(l=><div key={l.id} style={{background:G.card,borderRadius:10,padding:"11px 14px",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",display:"flex",alignItems:"center",gap:11}}>
 <div style={{flex:1}}>
 <div style={{fontWeight:700,fontSize:13}}>{l.name}</div>
 <div style={{fontSize:12,color:G.muted}}>{l.contact}{l.phone?` · ${l.phone}`:""}</div>
@@ -5670,7 +5670,7 @@ style={{border:"2px solid "+(ativo?d.color:G.border),background:ativo?d.color:"#
 </div>
 {(function(){
 var HORAS=["06:00","06:30","07:00","07:30","08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30"];
-var selStyle={border:"1.5px solid "+G.border,borderRadius:8,padding:"8px 10px",fontSize:13,outline:"none",width:"100%",background:"#fff"};
+var selStyle={border:"1.5px solid "+G.border,borderRadius:8,padding:"8px 10px",fontSize:13,outline:"none",width:"100%",background:G.card};
 return <div>
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:10}}>
 <div>
@@ -5753,7 +5753,7 @@ return novo;
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
 <div>
 <label style={{fontSize:10,fontWeight:700,color:G.muted,textTransform:"uppercase",display:"block",marginBottom:4}}>Funcionário</label>
-<select value={lfUser} onChange={function(e){setLfUser(e.target.value);}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 10px",fontSize:12,outline:"none",background:"#fff"}}>
+<select value={lfUser} onChange={function(e){setLfUser(e.target.value);}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 10px",fontSize:12,outline:"none",background:G.card}}>
 <option value="all">Todos</option>
 {uniqueUsers.map(function(u){return <option key={u} value={u}>{u}</option>;})}
 </select>
@@ -5770,7 +5770,7 @@ return novo;
 </div>
 <div>
 <label style={{fontSize:10,fontWeight:700,color:G.muted,textTransform:"uppercase",display:"block",marginBottom:4}}>Tipo</label>
-<select value={lfTipo} onChange={function(e){setLfTipo(e.target.value);}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 10px",fontSize:12,outline:"none",background:"#fff"}}>
+<select value={lfTipo} onChange={function(e){setLfTipo(e.target.value);}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:8,padding:"7px 10px",fontSize:12,outline:"none",background:G.card}}>
 {TIPOS_LOG.map(function(t){return <option key={t} value={t}>{TIPO_L_LOG[t]}</option>;})}
 </select>
 </div>
@@ -5831,7 +5831,7 @@ return(
     {bkpDone&&<div style={{background:"#E8F5E9",border:"1.5px solid #A5D6A7",borderRadius:10,padding:"10px 14px",fontSize:13,color:"#2E7D32",textAlign:"center"}}>{"✅ Backup gerado! Arquivo salvo na pasta Downloads."}</div>}
   </div>
 
-  <div style={{background:"#fff",border:"1.5px solid "+G.border,borderRadius:12,padding:"14px 16px",display:"flex",flexDirection:"column",gap:10}}>
+  <div style={{background:G.card,border:"1.5px solid "+G.border,borderRadius:12,padding:"14px 16px",display:"flex",flexDirection:"column",gap:10}}>
     <div style={{fontWeight:700,fontSize:14,color:G.primary}}>{"📂 Restaurar Backup"}</div>
     <div style={{fontSize:12,color:G.muted,lineHeight:1.6}}>
       {"Selecione um arquivo .json de backup para restaurar todos os dados. "}
@@ -5902,7 +5902,7 @@ return(
 </div>}/>
 {/* Lab modal -- inline to avoid state issues */}
 {lm&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:460,boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:460,boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:`1px solid ${G.border}`}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>{el?"Editar Laboratório":"Novo Laboratório"}</span>
       <button onClick={()=>setLm(false)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -5920,7 +5920,7 @@ return(
 </div>}
 
 {dm&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:560,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+  <div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:560,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:"1px solid "+G.border}}>
       <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>{ed?"Editar Dentista":"Novo Dentista"}</span>
       <button onClick={()=>setDm(false)} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>{"x"}</button>
@@ -6012,7 +6012,7 @@ const head=function(open,setOpen,icon,label,count,color){
     <span style={{color:color,fontSize:13,fontWeight:700,transform:open?"rotate(90deg)":"none",transition:"transform .15s"}}>{">"}</span>
   </button>;
 };
-const bodyWrap=function(children,color){return <div style={{border:"1.5px solid "+color+"55",borderTop:"none",borderRadius:"0 0 12px 12px",padding:"10px 12px",display:"flex",flexDirection:"column",gap:7,background:"#fff"}}>{children}</div>;};
+const bodyWrap=function(children,color){return <div style={{border:"1.5px solid "+color+"55",borderTop:"none",borderRadius:"0 0 12px 12px",padding:"10px 12px",display:"flex",flexDirection:"column",gap:7,background:G.card}}>{children}</div>;};
 return <div style={{display:"flex",flexDirection:"column",gap:12}} className="fi">
 
   <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
@@ -6129,7 +6129,7 @@ const url=`https://wa.me/${n.startsWith("55")?n:"55"+n}?text=${encodeURIComponen
 const copy=()=>{ navigator.clipboard?.writeText(msg).then(()=>alert("Mensagem copiada!")).catch(()=>alert("Copie manualmente:\n\n"+msg)); };
 return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex:9999,display:"flex",alignItems:"flex-end",justifyContent:"center",padding:"0 0 0 0"}}>
 
-<div style={{background:"#fff",borderRadius:"20px 20px 0 0",width:"100%",maxWidth:560,boxShadow:"0 -8px 32px rgba(0,0,0,.18)",overflow:"hidden"}}>
+<div style={{background:G.card,borderRadius:"20px 20px 0 0",width:"100%",maxWidth:560,boxShadow:"0 -8px 32px rgba(0,0,0,.18)",overflow:"hidden"}}>
 {/* Header */}
 <div style={{background:"#25D366",padding:"14px 18px",display:"flex",alignItems:"center",gap:12}}>
 <span style={{fontSize:24}}>📱</span>
@@ -6141,7 +6141,7 @@ return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex
 </div>
 {/* Message preview -- like WhatsApp bubble */}
 <div style={{background:"#ECE5DD",padding:"16px",maxHeight:"45vh",overflowY:"auto"}}>
-<div style={{background:"#fff",borderRadius:"0 12px 12px 12px",padding:"10px 14px",maxWidth:"85%",boxShadow:"0 1px 3px rgba(0,0,0,.1)",display:"inline-block",fontSize:13,lineHeight:1.6,whiteSpace:"pre-wrap",color:"#111",wordBreak:"break-word"}}>
+<div style={{background:G.card,borderRadius:"0 12px 12px 12px",padding:"10px 14px",maxWidth:"85%",boxShadow:"0 1px 3px rgba(0,0,0,.1)",display:"inline-block",fontSize:13,lineHeight:1.6,whiteSpace:"pre-wrap",color:"#111",wordBreak:"break-word"}}>
 {msg}
 </div>
 </div>
@@ -6284,7 +6284,7 @@ return (
 {addMod&&(
 
 <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-<div style={{background:"#fff",borderRadius:16,width:"100%",maxWidth:460,boxShadow:"0 16px 48px rgba(0,0,0,.2)"}}>
+<div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:460,boxShadow:"0 16px 48px rgba(0,0,0,.2)"}}>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 18px",borderBottom:"1px solid "+G.border}}>
 <span style={{fontWeight:700,fontSize:16}}>Nova Medicação</span>
 <button onClick={function(){setAddMod(false);}} style={{border:"none",background:"none",fontSize:22,cursor:"pointer",color:G.muted}}>{"×"}</button>
@@ -6379,7 +6379,7 @@ return(
   <style dangerouslySetInnerHTML={{__html:"@media print{@page{size:A4 portrait;margin:0} *{-webkit-print-color-adjust:exact;print-color-adjust:exact} .no-print{display:none!important} .print-page{box-shadow:none!important;max-width:100%!important;width:100%!important;padding:20mm 25mm!important;min-height:297mm!important;box-sizing:border-box!important} body,html{margin:0!important;padding:0!important;height:auto!important} .print-wrapper{padding:0!important;margin:0!important;background:none!important}}"}}/>
   {/* Action buttons - hidden on print */}
   <div className="no-print" style={{display:"flex",gap:12,marginBottom:20,width:"100%",maxWidth:520}}>
-    <button onClick={function(){setShowPrint(false);}} style={{flex:1,padding:"12px",border:"1.5px solid #ccc",borderRadius:10,background:"#fff",fontSize:14,fontWeight:700,cursor:"pointer"}}>← Voltar</button>
+    <button onClick={function(){setShowPrint(false);}} style={{flex:1,padding:"12px",border:"1.5px solid #ccc",borderRadius:10,background:G.card,fontSize:14,fontWeight:700,cursor:"pointer"}}>← Voltar</button>
     <button onClick={function(){
   var nomePac2=pat&&pat.name||"--";
   var nomeDent2=dent&&dent.name||"Dr. Ricardo Mendes";
@@ -6442,7 +6442,7 @@ return(
 }} style={{flex:2,padding:"12px",background:"#1B5E4A",color:"#fff",border:"none",borderRadius:10,fontSize:14,fontWeight:700,cursor:"pointer"}}>{"🖨️ Imprimir — desmarque Cabeçalhos e rodapés"}</button>
   </div>
   {/* Receipt page */}
-  <div className="print-page" style={{background:"#fff",width:"100%",maxWidth:794,padding:"32px 48px",borderRadius:4,boxShadow:"0 2px 20px rgba(0,0,0,.1)",minHeight:1050,display:"flex",flexDirection:"column"}}>
+  <div className="print-page" style={{background:G.card,width:"100%",maxWidth:794,padding:"32px 48px",borderRadius:4,boxShadow:"0 2px 20px rgba(0,0,0,.1)",minHeight:1050,display:"flex",flexDirection:"column"}}>
     {/* Header */}
     <div style={{textAlign:"center",marginBottom:20}}>
       <div style={{fontSize:14,letterSpacing:4,color:"#8B6914",textTransform:"uppercase",marginBottom:6}}>Clínica Modelo</div>
@@ -6592,7 +6592,7 @@ return(
 <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi">
   <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:8}}>
     <h2 style={{fontFamily:"'Cormorant Garamond'",fontSize:26,margin:0}}>{lbl("💰 Recebimentos")}</h2>
-    {!isDent&&<select value={selDent} onChange={function(e){setSelDent(e.target.value);}} style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"8px 12px",fontSize:13,outline:"none",background:"#fff"}}>
+    {!isDent&&<select value={selDent} onChange={function(e){setSelDent(e.target.value);}} style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"8px 12px",fontSize:13,outline:"none",background:G.card}}>
       {myDents.map(function(d){return <option key={d.id} value={String(d.id)}>{d.name}</option>;})}
     </select>}
   </div>
@@ -6605,7 +6605,7 @@ return(
   {/* Resumo */}
   <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
     {[["Total Comissão",totalComissao,G.primary],["Pago",totalPago,G.success],["Pendente",totalPendente,G.red]].map(function(row){return(
-      <div key={row[0]} style={{background:G.card,borderRadius:12,padding:"11px 8px",textAlign:"center",borderTop:"3px solid "+row[2],boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+      <div key={row[0]} style={{background:G.card,borderRadius:12,padding:"11px 8px",textAlign:"center",borderTop:"3px solid "+row[2],boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
         <div style={{fontSize:9,color:G.muted,fontWeight:700,textTransform:"uppercase",marginBottom:3}}>{row[0]}</div>
         <div style={{fontSize:16,fontWeight:700,color:row[2]}}>{cur(row[1])}</div>
       </div>
@@ -6613,13 +6613,13 @@ return(
   </div>
 
   {/* Lista de procedimentos */}
-  {items.length===0&&<div style={{background:G.card,borderRadius:12,padding:30,textAlign:"center",color:G.muted,fontSize:13,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+  {items.length===0&&<div style={{background:G.card,borderRadius:12,padding:30,textAlign:"center",color:G.muted,fontSize:13,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
     Nenhum procedimento realizado neste mês
   </div>}
 
   <div style={{display:"flex",flexDirection:"column",gap:8}}>
     {items.map(function(item){return(
-      <div key={item.key} style={{background:G.card,borderRadius:12,padding:"13px 15px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:"4px solid "+(item.pago?G.success:item.atrasado?G.red:G.orange),opacity:item.pago?0.75:1}}>
+      <div key={item.key} style={{background:G.card,borderRadius:12,padding:"13px 15px",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",borderLeft:"4px solid "+(item.pago?G.success:item.atrasado?G.red:G.orange),opacity:item.pago?0.75:1}}>
         <div style={{display:"flex",alignItems:"center",gap:12}}>
           {/* Checkbox admin */}
           {!isDent&&<div onClick={function(){marcarPago(item.key,!item.pago);}}
@@ -6658,7 +6658,7 @@ wa(pat.phone,msg);setSent(true);
 };
 return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-<div style={{background:"#fff",borderRadius:18,width:"100%",maxWidth:420,boxShadow:"0 8px 32px rgba(0,0,0,.2)"}}>
+<div style={{background:G.card,borderRadius:18,width:"100%",maxWidth:420,boxShadow:"0 8px 32px rgba(0,0,0,.2)"}}>
 <div style={{background:"#075E54",borderRadius:"18px 18px 0 0",padding:"14px 18px",display:"flex",alignItems:"center",gap:10}}>
 <span style={{fontSize:20}}>{"📋"}</span>
 <div style={{flex:1}}><div style={{fontWeight:700,color:"#fff",fontSize:14}}>Anamnese por WhatsApp</div><div style={{fontSize:11,color:"rgba(255,255,255,.8)"}}>{pat.name}</div></div>
@@ -6822,9 +6822,9 @@ function ConsultorIA(props){
     setLoading(false);
   };
 
-  var card={background:G.card,borderRadius:14,padding:"16px 18px",boxShadow:"0 1px 4px rgba(0,0,0,.07)"};
+  var card={background:G.card,borderRadius:14,padding:"16px 18px",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"};
   var kpi=function(label,valor,cor,sub){return (
-    <div style={{background:G.card,borderRadius:13,padding:"13px 15px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",flex:"1 1 140px"}}>
+    <div style={{background:G.card,borderRadius:13,padding:"13px 15px",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",flex:"1 1 140px"}}>
       <div style={{fontSize:10.5,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>{label}</div>
       <div style={{fontSize:20,fontWeight:800,color:cor||G.text,marginTop:3}}>{valor}</div>
       {sub?<div style={{fontSize:11,color:G.muted,marginTop:2}}>{sub}</div>:null}
@@ -6834,7 +6834,7 @@ function ConsultorIA(props){
   var listaCard=function(icon,titulo,itens,cor,bg){
     if(!itens||!itens.length)return null;
     return (
-      <div style={{background:bg||G.card,borderRadius:14,padding:"15px 17px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",borderLeft:"4px solid "+cor}}>
+      <div style={{background:bg||G.card,borderRadius:14,padding:"15px 17px",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",borderLeft:"4px solid "+cor}}>
         <div style={{fontSize:13.5,fontWeight:800,color:cor,marginBottom:9,display:"flex",alignItems:"center",gap:7}}><span>{icon}</span><span>{titulo}</span></div>
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
           {itens.map(function(it,ix){return (
@@ -6863,7 +6863,7 @@ function ConsultorIA(props){
       <div style={Object.assign({},card,{display:"flex",gap:10,flexWrap:"wrap",alignItems:"flex-end"})}>
         <div style={{flex:"1 1 160px"}}>
           <label style={{fontSize:10.5,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px",display:"block",marginBottom:4}}>Mês de referência</label>
-          <select value={refMonth} onChange={function(e){setRefMonth(e.target.value);}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"9px 11px",fontSize:14,outline:"none",background:"#fff",fontWeight:600}}>
+          <select value={refMonth} onChange={function(e){setRefMonth(e.target.value);}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"9px 11px",fontSize:14,outline:"none",background:G.card,fontWeight:600}}>
             {moOpts.map(function(mo){return <option key={mo} value={mo}>{moLabel(mo)}</option>;})}
           </select>
         </div>
@@ -6927,7 +6927,7 @@ setLoading(false);
 };
 return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-<div style={{background:"#fff",borderRadius:18,width:"100%",maxWidth:460,maxHeight:"90vh",overflow:"auto"}}>
+<div style={{background:G.card,borderRadius:18,width:"100%",maxWidth:460,maxHeight:"90vh",overflow:"auto"}}>
 <div style={{background:G.primary,borderRadius:"18px 18px 0 0",padding:"14px 18px",display:"flex",alignItems:"center",gap:10}}>
 <span style={{fontSize:20}}>{"🦷"}</span>
 <div style={{flex:1}}><div style={{fontWeight:700,color:"#fff",fontSize:14}}>{"Análise de RX com IA"}</div><div style={{fontSize:11,color:"rgba(255,255,255,.8)"}}>{pat&&pat.name}</div></div>
@@ -6959,7 +6959,7 @@ setDone(true);
 };
 return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
 
-<div style={{background:"#fff",borderRadius:18,width:"100%",maxWidth:380}}>
+<div style={{background:G.card,borderRadius:18,width:"100%",maxWidth:380}}>
 <div style={{background:G.red,borderRadius:"18px 18px 0 0",padding:"14px 18px",display:"flex",alignItems:"center",gap:10}}>
 <span style={{fontSize:20}}>{"❌"}</span>
 <div style={{flex:1,fontWeight:700,color:"#fff",fontSize:14}}>Cancelar Consulta</div>
@@ -6991,7 +6991,7 @@ var [outro,setOutro]=useState("");
 return(
 
 <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.6)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-<div style={{background:"#fff",borderRadius:18,width:"100%",maxWidth:420,boxShadow:"0 8px 32px rgba(0,0,0,.2)"}}>
+<div style={{background:G.card,borderRadius:18,width:"100%",maxWidth:420,boxShadow:"0 8px 32px rgba(0,0,0,.2)"}}>
 <div style={{background:G.red,borderRadius:"18px 18px 0 0",padding:"14px 18px",display:"flex",alignItems:"center",gap:10}}>
 <span style={{fontSize:20}}>{"📋"}</span>
 <div style={{flex:1,color:"#fff"}}><div style={{fontWeight:700,fontSize:14}}>Motivo do Não Agendamento</div><div style={{fontSize:11,opacity:.8}}>{p&&p.name}</div></div>
@@ -7127,7 +7127,7 @@ var canSave=pat&&proc&&valido;
 return(
 
 <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.6)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:16,overflowY:"auto"}}>
-<div style={{background:"#fff",borderRadius:18,width:"100%",maxWidth:480,boxShadow:"0 8px 32px rgba(0,0,0,.2)"}}>
+<div style={{background:G.card,borderRadius:18,width:"100%",maxWidth:480,boxShadow:"0 8px 32px rgba(0,0,0,.2)"}}>
 <div style={{background:"#7B1FA2",borderRadius:"18px 18px 0 0",padding:"14px 18px",display:"flex",alignItems:"center",gap:10}}>
 <span style={{fontSize:20}}>{"⏳"}</span>
 <div style={{flex:1,color:"#fff",fontWeight:700,fontSize:14}}>Nova Lista de Espera</div>
@@ -7258,7 +7258,7 @@ return(
 <button onClick={function(){setEditCat(item);setCatF({tipo:item.tipo,marca:item.marca,desc:item.desc,codigo:item.codigo||"",estoque_min:item.estoque_min,preco:item.preco!=null?String(item.preco):""});setShowCat(true);}} style={{background:G.bg,border:"1px solid "+G.border,borderRadius:7,padding:"4px 8px",fontSize:11,cursor:"pointer",color:G.muted}}>{"Editar"}</button>
 <button onClick={function(){setShowMov(true);setMovF({tipo:"entrada",itemId:String(item.id),qty:1,patId:"",dente:"",dentId:"",obs:"",date:t});}} style={{background:"#E8F5E9",border:"1px solid #27AE60",borderRadius:7,padding:"4px 8px",fontSize:11,cursor:"pointer",color:"#1E7D45",fontWeight:700}}>{"+ Entrada"}</button>
 <button onClick={function(){setShowMov(true);setMovF({tipo:"saida",itemId:String(item.id),qty:1,patId:"",dente:"",dentId:"",obs:"",date:t});}} style={{background:"#FFEBEE",border:"1px solid "+G.red,borderRadius:7,padding:"4px 8px",fontSize:11,cursor:"pointer",color:G.red,fontWeight:700}}>{"- Saida"}</button>
-<button onClick={function(){if(window.confirm("Excluir "+item.desc+"? Esta acao nao pode ser desfeita."))setImplCat(function(prev){return prev.filter(function(x){return x.id!==item.id;});});}} style={{background:"#fff",border:"1px solid "+G.red,borderRadius:7,padding:"4px 8px",fontSize:11,cursor:"pointer",color:G.red,fontWeight:700,marginLeft:"auto"}}>{"🗑 Excluir"}</button>
+<button onClick={function(){if(window.confirm("Excluir "+item.desc+"? Esta acao nao pode ser desfeita."))setImplCat(function(prev){return prev.filter(function(x){return x.id!==item.id;});});}} style={{background:G.card,border:"1px solid "+G.red,borderRadius:7,padding:"4px 8px",fontSize:11,cursor:"pointer",color:G.red,fontWeight:700,marginLeft:"auto"}}>{"🗑 Excluir"}</button>
 </div>
 </div>
 );})}
@@ -7313,7 +7313,7 @@ return(
 })}
 </div>}
 {showCat&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.6)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-<div style={{background:"#fff",borderRadius:18,width:"100%",maxWidth:400}}>
+<div style={{background:G.card,borderRadius:18,width:"100%",maxWidth:400}}>
 <div style={{background:G.primary,borderRadius:"18px 18px 0 0",padding:"14px 18px",display:"flex",alignItems:"center",gap:10}}>
 <div style={{flex:1,color:"#fff",fontWeight:700,fontSize:14}}>{editCat?"Editar Item":"Novo Item"}</div>
 <button onClick={function(){setShowCat(false);setEditCat(null);}} style={{border:"none",background:"rgba(255,255,255,.2)",borderRadius:8,color:"#fff",cursor:"pointer",padding:"5px 10px"}}>{"X"}</button>
@@ -7336,7 +7336,7 @@ return(
 </div>
 </div>}
 {showMov&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.6)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-<div style={{background:"#fff",borderRadius:18,width:"100%",maxWidth:420,maxHeight:"90vh",overflowY:"auto"}}>
+<div style={{background:G.card,borderRadius:18,width:"100%",maxWidth:420,maxHeight:"90vh",overflowY:"auto"}}>
 <div style={{background:movF.tipo==="entrada"?"#27AE60":G.red,borderRadius:"18px 18px 0 0",padding:"14px 18px",display:"flex",alignItems:"center",gap:10}}>
 <div style={{flex:1,color:"#fff",fontWeight:700,fontSize:14}}>{movF.tipo==="entrada"?"Registrar Entrada":"Registrar Saida (Uso)"}</div>
 <button onClick={function(){setShowMov(false);}} style={{border:"none",background:"rgba(255,255,255,.2)",borderRadius:8,color:"#fff",cursor:"pointer",padding:"5px 10px"}}>{"X"}</button>
@@ -7476,7 +7476,7 @@ alert(r.ok?"✅ Mensagem de teste enviada! Confira o WhatsApp.":"❌ Erro: "+(r.
 var Sw=function(props){
 var on=!!props.on;
 return <button onClick={props.onClick} style={{border:"none",width:46,height:26,borderRadius:20,background:on?G.success:"#cfd8d3",position:"relative",cursor:"pointer",flexShrink:0,transition:"background .15s"}}>
-<span style={{position:"absolute",top:3,left:on?23:3,width:20,height:20,borderRadius:"50%",background:"#fff",boxShadow:"0 1px 3px rgba(0,0,0,.3)",transition:"left .15s"}}/>
+<span style={{position:"absolute",top:3,left:on?23:3,width:20,height:20,borderRadius:"50%",background:G.card,boxShadow:"0 1px 3px rgba(0,0,0,.3)",transition:"left .15s"}}/>
 </button>;
 };
 return <div style={{display:"flex",flexDirection:"column",gap:14}}>
@@ -7515,7 +7515,7 @@ return <div key={t.k} style={{background:G.card,borderRadius:11,padding:"11px 13
 <Inp lb="Seu WhatsApp (com DDD)" val={testFone} set={setTestFone} ph="11999990000"/>
 <div style={{display:"flex",flexDirection:"column",gap:4}}>
 <label style={{fontSize:11,fontWeight:700,color:G.muted,textTransform:"uppercase",letterSpacing:".4px"}}>Template</label>
-<select value={testTpl} onChange={function(e){setTestTpl(e.target.value);}} style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"8px 11px",fontSize:13,outline:"none",background:"#fff"}}>
+<select value={testTpl} onChange={function(e){setTestTpl(e.target.value);}} style={{border:"1.5px solid "+G.border,borderRadius:8,padding:"8px 11px",fontSize:13,outline:"none",background:G.card}}>
 {WA_TPL.map(function(t){return <option key={t.k} value={t.k}>{t.label}</option>;})}
 </select>
 </div>
@@ -7552,7 +7552,7 @@ return(
 <div style={{position:"relative",width:150,height:150,margin:"0 auto 4px",display:"flex",alignItems:"center",justifyContent:"center"}}>
 <div style={{position:"absolute",inset:0,borderRadius:"50%",border:"1px solid rgba(255,255,255,.18)"}}/>
 <div style={{position:"absolute",inset:18,borderRadius:"50%",border:"1px solid rgba(255,255,255,.10)"}}/>
-<div className="orbe-orbit" style={{position:"absolute",inset:0}}><div style={{position:"absolute",top:-3,left:"50%",width:7,height:7,borderRadius:"50%",background:"#fff",boxShadow:"0 0 10px 2px rgba(255,255,255,.7)",transform:"translateX(-50%)"}}/></div>
+<div className="orbe-orbit" style={{position:"absolute",inset:0}}><div style={{position:"absolute",top:-3,left:"50%",width:7,height:7,borderRadius:"50%",background:G.card,boxShadow:"0 0 10px 2px rgba(255,255,255,.7)",transform:"translateX(-50%)"}}/></div>
 <div style={{fontSize:60,filter:"drop-shadow(0 6px 14px rgba(0,0,0,.35))"}}>{"🦷"}</div>
 </div>
 <div style={{fontFamily:"'Cormorant Garamond'",fontSize:56,color:"#fff",fontWeight:700,lineHeight:1,marginTop:18}}>Orbe</div>
@@ -7658,7 +7658,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 {/* Totais do mes - igual Gastos */}
 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10}}>
   {[["Total Geral",moData.total,G.primary],["PIX",moData.pix,G.success],["Cartao",moData.card,"#1565C0"]].map(function([l,v,c]){return(
-    <div key={l} style={{background:G.card,borderRadius:10,padding:"12px",textAlign:"center",borderTop:"3px solid "+c,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+    <div key={l} style={{background:G.card,borderRadius:10,padding:"12px",textAlign:"center",borderTop:"3px solid "+c,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
       <div style={{fontSize:10,color:G.muted,fontWeight:700}}>{l}</div>
       <div style={{fontSize:18,fontWeight:700,color:c,marginTop:4}}>{cur(v)}</div>
     </div>
@@ -7667,14 +7667,14 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 
 {/* Lista de pagamentos do mes */}
 {moData.recs.length===0
-  ?<div style={{background:G.card,borderRadius:12,padding:24,textAlign:"center",color:G.muted,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>{"Nenhum pagamento em "+fmtMo(moAtivo)}</div>
+  ?<div style={{background:G.card,borderRadius:12,padding:24,textAlign:"center",color:G.muted,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>{"Nenhum pagamento em "+fmtMo(moAtivo)}</div>
   :<div style={{display:"flex",flexDirection:"column",gap:8}}>
     <div style={{fontSize:11,color:G.muted,fontWeight:700,textTransform:"uppercase",letterSpacing:".5px",paddingLeft:2}}>{fmtMo(moAtivo)+" · "+moData.recs.length+" pagamento(s)"}</div>
     {moData.recs.slice().sort(function(a,b){var ka=a.ts||((a.date||"")+"T00:00:00");var kb=b.ts||((b.date||"")+"T00:00:00");if(ka<kb)return -1;if(ka>kb)return 1;return (Number(a.id)||0)-(Number(b.id)||0);}).map(function(r){
       var pat=pats.find(function(p){return p.id===r.patientId;});
       var isPix=(r.payment||"").toLowerCase().startsWith("pix");
       var horaPg=r.ts?new Date(r.ts).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}):"";
-      return <div key={r.id} style={{background:G.card,borderRadius:11,padding:"12px 14px",display:"flex",alignItems:"center",gap:10,boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}>
+      return <div key={r.id} style={{background:G.card,borderRadius:11,padding:"12px 14px",display:"flex",alignItems:"center",gap:10,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}>
         <div style={{flex:1,minWidth:0}}>
           <div style={{fontWeight:700,fontSize:13}}>{pat&&pat.name||"—"}</div>
           <div style={{fontSize:11,color:G.muted,marginTop:2}}>{fmt(r.date)+(horaPg?" \u00b7 "+horaPg:"")}</div>
@@ -7708,7 +7708,7 @@ return <div style={{display:"flex",flexDirection:"column",gap:14}} className="fi
 function Auditoria({pats,appts,recs,treats,setTreats,pros,espera,stock,implCat,implMov,rems,users,dents,pacsTicks,waSent,remarcar,setView,user,auditDismiss,setAuditDismiss}){
 var [audOpen,setAudOpen]=useState({});
 var audToggle=function(id){setAudOpen(function(p){var n=Object.assign({},p);n[id]=!n[id];return n;});};
-if(user.level<3)return <div style={{background:G.card,borderRadius:13,padding:30,textAlign:"center",boxShadow:"0 1px 4px rgba(0,0,0,.07)"}}><p style={{color:G.red,fontSize:15}}>🔒 Acesso restrito ao Administrador</p></div>;
+if(user.level<3)return <div style={{background:G.card,borderRadius:13,padding:30,textAlign:"center",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7"}}><p style={{color:G.red,fontSize:15}}>🔒 Acesso restrito ao Administrador</p></div>;
 var t=today();var ont=yest();
 function daysAgo(n){var d=new Date(t+"T12:00");d.setDate(d.getDate()-n);return d.toISOString().split("T")[0];}
 function daysAhead(n){var d=new Date(t+"T12:00");d.setDate(d.getDate()+n);return d.toISOString().split("T")[0];}
@@ -7796,7 +7796,7 @@ var sec=props.sec;
 var op=props.open;
 var n=sec.items.length;
 var capped=sec.items.slice(0,60);
-return <div style={{background:G.card,borderRadius:12,boxShadow:"0 1px 4px rgba(0,0,0,.07)",overflow:"hidden",borderLeft:"4px solid "+(n>0?sec.col:G.border)}}>
+return <div style={{background:G.card,borderRadius:12,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",overflow:"hidden",borderLeft:"4px solid "+(n>0?sec.col:G.border)}}>
 <div onClick={function(){if(n>0)props.toggle(sec.id);}} style={{display:"flex",alignItems:"center",gap:10,padding:"12px 14px",cursor:n>0?"pointer":"default"}}>
 <span style={{fontSize:18}}>{sec.ic}</span>
 <span style={{flex:1,fontWeight:700,fontSize:13.5,color:n>0?G.text:G.muted}}>{sec.t}</span>
@@ -7933,7 +7933,7 @@ Escolha o paciente para personalizar com o nome dele, depois abra a orientação
 {lista.map(function(o){
 var op=openId===o.id;
 var ed=editId===o.id;
-return <div key={o.id} style={{background:G.card,borderRadius:12,boxShadow:"0 1px 4px rgba(0,0,0,.07)",overflow:"hidden",borderLeft:"4px solid "+G.primary}}>
+return <div key={o.id} style={{background:G.card,borderRadius:12,boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",overflow:"hidden",borderLeft:"4px solid "+G.primary}}>
 <div onClick={function(){setOpenId(op?null:o.id);setEditId(null);}} style={{display:"flex",alignItems:"center",gap:10,padding:"12px 14px",cursor:"pointer"}}>
 <span style={{fontSize:18}}>{o.ic}</span>
 <span style={{flex:1,fontWeight:700,fontSize:13.5}}>{o.titulo}</span>
@@ -7945,8 +7945,8 @@ return <div key={o.id} style={{background:G.card,borderRadius:12,boxShadow:"0 1p
 <div style={{display:"flex",gap:7,flexWrap:"wrap",marginTop:10}}>
 <button onClick={function(){enviarWA(o);}} style={{background:"#25D366",color:"#fff",border:"none",borderRadius:8,padding:"7px 13px",fontSize:12,fontWeight:700,cursor:"pointer"}}>📱 WhatsApp</button>
 <button onClick={function(){imprimir(o);}} style={{background:G.primary,color:"#fff",border:"none",borderRadius:8,padding:"7px 13px",fontSize:12,fontWeight:700,cursor:"pointer"}}>🖨️ Imprimir</button>
-<button onClick={function(){setEditId(o.id);setEf({titulo:o.titulo,texto:o.texto});}} style={{background:"#fff",color:G.primary,border:"1.5px solid "+G.primary,borderRadius:8,padding:"7px 13px",fontSize:12,fontWeight:700,cursor:"pointer"}}>✏️ Editar</button>
-<button onClick={function(){excluir(o);}} style={{background:"#fff",color:G.red,border:"1px solid "+G.red,borderRadius:8,padding:"7px 11px",fontSize:12,fontWeight:700,cursor:"pointer"}}>🗑️</button>
+<button onClick={function(){setEditId(o.id);setEf({titulo:o.titulo,texto:o.texto});}} style={{background:G.card,color:G.primary,border:"1.5px solid "+G.primary,borderRadius:8,padding:"7px 13px",fontSize:12,fontWeight:700,cursor:"pointer"}}>✏️ Editar</button>
+<button onClick={function(){excluir(o);}} style={{background:G.card,color:G.red,border:"1px solid "+G.red,borderRadius:8,padding:"7px 11px",fontSize:12,fontWeight:700,cursor:"pointer"}}>🗑️</button>
 </div>
 </>:<div style={{display:"flex",flexDirection:"column",gap:9,borderTop:"1px solid "+G.border,paddingTop:12}}>
 <Inp lb="Título" val={ef.titulo} set={function(v){setEf(function(p){return {...p,titulo:v};});}}/>
@@ -7964,7 +7964,7 @@ return <div key={o.id} style={{background:G.card,borderRadius:12,boxShadow:"0 1p
 })}
 </div>
 {addMod&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.45)",zIndex:3000,display:"flex",alignItems:"center",justifyContent:"center",padding:16}}>
-<div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:560,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,.22)"}}>
+<div style={{background:G.card,borderRadius:16,width:"100%",maxWidth:560,maxHeight:"92vh",overflowY:"auto",boxShadow:"0 22px 55px rgba(30,45,38,.30),inset 0 1px 0 rgba(251,255,247,.55)"}}>
 <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"14px 20px",borderBottom:"1px solid "+G.border}}>
 <span style={{fontFamily:"'Cormorant Garamond'",fontSize:20}}>Nova Orientação</span>
 <button onClick={function(){setAddMod(false);}} style={{border:"none",background:"none",fontSize:24,cursor:"pointer",color:G.muted}}>×</button>
@@ -8065,7 +8065,7 @@ return (
 {loading&&<div style={{textAlign:"center",padding:20,color:G.muted,fontSize:13}}>{"Carregando..."}</div>}
 {!loading&&listaF.length===0&&<div style={{background:G.card,borderRadius:12,padding:24,textAlign:"center",color:G.muted,fontSize:13}}>{q?"Nenhuma conversa encontrada.":"Nenhuma conversa ainda. As mensagens trocadas pelo WhatsApp aparecerao aqui."}</div>}
 {listaF.map(function(g){return (
-<div key={g.phone} onClick={function(){setSel(g.phone);}} style={{background:G.card,borderRadius:12,padding:"11px 14px",boxShadow:"0 1px 4px rgba(0,0,0,.07)",display:"flex",gap:11,alignItems:"center",cursor:"pointer",borderLeft:g.unread>0?("4px solid "+G.success):"4px solid transparent"}}>
+<div key={g.phone} onClick={function(){setSel(g.phone);}} style={{background:G.card,borderRadius:12,padding:"11px 14px",boxShadow:"5px 5px 13px #c8d0c5,-5px -5px 13px #fbfff7",display:"flex",gap:11,alignItems:"center",cursor:"pointer",borderLeft:g.unread>0?("4px solid "+G.success):"4px solid transparent"}}>
 <div style={{width:44,height:44,borderRadius:"50%",background:g.unread>0?G.success:G.accent,display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,color:g.unread>0?"#fff":G.primary,flexShrink:0,fontWeight:700}}>{((g.name||"?")[0]||"?").toUpperCase()}</div>
 <div style={{flex:1,minWidth:0}}>
 <div style={{display:"flex",justifyContent:"space-between",gap:6,alignItems:"center"}}>
@@ -8106,7 +8106,7 @@ return <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(
 </div>;
 }
 var HINTS={dash:"Visão geral da clínica: indicadores do dia, pendências e atalhos para as áreas mais usadas.",agenda:"Agendamento com confirmação automática, controle de faltas e remarcações. Toque num horário para abrir.",pacs:"Fichas completas: anamnese digital, histórico, documentos e orçamentos de cada paciente.",remarcar:"Pacientes que faltaram ou desmarcaram, prontos para reagendar com um toque.",pros:"Controle de próteses no laboratório: envio, retorno, instalação e refações.",impl:"Acompanhamento de implantes: cirurgias, enxertos, próteses e retornos mês a mês.",lems:"Lembretes e tarefas da equipe, com avisos automáticos de aniversários e retornos.",conversas:"Mensagens recebidas pelo WhatsApp da clínica, ligadas a cada paciente.",fin:"Financeiro da clínica: recebimentos, despesas, comissões e fluxo de caixa.",rel:"Relatórios de faturamento, produção por dentista e desempenho da clínica.",desp:"Controle de gastos fixos e variáveis, da clínica e pessoais.",stk:"Estoque de materiais e implantes, com alerta de mínimo e movimentações.",pixdent:"Pix recebido direto pelos dentistas, para acerto de comissões.",pdent:"Acompanhamento dos tratamentos e produção de cada dentista.",rec:"Emissão de receituário e atestados com os dados da clínica.",orient:"Orientações pré e pós-procedimento para enviar ao paciente.",audit:"Verificação de inconsistências nos dados da clínica.",escala:"Escala de plantão para clínicas 24h. Todos veem quem está de plantão agora; o administrador adiciona cada profissional com o horário dele.",adm:"Área administrativa: usuários, procedimentos, valores, dados da clínica e configurações."};
-function Escala({dents,users,user,escala,setEscala}){var isAdmin=user.level>=3;var [grupo,setGrupo]=useState("dent");var [escMes,setEscMes]=useState(new Date());var [dEdit,setDEdit]=useState(null);var [addF,setAddF]=useState({pid:"",nome:"",inicio:"08:00",fim:"18:00"});var [adding,setAdding]=useState(false);var [rep,setRep]=useState(null);var [repSel,setRepSel]=useState({});var [showPadrao,setShowPadrao]=useState(false);var [selWd,setSelWd]=useState(new Date().getDay());var [padF,setPadF]=useState({pid:"",nome:"",inicio:"08:00",fim:"18:00"});var [padDias,setPadDias]=useState((function(){var o={};o[new Date().getDay()]=true;return o;})());var dOrder=[1,2,3,4,5,6,0];var MS=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];var dstr=function(y,m,d){return y+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");};var wdOf=function(ds){return new Date(ds+"T12:00").getDay();};var dentColor=function(pid){var x=(dents||[]).find(function(d){return d.id===pid;});return x&&x.color?x.color:G.primary;};var dentPhone=function(pid){var x=(dents||[]).find(function(d){return d.id===pid;});return x?(x.phone||x.whatsapp||""):"";};var pool=function(){return grupo==="dent"?(dents||[]):(users||[]);};var grpLabel=grupo==="dent"?"DENTISTAS":"SECRETÁRIAS / RECEPÇÃO";var grpIcon=grupo==="dent"?"🦷":"👤";var grpSing=grupo==="dent"?"dentista":"secretária";var nameFor=function(pid){var arr=grupo==="dent"?(dents||[]):(users||[]);var x=arr.find(function(p){return p.id===pid;});return x?x.name:"";};var resolve=function(ds){return (escala&&escala[ds]!==undefined)?escala[ds]:((escala&&escala[wdOf(ds)])||[]);};var isProg=function(ds){return !!(escala&&Object.prototype.hasOwnProperty.call(escala,ds));};var ensureOv=function(prev,ds){var nx=Object.assign({},prev);if(!Object.prototype.hasOwnProperty.call(nx,ds)){nx[ds]=((nx[wdOf(ds)])||[]).map(function(e){return Object.assign({},e);});}else{nx[ds]=nx[ds].slice();}return nx;};var addToDay=function(ds,entry){setEscala(function(prev){var nx=ensureOv(prev,ds);nx[ds]=nx[ds].concat([entry]);return nx;});};var updInDay=function(ds,id,patch){setEscala(function(prev){var nx=ensureOv(prev,ds);nx[ds]=nx[ds].map(function(x){return x.id===id?Object.assign({},x,patch):x;});return nx;});};var delInDay=function(ds,id){setEscala(function(prev){var nx=ensureOv(prev,ds);nx[ds]=nx[ds].filter(function(x){return x.id!==id;});return nx;});};var resetDay=function(ds){setEscala(function(prev){var nx=Object.assign({},prev);delete nx[ds];return nx;});};var wdL=function(wd){return ((escala&&escala[wd])||[]).filter(function(e){return e.tipo===grupo;});};var wdAdd=function(wd,entry){setEscala(function(prev){var nx=Object.assign({},prev);nx[wd]=(nx[wd]||[]).concat([entry]);return nx;});};var wdUpd=function(wd,id,patch){setEscala(function(prev){var nx=Object.assign({},prev);nx[wd]=(nx[wd]||[]).map(function(x){return x.id===id?Object.assign({},x,patch):x;});return nx;});};var wdDel=function(wd,id){setEscala(function(prev){var nx=Object.assign({},prev);nx[wd]=(nx[wd]||[]).filter(function(x){return x.id!==id;});return nx;});};var startAdd=function(){setAddF({pid:"",nome:"",inicio:"08:00",fim:"18:00"});setAdding(true);};var doAdd=function(){var isO=addF.pid==="__outro__";var pid=(addF.pid&&!isO)?Number(addF.pid):null;var nome=pid?nameFor(pid):((addF.nome||"").trim());if(!pid&&!nome)return;addToDay(dEdit,{id:Date.now()+Math.floor(Math.random()*1000000),tipo:grupo,pid:pid,nome:nome,inicio:addF.inicio,fim:addF.fim});setAdding(false);setAddF({pid:"",nome:"",inicio:"08:00",fim:"18:00"});};var doPadAdd=function(){var isO=padF.pid==="__outro__";var pid=(padF.pid&&!isO)?Number(padF.pid):null;var nome=pid?nameFor(pid):((padF.nome||"").trim());if(!pid&&!nome)return;var dias=Object.keys(padDias).filter(function(k){return padDias[k];}).map(Number);if(!dias.length)dias=[selWd];dias.forEach(function(wd){wdAdd(wd,{id:Date.now()+Math.floor(Math.random()*1000000)+wd,tipo:grupo,pid:pid,nome:nome,inicio:padF.inicio,fim:padF.fim});});setPadF({pid:"",nome:"",inicio:"08:00",fim:"18:00"});};var openRepeat=function(entry){setRep(entry);setRepSel({});};var applyRepeat=function(){if(!rep)return;Object.keys(repSel).forEach(function(ds){if(repSel[ds]&&ds!==dEdit){addToDay(ds,Object.assign({},rep,{id:Date.now()+Math.floor(Math.random()*1000000)+Math.floor(Math.random()*9973)}));}});setRep(null);setRepSel({});};var act=plantaoAgora(escala);var actDent=act.filter(function(e){return e.tipo==="dent";});var actEq=act.filter(function(e){return e.tipo==="equipe";});var gaps=[];if(isAdmin&&grupo==="dent"){dOrder.forEach(function(wd){if(!wdL(wd).length)gaps.push(DOW_LABELS[wd]);});}var mY=escMes.getFullYear(),mM=escMes.getMonth();var dimM=new Date(mY,mM+1,0).getDate(),fdw=new Date(mY,mM,1).getDay();var td=today();var cells=[];for(var b=0;b<fdw;b++)cells.push(null);for(var dd=1;dd<=dimM;dd++)cells.push(dstr(mY,mM,dd));var deList=dEdit?resolve(dEdit).filter(function(e){return e.tipo===grupo;}).slice().sort(function(a,b){return (a.inicio||"").localeCompare(b.inicio||"");}):[];var deProg=dEdit?isProg(dEdit):false;var addForm=function(F,setF,onAdd,onCancel){return <div style={{border:"1px solid "+G.border,borderRadius:11,padding:12,display:"flex",flexDirection:"column",gap:10,background:G.bg}}><select value={F.pid} onChange={function(e){var v=e.target.value;setF(function(p){return Object.assign({},p,{pid:v,nome:""});});}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"10px 12px",fontSize:14,outline:"none",background:"#fff",boxSizing:"border-box"}}><option value="">— escolher {grpSing} —</option>{pool().map(function(x){return <option key={x.id} value={x.id}>{x.name}</option>;})}<option value="__outro__">Outro (digitar nome)</option></select>{F.pid==="__outro__"&&<input value={F.nome} onChange={function(e){var v=e.target.value;setF(function(p){return Object.assign({},p,{nome:v});});}} placeholder="Nome" style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"10px 12px",fontSize:14,outline:"none",boxSizing:"border-box"}}/>}<div style={{display:"flex",gap:10}}><div style={{flex:1}}><label style={{fontSize:11,fontWeight:700,color:G.muted}}>ENTRA</label><input type="time" value={F.inicio} onChange={function(e){var v=e.target.value;setF(function(p){return Object.assign({},p,{inicio:v});});}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"9px 12px",fontSize:14,outline:"none",boxSizing:"border-box"}}/></div><div style={{flex:1}}><label style={{fontSize:11,fontWeight:700,color:G.muted}}>SAI</label><input type="time" value={F.fim} onChange={function(e){var v=e.target.value;setF(function(p){return Object.assign({},p,{fim:v});});}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"9px 12px",fontSize:14,outline:"none",boxSizing:"border-box"}}/></div></div><div style={{display:"flex",gap:8}}><Btn ch="Adicionar" sm onClick={onAdd}/>{onCancel&&<Btn ch="Cancelar" v="g" sm onClick={onCancel}/>}</div></div>;};var personRow=function(e,onTimes,onDel,onRep){return <div key={e.id} style={{background:G.bg,borderRadius:10,padding:"9px 11px",display:"flex",alignItems:"center",gap:7,flexWrap:"wrap"}}><span style={{fontSize:13,fontWeight:700,color:G.text}}>{(e.tipo==="dent"?"🦷 ":"👤 ")+(e.nome||(e.tipo==="dent"?"Dentista":"Pessoa"))}</span>{isAdmin?<div style={{display:"flex",alignItems:"center",gap:5,marginLeft:"auto",flexWrap:"wrap"}}><input type="time" value={e.inicio} onChange={function(ev){onTimes({inicio:ev.target.value});}} style={{border:"1.5px solid "+G.border,borderRadius:7,padding:"4px 6px",fontSize:12,outline:"none"}}/><span style={{color:G.muted}}>–</span><input type="time" value={e.fim} onChange={function(ev){onTimes({fim:ev.target.value});}} style={{border:"1.5px solid "+G.border,borderRadius:7,padding:"4px 6px",fontSize:12,outline:"none"}}/>{onRep&&<button onClick={onRep} title="Repetir em outros dias" style={{border:"none",background:G.accent,color:G.primary,borderRadius:7,padding:"4px 8px",fontSize:12,cursor:"pointer",fontWeight:700}}>📌</button>}<button onClick={onDel} style={{border:"none",background:"#FDECEA",color:G.red,borderRadius:7,padding:"4px 8px",fontSize:12,cursor:"pointer",fontWeight:700}}>🗑</button></div>:<span style={{marginLeft:"auto",fontSize:12.5,color:G.muted,fontWeight:600}}>{(e.inicio||"")+"–"+(e.fim||"")}</span>}</div>;};return <div className="fi" style={{display:"flex",flexDirection:"column",gap:14}}><h2 style={{fontFamily:"'Cormorant Garamond'",fontSize:26}}>{lbl("🗓️ Escala de Plantão")}</h2><div style={{background:"linear-gradient(135deg,#1E8449,#145A32)",borderRadius:14,padding:"14px 16px",color:"#fff",boxShadow:"0 4px 14px rgba(0,0,0,.15)"}}><div style={{fontSize:11,fontWeight:700,letterSpacing:"1px",opacity:.85,marginBottom:8}}>🟢 DE PLANTÃO AGORA</div>{(act.length)?<div style={{display:"flex",flexDirection:"column",gap:8}}>{actDent.map(function(e){var ph=dentPhone(e.pid);return <div key={e.id} style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:14,fontWeight:700}}>{"🦷 "+(e.nome||"Dentista")}<span style={{fontWeight:500,opacity:.85,fontSize:12.5}}>{" · "+e.inicio+"–"+e.fim}</span></span>{ph&&<button onClick={function(){wa(ph,"Olá! Preciso falar com o dentista de plantão.");}} style={{marginLeft:"auto",background:"rgba(255,255,255,.18)",border:"none",color:"#fff",borderRadius:8,padding:"4px 11px",fontSize:12,fontWeight:700,cursor:"pointer"}}>💬 Chamar</button>}</div>;})}{actEq.length>0&&<div style={{fontSize:12.5,opacity:.9}}>{"👤 Equipe: "+actEq.map(function(e){return (e.nome||"Equipe")+" ("+e.inicio+"–"+e.fim+")";}).join(", ")}</div>}</div>:<div style={{fontSize:13,opacity:.9}}>Nenhum profissional escalado neste horário.</div>}</div><div style={{display:"flex",gap:8}}>{[["dent","🦷 Dentistas"],["equipe","👤 Secretárias"]].map(function(v){var on=grupo===v[0];return <button key={v[0]} onClick={function(){setGrupo(v[0]);setDEdit(null);setAdding(false);setRep(null);}} style={{flex:1,border:"2px solid "+(on?G.primary:G.border),background:on?G.primary:"#fff",color:on?"#fff":G.text,borderRadius:11,padding:"11px",fontSize:14,fontWeight:700,cursor:"pointer"}}>{v[1]}</button>;})}</div>{isAdmin&&gaps.length>0&&<div style={{background:"#FDECEA",border:"1.5px solid "+G.red,borderRadius:10,padding:"8px 12px",fontSize:12.5,color:G.red,fontWeight:600}}>{"⚠️ Sem dentista no padrão: "+gaps.join(", ")}</div>}<div style={{background:G.card,border:"1px solid "+G.border,borderRadius:14,padding:"12px 14px",display:"flex",flexDirection:"column",gap:10}}><div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}><button onClick={function(){setEscMes(new Date(mY,mM-1,1));}} style={{border:"none",background:G.bg,borderRadius:8,padding:"6px 13px",cursor:"pointer",color:G.primary,fontWeight:700,fontSize:16}}>{"<"}</button><span style={{fontFamily:"'Cormorant Garamond'",fontSize:19,fontWeight:700,color:G.primary,textTransform:"capitalize"}}>{MS[mM]+" "+mY}</span><button onClick={function(){setEscMes(new Date(mY,mM+1,1));}} style={{border:"none",background:G.bg,borderRadius:8,padding:"6px 13px",cursor:"pointer",color:G.primary,fontWeight:700,fontSize:16}}>{">"}</button></div><div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:3}}>{DOW_LABELS.map(function(dn,i){return <div key={"h"+i} style={{textAlign:"center",fontSize:10.5,fontWeight:700,color:G.muted,padding:"2px 0"}}>{dn}</div>;})}{cells.map(function(ds,i){if(!ds)return <div key={"e"+i}/>;var ents=resolve(ds).filter(function(e){return e.tipo===grupo;});var prog=isProg(ds);var isTd=ds===td;return <div key={ds} onClick={function(){setDEdit(ds);setAdding(false);setRep(null);}} style={{minHeight:70,background:isTd?G.accent:"#fff",border:(prog?"2px solid "+G.primary:"1.5px solid "+((ents.length||grupo!=="dent")?G.border:"#F0D9D9")),borderRadius:9,padding:"3px 4px 5px",cursor:"pointer",display:"flex",flexDirection:"column",gap:2,overflow:"hidden",position:"relative"}}>{prog&&<span title="Dia editado" style={{position:"absolute",top:3,left:4,width:7,height:7,borderRadius:"50%",background:G.gold}}/>}<div style={{fontSize:12,fontWeight:700,color:isTd?G.primary:G.text,textAlign:"right",paddingRight:2}}>{Number(ds.slice(8))}</div>{ents.slice(0,3).map(function(e){var c=grupo==="dent"?dentColor(e.pid):G.primary;return <div key={e.id} style={{fontSize:9.5,lineHeight:1.25,background:c+"1A",color:c,borderLeft:"2.5px solid "+c,borderRadius:3,padding:"1px 3px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{(e.nome||(grupo==="dent"?"Dentista":"Pessoa")).split(" ")[0]}</div>;})}{ents.length>3&&<div style={{fontSize:9,fontWeight:700,color:G.muted}}>{"+"+(ents.length-3)}</div>}{!ents.length&&grupo==="dent"&&<div style={{fontSize:8.5,color:G.red,opacity:.6}}>sem dentista</div>}</div>;})}</div><div style={{display:"flex",alignItems:"center",gap:12,fontSize:10.5,color:G.muted,flexWrap:"wrap"}}><span><span style={{display:"inline-block",width:7,height:7,borderRadius:"50%",background:G.gold,marginRight:4,verticalAlign:"middle"}}/>dia editado</span><span>{"Toque num dia para editar "+(grupo==="dent"?"os dentistas":"as secretárias")+"."}</span></div></div>{isAdmin&&<div style={{background:G.card,border:"1px solid "+G.border,borderRadius:14,padding:"12px 14px"}}><button onClick={function(){setShowPadrao(!showPadrao);}} style={{border:"none",background:"transparent",color:G.primary,fontSize:13,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",gap:6,width:"100%",padding:0,textAlign:"left"}}><span>{"🗓️ Padrão da semana ("+(grupo==="dent"?"dentistas":"secretárias")+")"}</span><span style={{marginLeft:"auto"}}>{showPadrao?"▲":"▼"}</span></button>{showPadrao&&<div style={{marginTop:12,display:"flex",flexDirection:"column",gap:12}}><div style={{fontSize:11.5,color:G.muted,lineHeight:1.45}}>Quem entra de plantão em cada dia da semana, repetindo automaticamente. Dias que você editar no calendário continuam diferentes.</div><div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:2}}>{dOrder.map(function(wd){var on=selWd===wd;var n=wdL(wd).length;return <button key={wd} onClick={function(){setSelWd(wd);var o={};o[wd]=true;setPadDias(o);}} style={{flexShrink:0,border:"2px solid "+(on?G.primary:G.border),background:on?G.primary:"#fff",color:on?"#fff":G.text,borderRadius:10,padding:"8px 13px",fontSize:13,fontWeight:700,cursor:"pointer"}}>{DOW_LABELS[wd]}{n>0&&<span style={{marginLeft:5,fontSize:11,opacity:.85}}>{n}</span>}</button>;})}</div><div><div style={{fontSize:10.5,fontWeight:700,color:G.muted,marginBottom:6,letterSpacing:".4px"}}>{grpIcon+" "+grpLabel+" · "+DOW_FULL[selWd]}</div><div style={{display:"flex",flexDirection:"column",gap:6}}>{wdL(selWd).length?wdL(selWd).slice().sort(function(a,b){return (a.inicio||"").localeCompare(b.inicio||"");}).map(function(e){return personRow(e,function(patch){wdUpd(selWd,e.id,patch);},function(){wdDel(selWd,e.id);},null);}):<div style={{fontSize:12.5,color:G.muted}}>Ninguém neste dia.</div>}</div><div style={{marginTop:10,border:"1px solid "+G.border,borderRadius:11,padding:12,display:"flex",flexDirection:"column",gap:10,background:G.bg}}><div style={{fontSize:10.5,fontWeight:700,color:G.muted,letterSpacing:".4px"}}>{"ADICIONAR "+grpSing.toUpperCase()+" AO PADRÃO"}</div><select value={padF.pid} onChange={function(e){var v=e.target.value;setPadF(function(p){return Object.assign({},p,{pid:v,nome:""});});}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"10px 12px",fontSize:14,outline:"none",background:"#fff",boxSizing:"border-box"}}><option value="">— escolher {grpSing} —</option>{pool().map(function(x){return <option key={x.id} value={x.id}>{x.name}</option>;})}<option value="__outro__">Outro (digitar nome)</option></select>{padF.pid==="__outro__"&&<input value={padF.nome} onChange={function(e){var v=e.target.value;setPadF(function(p){return Object.assign({},p,{nome:v});});}} placeholder="Nome" style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"10px 12px",fontSize:14,outline:"none",boxSizing:"border-box"}}/>}<div style={{display:"flex",gap:10}}><div style={{flex:1}}><label style={{fontSize:11,fontWeight:700,color:G.muted}}>ENTRA</label><input type="time" value={padF.inicio} onChange={function(e){var v=e.target.value;setPadF(function(p){return Object.assign({},p,{inicio:v});});}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"9px 12px",fontSize:14,outline:"none",boxSizing:"border-box"}}/></div><div style={{flex:1}}><label style={{fontSize:11,fontWeight:700,color:G.muted}}>SAI</label><input type="time" value={padF.fim} onChange={function(e){var v=e.target.value;setPadF(function(p){return Object.assign({},p,{fim:v});});}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"9px 12px",fontSize:14,outline:"none",boxSizing:"border-box"}}/></div></div><div><label style={{fontSize:11,fontWeight:700,color:G.muted,display:"block",marginBottom:6}}>REPETE NESTES DIAS (toque pra marcar/desmarcar)</label><div style={{display:"flex",gap:5,flexWrap:"wrap"}}>{dOrder.map(function(wd){var on=!!padDias[wd];return <button key={"pd"+wd} onClick={function(){setPadDias(function(p){var nn=Object.assign({},p);nn[wd]=!nn[wd];return nn;});}} style={{border:"1.5px solid "+(on?G.primary:G.border),background:on?G.primary:"#fff",color:on?"#fff":G.text,borderRadius:8,padding:"7px 11px",fontSize:12.5,fontWeight:700,cursor:"pointer"}}>{DOW_LABELS[wd]}</button>;})}</div></div><Btn ch={"Adicionar em "+Object.keys(padDias).filter(function(k){return padDias[k];}).length+" dia(s) da semana"} onClick={doPadAdd}/></div></div></div>}</div>}{dEdit&&<Modal open={true} close={function(){setDEdit(null);setAdding(false);setRep(null);}} title={grpIcon+" "+(grupo==="dent"?"Dentistas":"Secretárias")+" · "+(function(){try{return new Date(dEdit+"T12:00").toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"});}catch(e){return dEdit;}})()} ch={<div style={{display:"flex",flexDirection:"column",gap:12}}><div style={{display:"flex",flexDirection:"column",gap:6}}>{deList.length?deList.map(function(e){return personRow(e,function(patch){updInDay(dEdit,e.id,patch);},function(){delInDay(dEdit,e.id);},function(){openRepeat(e);});}):<div style={{fontSize:12.5,color:grupo==="dent"?G.red:G.muted,fontWeight:grupo==="dent"?600:400}}>{grupo==="dent"?"Sem dentista neste dia":"Ninguém neste dia"}</div>}</div>{isAdmin&&!adding&&<button onClick={startAdd} style={{border:"1.5px dashed "+G.primary,background:"transparent",color:G.primary,borderRadius:9,padding:"10px",fontSize:13,fontWeight:700,cursor:"pointer",width:"100%"}}>{"+ Adicionar "+grpSing}</button>}{isAdmin&&adding&&addForm(addF,setAddF,doAdd,function(){setAdding(false);})}{deProg&&isAdmin&&<button onClick={function(){resetDay(dEdit);}} style={{border:"1.5px solid "+G.border,background:"transparent",color:G.muted,borderRadius:9,padding:"9px",fontSize:12,fontWeight:700,cursor:"pointer",width:"100%"}}>↩︎ Voltar ao padrão da semana neste dia</button>}{isAdmin&&<div style={{fontSize:11,color:G.muted,lineHeight:1.4}}>Toque 📌 num profissional para repeti-lo em outros dias do mês.</div>}</div>}/>}{rep&&<Modal open={true} close={function(){setRep(null);}} title={"Repetir "+(rep.nome||(rep.tipo==="dent"?"dentista":"pessoa"))+" em outros dias"} ch={<div style={{display:"flex",flexDirection:"column",gap:10}}><div style={{fontSize:12.5,color:G.muted,lineHeight:1.45}}>{"Toque nos dias que também terão "+(rep.nome||"este profissional")+" ("+rep.inicio+"–"+rep.fim+"). Pode escolher os dias que quiser."}</div><div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}><button onClick={function(){setEscMes(new Date(mY,mM-1,1));}} style={{border:"none",background:G.bg,borderRadius:8,padding:"5px 11px",cursor:"pointer",color:G.primary,fontWeight:700}}>{"<"}</button><span style={{fontWeight:700,color:G.primary,textTransform:"capitalize"}}>{MS[mM]+" "+mY}</span><button onClick={function(){setEscMes(new Date(mY,mM+1,1));}} style={{border:"none",background:G.bg,borderRadius:8,padding:"5px 11px",cursor:"pointer",color:G.primary,fontWeight:700}}>{">"}</button></div><div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:3}}>{DOW_LABELS.map(function(dn,i){return <div key={"rh"+i} style={{textAlign:"center",fontSize:10,fontWeight:700,color:G.muted}}>{dn}</div>;})}{cells.map(function(ds,i){if(!ds)return <div key={"re"+i}/>;var sel=!!repSel[ds];var isCur=ds===dEdit;return <button key={ds} disabled={isCur} onClick={function(){setRepSel(function(p){var nn=Object.assign({},p);nn[ds]=!nn[ds];return nn;});}} style={{padding:"8px 0",borderRadius:8,border:"1.5px solid "+(sel?G.primary:G.border),background:isCur?G.accent:(sel?G.primary:"#fff"),color:isCur?G.muted:(sel?"#fff":G.text),fontSize:12.5,fontWeight:700,cursor:isCur?"default":"pointer",opacity:isCur?.55:1}}>{Number(ds.slice(8))}</button>;})}</div><Btn ch={"Aplicar a "+Object.keys(repSel).filter(function(k){return repSel[k];}).length+" dia(s)"} onClick={applyRepeat}/></div>}/>}</div>;}
+function Escala({dents,users,user,escala,setEscala}){var isAdmin=user.level>=3;var [grupo,setGrupo]=useState("dent");var [escMes,setEscMes]=useState(new Date());var [dEdit,setDEdit]=useState(null);var [addF,setAddF]=useState({pid:"",nome:"",inicio:"08:00",fim:"18:00"});var [adding,setAdding]=useState(false);var [rep,setRep]=useState(null);var [repSel,setRepSel]=useState({});var [showPadrao,setShowPadrao]=useState(false);var [selWd,setSelWd]=useState(new Date().getDay());var [padF,setPadF]=useState({pid:"",nome:"",inicio:"08:00",fim:"18:00"});var [padDias,setPadDias]=useState((function(){var o={};o[new Date().getDay()]=true;return o;})());var dOrder=[1,2,3,4,5,6,0];var MS=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];var dstr=function(y,m,d){return y+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");};var wdOf=function(ds){return new Date(ds+"T12:00").getDay();};var dentColor=function(pid){var x=(dents||[]).find(function(d){return d.id===pid;});return x&&x.color?x.color:G.primary;};var dentPhone=function(pid){var x=(dents||[]).find(function(d){return d.id===pid;});return x?(x.phone||x.whatsapp||""):"";};var pool=function(){return grupo==="dent"?(dents||[]):(users||[]);};var grpLabel=grupo==="dent"?"DENTISTAS":"SECRETÁRIAS / RECEPÇÃO";var grpIcon=grupo==="dent"?"🦷":"👤";var grpSing=grupo==="dent"?"dentista":"secretária";var nameFor=function(pid){var arr=grupo==="dent"?(dents||[]):(users||[]);var x=arr.find(function(p){return p.id===pid;});return x?x.name:"";};var resolve=function(ds){return (escala&&escala[ds]!==undefined)?escala[ds]:((escala&&escala[wdOf(ds)])||[]);};var isProg=function(ds){return !!(escala&&Object.prototype.hasOwnProperty.call(escala,ds));};var ensureOv=function(prev,ds){var nx=Object.assign({},prev);if(!Object.prototype.hasOwnProperty.call(nx,ds)){nx[ds]=((nx[wdOf(ds)])||[]).map(function(e){return Object.assign({},e);});}else{nx[ds]=nx[ds].slice();}return nx;};var addToDay=function(ds,entry){setEscala(function(prev){var nx=ensureOv(prev,ds);nx[ds]=nx[ds].concat([entry]);return nx;});};var updInDay=function(ds,id,patch){setEscala(function(prev){var nx=ensureOv(prev,ds);nx[ds]=nx[ds].map(function(x){return x.id===id?Object.assign({},x,patch):x;});return nx;});};var delInDay=function(ds,id){setEscala(function(prev){var nx=ensureOv(prev,ds);nx[ds]=nx[ds].filter(function(x){return x.id!==id;});return nx;});};var resetDay=function(ds){setEscala(function(prev){var nx=Object.assign({},prev);delete nx[ds];return nx;});};var wdL=function(wd){return ((escala&&escala[wd])||[]).filter(function(e){return e.tipo===grupo;});};var wdAdd=function(wd,entry){setEscala(function(prev){var nx=Object.assign({},prev);nx[wd]=(nx[wd]||[]).concat([entry]);return nx;});};var wdUpd=function(wd,id,patch){setEscala(function(prev){var nx=Object.assign({},prev);nx[wd]=(nx[wd]||[]).map(function(x){return x.id===id?Object.assign({},x,patch):x;});return nx;});};var wdDel=function(wd,id){setEscala(function(prev){var nx=Object.assign({},prev);nx[wd]=(nx[wd]||[]).filter(function(x){return x.id!==id;});return nx;});};var startAdd=function(){setAddF({pid:"",nome:"",inicio:"08:00",fim:"18:00"});setAdding(true);};var doAdd=function(){var isO=addF.pid==="__outro__";var pid=(addF.pid&&!isO)?Number(addF.pid):null;var nome=pid?nameFor(pid):((addF.nome||"").trim());if(!pid&&!nome)return;addToDay(dEdit,{id:Date.now()+Math.floor(Math.random()*1000000),tipo:grupo,pid:pid,nome:nome,inicio:addF.inicio,fim:addF.fim});setAdding(false);setAddF({pid:"",nome:"",inicio:"08:00",fim:"18:00"});};var doPadAdd=function(){var isO=padF.pid==="__outro__";var pid=(padF.pid&&!isO)?Number(padF.pid):null;var nome=pid?nameFor(pid):((padF.nome||"").trim());if(!pid&&!nome)return;var dias=Object.keys(padDias).filter(function(k){return padDias[k];}).map(Number);if(!dias.length)dias=[selWd];dias.forEach(function(wd){wdAdd(wd,{id:Date.now()+Math.floor(Math.random()*1000000)+wd,tipo:grupo,pid:pid,nome:nome,inicio:padF.inicio,fim:padF.fim});});setPadF({pid:"",nome:"",inicio:"08:00",fim:"18:00"});};var openRepeat=function(entry){setRep(entry);setRepSel({});};var applyRepeat=function(){if(!rep)return;Object.keys(repSel).forEach(function(ds){if(repSel[ds]&&ds!==dEdit){addToDay(ds,Object.assign({},rep,{id:Date.now()+Math.floor(Math.random()*1000000)+Math.floor(Math.random()*9973)}));}});setRep(null);setRepSel({});};var act=plantaoAgora(escala);var actDent=act.filter(function(e){return e.tipo==="dent";});var actEq=act.filter(function(e){return e.tipo==="equipe";});var gaps=[];if(isAdmin&&grupo==="dent"){dOrder.forEach(function(wd){if(!wdL(wd).length)gaps.push(DOW_LABELS[wd]);});}var mY=escMes.getFullYear(),mM=escMes.getMonth();var dimM=new Date(mY,mM+1,0).getDate(),fdw=new Date(mY,mM,1).getDay();var td=today();var cells=[];for(var b=0;b<fdw;b++)cells.push(null);for(var dd=1;dd<=dimM;dd++)cells.push(dstr(mY,mM,dd));var deList=dEdit?resolve(dEdit).filter(function(e){return e.tipo===grupo;}).slice().sort(function(a,b){return (a.inicio||"").localeCompare(b.inicio||"");}):[];var deProg=dEdit?isProg(dEdit):false;var addForm=function(F,setF,onAdd,onCancel){return <div style={{border:"1px solid "+G.border,borderRadius:11,padding:12,display:"flex",flexDirection:"column",gap:10,background:G.bg}}><select value={F.pid} onChange={function(e){var v=e.target.value;setF(function(p){return Object.assign({},p,{pid:v,nome:""});});}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"10px 12px",fontSize:14,outline:"none",background:G.card,boxSizing:"border-box"}}><option value="">— escolher {grpSing} —</option>{pool().map(function(x){return <option key={x.id} value={x.id}>{x.name}</option>;})}<option value="__outro__">Outro (digitar nome)</option></select>{F.pid==="__outro__"&&<input value={F.nome} onChange={function(e){var v=e.target.value;setF(function(p){return Object.assign({},p,{nome:v});});}} placeholder="Nome" style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"10px 12px",fontSize:14,outline:"none",boxSizing:"border-box"}}/>}<div style={{display:"flex",gap:10}}><div style={{flex:1}}><label style={{fontSize:11,fontWeight:700,color:G.muted}}>ENTRA</label><input type="time" value={F.inicio} onChange={function(e){var v=e.target.value;setF(function(p){return Object.assign({},p,{inicio:v});});}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"9px 12px",fontSize:14,outline:"none",boxSizing:"border-box"}}/></div><div style={{flex:1}}><label style={{fontSize:11,fontWeight:700,color:G.muted}}>SAI</label><input type="time" value={F.fim} onChange={function(e){var v=e.target.value;setF(function(p){return Object.assign({},p,{fim:v});});}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"9px 12px",fontSize:14,outline:"none",boxSizing:"border-box"}}/></div></div><div style={{display:"flex",gap:8}}><Btn ch="Adicionar" sm onClick={onAdd}/>{onCancel&&<Btn ch="Cancelar" v="g" sm onClick={onCancel}/>}</div></div>;};var personRow=function(e,onTimes,onDel,onRep){return <div key={e.id} style={{background:G.bg,borderRadius:10,padding:"9px 11px",display:"flex",alignItems:"center",gap:7,flexWrap:"wrap"}}><span style={{fontSize:13,fontWeight:700,color:G.text}}>{(e.tipo==="dent"?"🦷 ":"👤 ")+(e.nome||(e.tipo==="dent"?"Dentista":"Pessoa"))}</span>{isAdmin?<div style={{display:"flex",alignItems:"center",gap:5,marginLeft:"auto",flexWrap:"wrap"}}><input type="time" value={e.inicio} onChange={function(ev){onTimes({inicio:ev.target.value});}} style={{border:"1.5px solid "+G.border,borderRadius:7,padding:"4px 6px",fontSize:12,outline:"none"}}/><span style={{color:G.muted}}>–</span><input type="time" value={e.fim} onChange={function(ev){onTimes({fim:ev.target.value});}} style={{border:"1.5px solid "+G.border,borderRadius:7,padding:"4px 6px",fontSize:12,outline:"none"}}/>{onRep&&<button onClick={onRep} title="Repetir em outros dias" style={{border:"none",background:G.accent,color:G.primary,borderRadius:7,padding:"4px 8px",fontSize:12,cursor:"pointer",fontWeight:700}}>📌</button>}<button onClick={onDel} style={{border:"none",background:"#FDECEA",color:G.red,borderRadius:7,padding:"4px 8px",fontSize:12,cursor:"pointer",fontWeight:700}}>🗑</button></div>:<span style={{marginLeft:"auto",fontSize:12.5,color:G.muted,fontWeight:600}}>{(e.inicio||"")+"–"+(e.fim||"")}</span>}</div>;};return <div className="fi" style={{display:"flex",flexDirection:"column",gap:14}}><h2 style={{fontFamily:"'Cormorant Garamond'",fontSize:26}}>{lbl("🗓️ Escala de Plantão")}</h2><div style={{background:"linear-gradient(135deg,#1E8449,#145A32)",borderRadius:14,padding:"14px 16px",color:"#fff",boxShadow:"0 4px 14px rgba(0,0,0,.15)"}}><div style={{fontSize:11,fontWeight:700,letterSpacing:"1px",opacity:.85,marginBottom:8}}>🟢 DE PLANTÃO AGORA</div>{(act.length)?<div style={{display:"flex",flexDirection:"column",gap:8}}>{actDent.map(function(e){var ph=dentPhone(e.pid);return <div key={e.id} style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:14,fontWeight:700}}>{"🦷 "+(e.nome||"Dentista")}<span style={{fontWeight:500,opacity:.85,fontSize:12.5}}>{" · "+e.inicio+"–"+e.fim}</span></span>{ph&&<button onClick={function(){wa(ph,"Olá! Preciso falar com o dentista de plantão.");}} style={{marginLeft:"auto",background:"rgba(255,255,255,.18)",border:"none",color:"#fff",borderRadius:8,padding:"4px 11px",fontSize:12,fontWeight:700,cursor:"pointer"}}>💬 Chamar</button>}</div>;})}{actEq.length>0&&<div style={{fontSize:12.5,opacity:.9}}>{"👤 Equipe: "+actEq.map(function(e){return (e.nome||"Equipe")+" ("+e.inicio+"–"+e.fim+")";}).join(", ")}</div>}</div>:<div style={{fontSize:13,opacity:.9}}>Nenhum profissional escalado neste horário.</div>}</div><div style={{display:"flex",gap:8}}>{[["dent","🦷 Dentistas"],["equipe","👤 Secretárias"]].map(function(v){var on=grupo===v[0];return <button key={v[0]} onClick={function(){setGrupo(v[0]);setDEdit(null);setAdding(false);setRep(null);}} style={{flex:1,border:"2px solid "+(on?G.primary:G.border),background:on?G.primary:"#fff",color:on?"#fff":G.text,borderRadius:11,padding:"11px",fontSize:14,fontWeight:700,cursor:"pointer"}}>{v[1]}</button>;})}</div>{isAdmin&&gaps.length>0&&<div style={{background:"#FDECEA",border:"1.5px solid "+G.red,borderRadius:10,padding:"8px 12px",fontSize:12.5,color:G.red,fontWeight:600}}>{"⚠️ Sem dentista no padrão: "+gaps.join(", ")}</div>}<div style={{background:G.card,border:"1px solid "+G.border,borderRadius:14,padding:"12px 14px",display:"flex",flexDirection:"column",gap:10}}><div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}><button onClick={function(){setEscMes(new Date(mY,mM-1,1));}} style={{border:"none",background:G.bg,borderRadius:8,padding:"6px 13px",cursor:"pointer",color:G.primary,fontWeight:700,fontSize:16}}>{"<"}</button><span style={{fontFamily:"'Cormorant Garamond'",fontSize:19,fontWeight:700,color:G.primary,textTransform:"capitalize"}}>{MS[mM]+" "+mY}</span><button onClick={function(){setEscMes(new Date(mY,mM+1,1));}} style={{border:"none",background:G.bg,borderRadius:8,padding:"6px 13px",cursor:"pointer",color:G.primary,fontWeight:700,fontSize:16}}>{">"}</button></div><div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:3}}>{DOW_LABELS.map(function(dn,i){return <div key={"h"+i} style={{textAlign:"center",fontSize:10.5,fontWeight:700,color:G.muted,padding:"2px 0"}}>{dn}</div>;})}{cells.map(function(ds,i){if(!ds)return <div key={"e"+i}/>;var ents=resolve(ds).filter(function(e){return e.tipo===grupo;});var prog=isProg(ds);var isTd=ds===td;return <div key={ds} onClick={function(){setDEdit(ds);setAdding(false);setRep(null);}} style={{minHeight:70,background:isTd?G.accent:"#fff",border:(prog?"2px solid "+G.primary:"1.5px solid "+((ents.length||grupo!=="dent")?G.border:"#F0D9D9")),borderRadius:9,padding:"3px 4px 5px",cursor:"pointer",display:"flex",flexDirection:"column",gap:2,overflow:"hidden",position:"relative"}}>{prog&&<span title="Dia editado" style={{position:"absolute",top:3,left:4,width:7,height:7,borderRadius:"50%",background:G.gold}}/>}<div style={{fontSize:12,fontWeight:700,color:isTd?G.primary:G.text,textAlign:"right",paddingRight:2}}>{Number(ds.slice(8))}</div>{ents.slice(0,3).map(function(e){var c=grupo==="dent"?dentColor(e.pid):G.primary;return <div key={e.id} style={{fontSize:9.5,lineHeight:1.25,background:c+"1A",color:c,borderLeft:"2.5px solid "+c,borderRadius:3,padding:"1px 3px",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{(e.nome||(grupo==="dent"?"Dentista":"Pessoa")).split(" ")[0]}</div>;})}{ents.length>3&&<div style={{fontSize:9,fontWeight:700,color:G.muted}}>{"+"+(ents.length-3)}</div>}{!ents.length&&grupo==="dent"&&<div style={{fontSize:8.5,color:G.red,opacity:.6}}>sem dentista</div>}</div>;})}</div><div style={{display:"flex",alignItems:"center",gap:12,fontSize:10.5,color:G.muted,flexWrap:"wrap"}}><span><span style={{display:"inline-block",width:7,height:7,borderRadius:"50%",background:G.gold,marginRight:4,verticalAlign:"middle"}}/>dia editado</span><span>{"Toque num dia para editar "+(grupo==="dent"?"os dentistas":"as secretárias")+"."}</span></div></div>{isAdmin&&<div style={{background:G.card,border:"1px solid "+G.border,borderRadius:14,padding:"12px 14px"}}><button onClick={function(){setShowPadrao(!showPadrao);}} style={{border:"none",background:"transparent",color:G.primary,fontSize:13,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",gap:6,width:"100%",padding:0,textAlign:"left"}}><span>{"🗓️ Padrão da semana ("+(grupo==="dent"?"dentistas":"secretárias")+")"}</span><span style={{marginLeft:"auto"}}>{showPadrao?"▲":"▼"}</span></button>{showPadrao&&<div style={{marginTop:12,display:"flex",flexDirection:"column",gap:12}}><div style={{fontSize:11.5,color:G.muted,lineHeight:1.45}}>Quem entra de plantão em cada dia da semana, repetindo automaticamente. Dias que você editar no calendário continuam diferentes.</div><div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:2}}>{dOrder.map(function(wd){var on=selWd===wd;var n=wdL(wd).length;return <button key={wd} onClick={function(){setSelWd(wd);var o={};o[wd]=true;setPadDias(o);}} style={{flexShrink:0,border:"2px solid "+(on?G.primary:G.border),background:on?G.primary:"#fff",color:on?"#fff":G.text,borderRadius:10,padding:"8px 13px",fontSize:13,fontWeight:700,cursor:"pointer"}}>{DOW_LABELS[wd]}{n>0&&<span style={{marginLeft:5,fontSize:11,opacity:.85}}>{n}</span>}</button>;})}</div><div><div style={{fontSize:10.5,fontWeight:700,color:G.muted,marginBottom:6,letterSpacing:".4px"}}>{grpIcon+" "+grpLabel+" · "+DOW_FULL[selWd]}</div><div style={{display:"flex",flexDirection:"column",gap:6}}>{wdL(selWd).length?wdL(selWd).slice().sort(function(a,b){return (a.inicio||"").localeCompare(b.inicio||"");}).map(function(e){return personRow(e,function(patch){wdUpd(selWd,e.id,patch);},function(){wdDel(selWd,e.id);},null);}):<div style={{fontSize:12.5,color:G.muted}}>Ninguém neste dia.</div>}</div><div style={{marginTop:10,border:"1px solid "+G.border,borderRadius:11,padding:12,display:"flex",flexDirection:"column",gap:10,background:G.bg}}><div style={{fontSize:10.5,fontWeight:700,color:G.muted,letterSpacing:".4px"}}>{"ADICIONAR "+grpSing.toUpperCase()+" AO PADRÃO"}</div><select value={padF.pid} onChange={function(e){var v=e.target.value;setPadF(function(p){return Object.assign({},p,{pid:v,nome:""});});}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"10px 12px",fontSize:14,outline:"none",background:G.card,boxSizing:"border-box"}}><option value="">— escolher {grpSing} —</option>{pool().map(function(x){return <option key={x.id} value={x.id}>{x.name}</option>;})}<option value="__outro__">Outro (digitar nome)</option></select>{padF.pid==="__outro__"&&<input value={padF.nome} onChange={function(e){var v=e.target.value;setPadF(function(p){return Object.assign({},p,{nome:v});});}} placeholder="Nome" style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"10px 12px",fontSize:14,outline:"none",boxSizing:"border-box"}}/>}<div style={{display:"flex",gap:10}}><div style={{flex:1}}><label style={{fontSize:11,fontWeight:700,color:G.muted}}>ENTRA</label><input type="time" value={padF.inicio} onChange={function(e){var v=e.target.value;setPadF(function(p){return Object.assign({},p,{inicio:v});});}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"9px 12px",fontSize:14,outline:"none",boxSizing:"border-box"}}/></div><div style={{flex:1}}><label style={{fontSize:11,fontWeight:700,color:G.muted}}>SAI</label><input type="time" value={padF.fim} onChange={function(e){var v=e.target.value;setPadF(function(p){return Object.assign({},p,{fim:v});});}} style={{width:"100%",border:"1.5px solid "+G.border,borderRadius:9,padding:"9px 12px",fontSize:14,outline:"none",boxSizing:"border-box"}}/></div></div><div><label style={{fontSize:11,fontWeight:700,color:G.muted,display:"block",marginBottom:6}}>REPETE NESTES DIAS (toque pra marcar/desmarcar)</label><div style={{display:"flex",gap:5,flexWrap:"wrap"}}>{dOrder.map(function(wd){var on=!!padDias[wd];return <button key={"pd"+wd} onClick={function(){setPadDias(function(p){var nn=Object.assign({},p);nn[wd]=!nn[wd];return nn;});}} style={{border:"1.5px solid "+(on?G.primary:G.border),background:on?G.primary:"#fff",color:on?"#fff":G.text,borderRadius:8,padding:"7px 11px",fontSize:12.5,fontWeight:700,cursor:"pointer"}}>{DOW_LABELS[wd]}</button>;})}</div></div><Btn ch={"Adicionar em "+Object.keys(padDias).filter(function(k){return padDias[k];}).length+" dia(s) da semana"} onClick={doPadAdd}/></div></div></div>}</div>}{dEdit&&<Modal open={true} close={function(){setDEdit(null);setAdding(false);setRep(null);}} title={grpIcon+" "+(grupo==="dent"?"Dentistas":"Secretárias")+" · "+(function(){try{return new Date(dEdit+"T12:00").toLocaleDateString("pt-BR",{weekday:"long",day:"numeric",month:"long"});}catch(e){return dEdit;}})()} ch={<div style={{display:"flex",flexDirection:"column",gap:12}}><div style={{display:"flex",flexDirection:"column",gap:6}}>{deList.length?deList.map(function(e){return personRow(e,function(patch){updInDay(dEdit,e.id,patch);},function(){delInDay(dEdit,e.id);},function(){openRepeat(e);});}):<div style={{fontSize:12.5,color:grupo==="dent"?G.red:G.muted,fontWeight:grupo==="dent"?600:400}}>{grupo==="dent"?"Sem dentista neste dia":"Ninguém neste dia"}</div>}</div>{isAdmin&&!adding&&<button onClick={startAdd} style={{border:"1.5px dashed "+G.primary,background:"transparent",color:G.primary,borderRadius:9,padding:"10px",fontSize:13,fontWeight:700,cursor:"pointer",width:"100%"}}>{"+ Adicionar "+grpSing}</button>}{isAdmin&&adding&&addForm(addF,setAddF,doAdd,function(){setAdding(false);})}{deProg&&isAdmin&&<button onClick={function(){resetDay(dEdit);}} style={{border:"1.5px solid "+G.border,background:"transparent",color:G.muted,borderRadius:9,padding:"9px",fontSize:12,fontWeight:700,cursor:"pointer",width:"100%"}}>↩︎ Voltar ao padrão da semana neste dia</button>}{isAdmin&&<div style={{fontSize:11,color:G.muted,lineHeight:1.4}}>Toque 📌 num profissional para repeti-lo em outros dias do mês.</div>}</div>}/>}{rep&&<Modal open={true} close={function(){setRep(null);}} title={"Repetir "+(rep.nome||(rep.tipo==="dent"?"dentista":"pessoa"))+" em outros dias"} ch={<div style={{display:"flex",flexDirection:"column",gap:10}}><div style={{fontSize:12.5,color:G.muted,lineHeight:1.45}}>{"Toque nos dias que também terão "+(rep.nome||"este profissional")+" ("+rep.inicio+"–"+rep.fim+"). Pode escolher os dias que quiser."}</div><div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}><button onClick={function(){setEscMes(new Date(mY,mM-1,1));}} style={{border:"none",background:G.bg,borderRadius:8,padding:"5px 11px",cursor:"pointer",color:G.primary,fontWeight:700}}>{"<"}</button><span style={{fontWeight:700,color:G.primary,textTransform:"capitalize"}}>{MS[mM]+" "+mY}</span><button onClick={function(){setEscMes(new Date(mY,mM+1,1));}} style={{border:"none",background:G.bg,borderRadius:8,padding:"5px 11px",cursor:"pointer",color:G.primary,fontWeight:700}}>{">"}</button></div><div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:3}}>{DOW_LABELS.map(function(dn,i){return <div key={"rh"+i} style={{textAlign:"center",fontSize:10,fontWeight:700,color:G.muted}}>{dn}</div>;})}{cells.map(function(ds,i){if(!ds)return <div key={"re"+i}/>;var sel=!!repSel[ds];var isCur=ds===dEdit;return <button key={ds} disabled={isCur} onClick={function(){setRepSel(function(p){var nn=Object.assign({},p);nn[ds]=!nn[ds];return nn;});}} style={{padding:"8px 0",borderRadius:8,border:"1.5px solid "+(sel?G.primary:G.border),background:isCur?G.accent:(sel?G.primary:"#fff"),color:isCur?G.muted:(sel?"#fff":G.text),fontSize:12.5,fontWeight:700,cursor:isCur?"default":"pointer",opacity:isCur?.55:1}}>{Number(ds.slice(8))}</button>;})}</div><Btn ch={"Aplicar a "+Object.keys(repSel).filter(function(k){return repSel[k];}).length+" dia(s)"} onClick={applyRepeat}/></div>}/>}</div>;}
 function Odontograma({pat,setPats,user}){
 var [mode,setMode]=useState("perm");
 var [sel,setSel]=useState(null);
@@ -8327,11 +8327,11 @@ return (<div style={{display:"flex",flexDirection:"column",gap:12}}>
  <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap",background:"#F2F8F5",border:"1px solid "+G.border,borderRadius:12,padding:"8px 10px"}}>
    <button onClick={listening?stopListen:startListen} style={{display:"flex",alignItems:"center",gap:6,border:"none",borderRadius:20,padding:"8px 14px",fontSize:13,fontWeight:700,cursor:"pointer",background:listening?"#C0392B":G.primary,color:"#fff"}}>{listening?"⏹ Parar":"🎤 Ditar"}</button>
    <input value={cmdText} onChange={function(e){setCmdText(e.target.value);}} onKeyDown={function(e){if(e.key==="Enter"&&cmdText.trim()){runCommand(cmdText);setCmdText("");}}} placeholder={'ex: "cárie MO 46" ou "endo 33"'} style={{flex:1,minWidth:150,boxSizing:"border-box",border:"1.5px solid "+G.border,borderRadius:10,padding:"9px 12px",fontSize:13,outline:"none"}}/>
-   <button onClick={function(){setShowHelp(!showHelp);}} style={{border:"1px solid "+G.border,background:"#fff",borderRadius:10,padding:"8px 11px",fontSize:13,fontWeight:700,cursor:"pointer",color:G.muted}}>?</button>
+   <button onClick={function(){setShowHelp(!showHelp);}} style={{border:"1px solid "+G.border,background:G.card,borderRadius:10,padding:"8px 11px",fontSize:13,fontWeight:700,cursor:"pointer",color:G.muted}}>?</button>
  </div>
  {listening&&<div style={{fontSize:12,color:G.primary,fontWeight:600}}>🎤 Ouvindo… <span style={{color:G.muted,fontWeight:400}}>{interim||"diga: condição, faces e dente"}</span></div>}
  {feedback&&<div style={{display:"flex",flexDirection:"column",gap:2}}>{feedback.lines.map(function(l,i){return <div key={i} style={{fontSize:12.5,fontWeight:600,color:feedback.ok?G.success:"#C0392B"}}>{l}</div>;})}</div>}
- {showHelp&&<div style={{fontSize:11.5,color:G.text,background:"#fff",border:"1px solid "+G.border,borderRadius:10,padding:"9px 11px",lineHeight:1.55}}><b style={{color:G.primary}}>Como ditar:</b> condição + faces + dente.<br/>Faces: <b>M</b> mesial · <b>D</b> distal · <b>O</b> oclusal · <b>V</b> vestibular · <b>L/P</b> lingual/palatina.<br/>Exemplos: "cárie MO 46" · "restauração OD 24" · "endo 33" · "coroa 26" · "núcleo 21" · "implante 36" · "extração 18" · "ausente 47" · "fratura 11" · "normal 46".<br/>Vários de uma vez: separe por vírgula — "cárie MO 46, endo 33".</div>}
+ {showHelp&&<div style={{fontSize:11.5,color:G.text,background:G.card,border:"1px solid "+G.border,borderRadius:10,padding:"9px 11px",lineHeight:1.55}}><b style={{color:G.primary}}>Como ditar:</b> condição + faces + dente.<br/>Faces: <b>M</b> mesial · <b>D</b> distal · <b>O</b> oclusal · <b>V</b> vestibular · <b>L/P</b> lingual/palatina.<br/>Exemplos: "cárie MO 46" · "restauração OD 24" · "endo 33" · "coroa 26" · "núcleo 21" · "implante 36" · "extração 18" · "ausente 47" · "fratura 11" · "normal 46".<br/>Vários de uma vez: separe por vírgula — "cárie MO 46, endo 33".</div>}
  <div style={{fontSize:12,color:G.muted}}>Toque em um dente para marcar superfícies e condições.</div>
  <div style={{background:G.card,border:"1px solid "+G.border,borderRadius:14,padding:"8px 6px"}}>
    <svg width="100%" viewBox={"0 0 "+total+" "+svgH} preserveAspectRatio="xMidYMid meet" style={{display:"block",width:"100%",height:"auto"}}>{archEls()}</svg>
@@ -9102,7 +9102,7 @@ const BOTTOM_NAV=user.level>=3
 ?[{id:"agenda",icon:"📅"},{id:"pacs",icon:"👥"},{id:"pixdent",icon:"💸"},{id:"lems",icon:"📌",b:remBadge},{id:"rel",icon:"📊"}]
 :[{id:"agenda",icon:"📅"},{id:"pacs",icon:"👥"},{id:"pixdent",icon:"💸"},{id:"lems",icon:"📌",b:remBadge},{id:"rec",icon:"📋"}];
 
-const RESPONSIVE_CSS=`@media(min-width:640px){.sidebar-overlay{display:none!important;}.sidebar{position:relative!important;transform:none!important;width:195px!important;flex-shrink:0;}.bottom-nav{display:none!important;}.main-content{padding-bottom:16px!important;}.mobile-topbar{display:none!important;}}@media(max-width:639px){.sidebar{position:fixed!important;top:0!important;left:0!important;height:100vh!important;z-index:500!important;width:240px!important;transition:transform .25s ease!important;}.sidebar.closed{transform:translateX(-100%)!important;}.sidebar-scroll::-webkit-scrollbar{width:6px;}.sidebar-scroll::-webkit-scrollbar-thumb{background:#1B5E4A;border-radius:4px;}.sidebar-scroll::-webkit-scrollbar-track{background:transparent;}.main-content{padding-bottom:70px!important;}}`;
+const RESPONSIVE_CSS=`@media(min-width:640px){.sidebar-overlay{display:none!important;}.sidebar{position:relative!important;transform:none!important;width:195px!important;flex-shrink:0;}.bottom-nav{display:none!important;}.main-content{padding-bottom:16px!important;}.mobile-topbar{display:none!important;}}@media(max-width:639px){.sidebar{position:fixed!important;top:0!important;left:0!important;height:100vh!important;z-index:500!important;width:240px!important;transition:transform .25s ease!important;}.sidebar.closed{transform:translateX(-100%)!important;}.sidebar-scroll::-webkit-scrollbar{width:6px;}.sidebar-scroll::-webkit-scrollbar-thumb{background:#c8d0c5;border-radius:4px;}.sidebar-scroll::-webkit-scrollbar-track{background:transparent;}.main-content{padding-bottom:70px!important;}}`;
 
 return <>
 
@@ -9116,27 +9116,27 @@ return <>
 
 <div style={{display:"flex",minHeight:"100vh"}}>
   {/* Sidebar */}
-  <div className={`sidebar${sideOpen?"":" closed"}`} style={{background:"linear-gradient(180deg,rgba(23,47,38,.90),rgba(11,30,23,.93))",backdropFilter:"blur(22px) saturate(140%)",WebkitBackdropFilter:"blur(22px) saturate(140%)",borderRight:"1px solid rgba(255,255,255,.08)",borderRadius:"0 18px 18px 0",boxShadow:"3px 0 22px rgba(0,0,0,.28)",display:"flex",flexDirection:"column",padding:"14px 10px",gap:2,flexShrink:0}}>
+  <div className={`sidebar${sideOpen?"":" closed"}`} style={{background:"#e8ece6",borderRadius:"0 18px 18px 0",boxShadow:"inset -9px 0 18px -12px #c8d0c5,4px 0 16px rgba(40,60,50,.10)",display:"flex",flexDirection:"column",padding:"14px 10px",gap:2,flexShrink:0}}>
     {/* Header with close button on mobile */}
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",padding:"6px 4px 14px",flexShrink:0}}>
       <div>
-        <div style={{fontFamily:"'Cormorant Garamond'",fontSize:18,color:"#fff",lineHeight:1.2}}>{<><Icon n="tooth" w="fill" s={16} c="#ead9b6"/> {CLINICA_LIVE.nome}</>}</div>
-        <div style={{fontFamily:"'Cormorant Garamond'",fontSize:12,color:"rgba(255,255,255,.65)"}}>Dr. Ricardo Mendes</div>
+        <div style={{fontFamily:"'Cormorant Garamond'",fontSize:18,color:"#23332b",lineHeight:1.2}}>{<><Icon n="tooth" w="fill" s={16} c="#2f5d49"/> {CLINICA_LIVE.nome}</>}</div>
+        <div style={{fontFamily:"'Cormorant Garamond'",fontSize:12,color:"#7c8a80"}}>Dr. Ricardo Mendes</div>
       </div>
-      <button onClick={()=>setSideOpen(false)} style={{border:"none",background:"rgba(255,255,255,.15)",borderRadius:7,color:"#fff",fontSize:16,cursor:"pointer",padding:"4px 8px",lineHeight:1}} className="sidebar-close-btn">{lbl("✕")}</button>
+      <button onClick={()=>setSideOpen(false)} style={{border:"none",background:"#e8ece6",boxShadow:"2px 2px 5px #c8d0c5,-2px -2px 5px #fbfff7",borderRadius:9,color:"#39473f",fontSize:16,cursor:"pointer",padding:"4px 8px",lineHeight:1}} className="sidebar-close-btn">{lbl("✕")}</button>
     </div>
     <div className="sidebar-scroll" style={{flex:1,overflowY:"auto",minHeight:0,display:"flex",flexDirection:"column",gap:2}}>
-    {NAV.map(n=><button key={n.id} onClick={()=>go(n.id)} style={{background:view===n.id?"rgba(255,255,255,.16)":"transparent",border:"none",borderRadius:8,padding:"9px 11px",cursor:"pointer",color:"#fff",fontFamily:"'Manrope'",fontWeight:600,fontSize:12,display:"flex",alignItems:"center",gap:8,textAlign:"left",transition:"background .15s"}}>
+    {NAV.map(n=><button key={n.id} onClick={()=>go(n.id)} style={view===n.id?{border:"none",borderRadius:11,padding:"9px 12px",cursor:"pointer",color:"#2f5d49",fontFamily:"'Manrope'",fontWeight:700,fontSize:12.5,display:"flex",alignItems:"center",gap:8,textAlign:"left",transition:"all .15s",background:"#e8ece6",boxShadow:"inset 4px 4px 9px #c8d0c5,inset -4px -4px 9px #fbfff7"}:{border:"none",borderRadius:11,padding:"9px 12px",cursor:"pointer",color:"#39473f",fontFamily:"'Manrope'",fontWeight:600,fontSize:12.5,display:"flex",alignItems:"center",gap:8,textAlign:"left",transition:"all .15s",background:"transparent"}}>
       <span style={{flex:1}}>{lbl(n.l)}</span>
       {n.b>0&&<span style={{background:G.red,color:"#fff",borderRadius:10,padding:"1px 6px",fontSize:9,fontWeight:700}}>{n.b}</span>}
     </button>)}
     </div>
-    <div style={{flexShrink:0,borderTop:"1px solid rgba(255,255,255,.12)",paddingTop:10,marginTop:6}}>
-      <div style={{fontSize:10,color:"rgba(255,255,255,.5)",marginBottom:4,paddingLeft:3}}>{user.name}</div>
-      <div style={{fontSize:9,color:"rgba(255,255,255,.3)",paddingLeft:3,marginBottom:6}}>{["","Básico","Intermediário","Total"][user.level]}</div>
-      <button onClick={()=>{setShowWelcome(true);setSideOpen(false);}} style={{border:"none",background:"rgba(255,255,255,.1)",borderRadius:8,padding:"6px 11px",color:"rgba(255,255,255,.8)",fontSize:11,fontWeight:600,cursor:"pointer",width:"100%",textAlign:"left",marginBottom:5}}>{lbl("❓ Ajuda / Tour")}</button>
-      <button onClick={()=>{var n=(CLINICA_LIVE.whatsapp||"").replace(/\D/g,"");window.open("https://wa.me/"+(SUPORTE_WA)+"?text="+encodeURIComponent("Olá! Preciso de ajuda com o sistema Orbe."),"_blank");}} style={{border:"none",background:"rgba(255,255,255,.1)",borderRadius:8,padding:"6px 11px",color:"rgba(255,255,255,.8)",fontSize:11,fontWeight:600,cursor:"pointer",width:"100%",textAlign:"left",marginBottom:5}}>{lbl("💬 Falar com suporte")}</button>
-      <button onClick={()=>{try{localStorage.removeItem("orbe_token");localStorage.removeItem("orbe_user");}catch(e){}location.reload();}} style={{border:"none",background:"rgba(255,255,255,.1)",borderRadius:8,padding:"6px 11px",color:"rgba(255,255,255,.7)",fontSize:11,fontWeight:600,cursor:"pointer",width:"100%",textAlign:"left"}}>{lbl("🚪 Sair")}</button>
+    <div style={{flexShrink:0,borderTop:"1px solid #d8ded3",paddingTop:10,marginTop:6}}>
+      <div style={{fontSize:10,color:"#7c8a80",marginBottom:4,paddingLeft:3}}>{user.name}</div>
+      <div style={{fontSize:9,color:"#9aa69d",paddingLeft:3,marginBottom:6}}>{["","Básico","Intermediário","Total"][user.level]}</div>
+      <button onClick={()=>{setShowWelcome(true);setSideOpen(false);}} style={{border:"none",background:"#e8ece6",boxShadow:"2px 2px 6px #c8d0c5,-2px -2px 6px #fbfff7",borderRadius:9,padding:"6px 11px",color:"#39473f",fontSize:11,fontWeight:600,cursor:"pointer",width:"100%",textAlign:"left",marginBottom:5}}>{lbl("❓ Ajuda / Tour")}</button>
+      <button onClick={()=>{var n=(CLINICA_LIVE.whatsapp||"").replace(/\D/g,"");window.open("https://wa.me/"+(SUPORTE_WA)+"?text="+encodeURIComponent("Olá! Preciso de ajuda com o sistema Orbe."),"_blank");}} style={{border:"none",background:"#e8ece6",boxShadow:"2px 2px 6px #c8d0c5,-2px -2px 6px #fbfff7",borderRadius:9,padding:"6px 11px",color:"#39473f",fontSize:11,fontWeight:600,cursor:"pointer",width:"100%",textAlign:"left",marginBottom:5}}>{lbl("💬 Falar com suporte")}</button>
+      <button onClick={()=>{try{localStorage.removeItem("orbe_token");localStorage.removeItem("orbe_user");}catch(e){}location.reload();}} style={{border:"none",background:"#e8ece6",boxShadow:"2px 2px 6px #c8d0c5,-2px -2px 6px #fbfff7",borderRadius:9,padding:"6px 11px",color:"#39473f",fontSize:11,fontWeight:600,cursor:"pointer",width:"100%",textAlign:"left"}}>{lbl("🚪 Sair")}</button>
     </div>
   </div>
 
@@ -9144,9 +9144,9 @@ return <>
 
   <div className="main-content" style={{flex:1,overflowY:"auto",minWidth:0}}>
     {/* Mobile top bar */}
-    <div style={{display:"flex",alignItems:"center",gap:10,padding:"12px 16px",background:"linear-gradient(180deg,rgba(23,47,38,.97),rgba(11,30,23,.99))",backdropFilter:"blur(22px) saturate(140%)",WebkitBackdropFilter:"blur(22px) saturate(140%)",position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 10px rgba(0,0,0,.18)"}} className="mobile-topbar">
-      <button onClick={()=>setSideOpen(true)} style={{border:"none",background:"rgba(255,255,255,.15)",borderRadius:8,color:"#fff",fontSize:18,cursor:"pointer",padding:"6px 10px",lineHeight:1,flexShrink:0}}>{lbl("☰")}</button>
-      <div style={{flex:1,fontFamily:"'Cormorant Garamond'",fontSize:16,color:"#fff",fontWeight:700}}>
+    <div style={{display:"flex",alignItems:"center",gap:10,padding:"12px 16px",background:"#e8ece6",position:"sticky",top:0,zIndex:100,boxShadow:"0 6px 16px -10px #c8d0c5,inset 0 -1px 0 #d8ded3"}} className="mobile-topbar">
+      <button onClick={()=>setSideOpen(true)} style={{border:"none",background:"#e8ece6",boxShadow:"2px 2px 5px #c8d0c5,-2px -2px 5px #fbfff7",borderRadius:10,color:"#39473f",fontSize:18,cursor:"pointer",padding:"6px 10px",lineHeight:1,flexShrink:0}}>{lbl("☰")}</button>
+      <div style={{flex:1,fontFamily:"'Cormorant Garamond'",fontSize:16,color:"#23332b",fontWeight:700}}>
         {lbl(NAV.find(n=>n.id===view)?.l||"🏠 Visão Geral")}
       </div>
       {user.level>=2&&waUnread>0&&<button onClick={()=>go("conversas")} style={{background:"#25D366",color:"#fff",border:"none",borderRadius:10,padding:"3px 9px",fontSize:11,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",gap:3,flexShrink:0}}>💬 {waUnread}</button>}
@@ -9189,10 +9189,10 @@ return <>
 
 {/* Bottom navigation bar - mobile only */}
 
-<div className="bottom-nav" style={{position:"fixed",bottom:0,left:0,right:0,background:"#fff",borderTop:`1.5px solid ${G.border}`,display:"flex",zIndex:400,boxShadow:"0 -2px 12px rgba(0,0,0,.08)"}}>
+<div className="bottom-nav" style={{position:"fixed",bottom:0,left:0,right:0,background:G.card,borderTop:`1.5px solid ${G.border}`,display:"flex",zIndex:400,boxShadow:"0 -2px 12px rgba(0,0,0,.08)"}}>
   {BOTTOM_NAV.map(n=>{
     if(n.id==="menu")return <button key="menu" onClick={()=>setSideOpen(true)} style={{flex:1,border:"none",background:"transparent",padding:"10px 0 8px",display:"flex",flexDirection:"column",alignItems:"center",gap:2,cursor:"pointer",color:G.muted}}>
-      <span style={{fontSize:20}}>☰</span>
+      <span style={{fontSize:20}}><Icon n="list" s={20}/></span>
       <span style={{fontSize:9,fontWeight:700}}>Menu</span>
     </button>;
     const active=view===n.id;
