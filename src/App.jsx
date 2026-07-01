@@ -9198,12 +9198,22 @@ const remBadge=(user.level===1)
 const prosBadge=pros.filter(p=>p.due===today()&&p.status==="waiting").length;
 
 const ALL_NAV=[
-{id:"dash",l:"🏠 Visão Geral",lv:3},{id:"agenda",l:"📅 Agenda",lv:1},{id:"escala",l:"🗓️ Escala",lv:1},
-{id:"pacs",l:"👥 Pacientes",lv:1},{id:"remarcar",l:"🔄 Remarcar",lv:2},{id:"pros",l:"🏥 Próteses",lv:2,b:prosBadge},
-{id:"impl",l:"🔩 Implantes",lv:2},{id:"lems",l:"📌 Lembretes",lv:1,b:remBadge},{id:"conversas",l:"💬 Conversas",lv:2,b:waUnread},
-{id:"fin",l:"💰 Financeiro",lv:3},{id:"pixdent",l:"💸 Pix Dentistas",lv:1},{id:"rel",l:"📊 Relatórios",lv:2},
-{id:"desp",l:"💸 Gastos",lv:3},{id:"stk",l:"📦 Estoque",lv:2},
-{id:"rec",l:"📋 Receituário",lv:1},{id:"orient",l:"📖 Orientações",lv:1},{id:"pdent",l:"💰 Recebimentos",lv:1},{id:"consultor",l:"🧠 Consultor IA",lv:3},{id:"audit",l:"🔍 Auditoria",lv:3},{id:"adm",l:"⚙️ Administrativo",lv:3},
+// ── Rotina (dia a dia) ──
+{id:"dash",l:"🏠 Visão Geral",lv:3,g:"rotina"},{id:"agenda",l:"📅 Agenda",lv:1,g:"rotina"},{id:"escala",l:"🗓️ Escala",lv:1,g:"rotina"},
+{id:"pacs",l:"👥 Pacientes",lv:1,g:"rotina"},{id:"remarcar",l:"🔄 Remarcar",lv:2,g:"rotina"},{id:"lems",l:"📌 Lembretes",lv:1,b:remBadge,g:"rotina"},{id:"conversas",l:"💬 Conversas",lv:2,b:waUnread,g:"rotina"},
+// ── Clínico (procedimento e laboratório) ──
+{id:"pros",l:"🏥 Próteses",lv:2,b:prosBadge,g:"clinico"},{id:"impl",l:"🔩 Implantes",lv:2,g:"clinico"},{id:"stk",l:"📦 Estoque",lv:2,g:"clinico"},
+{id:"rec",l:"📋 Receituário",lv:1,g:"clinico"},{id:"orient",l:"📖 Orientações",lv:1,g:"clinico"},
+// ── Financeiro (dinheiro) ──
+{id:"fin",l:"💰 Financeiro",lv:3,g:"financeiro"},{id:"pdent",l:"💰 Recebimentos",lv:1,g:"financeiro"},{id:"pixdent",l:"💸 Pix Dentistas",lv:1,g:"financeiro"},{id:"desp",l:"💸 Gastos",lv:3,g:"financeiro"},
+// ── Gestão (análise e configuração) ──
+{id:"rel",l:"📊 Relatórios",lv:2,g:"gestao"},{id:"consultor",l:"🧠 Consultor IA",lv:3,g:"gestao"},{id:"audit",l:"🔍 Auditoria",lv:3,g:"gestao"},{id:"adm",l:"⚙️ Administrativo",lv:3,g:"gestao"},
+];
+const NAV_GROUPS=[
+{g:"rotina",t:"Rotina",c:"var(--primary)"},
+{g:"clinico",t:"Clínico",c:"var(--blue)"},
+{g:"financeiro",t:"Financeiro",c:"var(--gold)"},
+{g:"gestao",t:"Gestão",c:"var(--purple)"},
 ];
 const NAV=ALL_NAV.filter(n=>n.lv<=user.level);
 const go=v=>{
@@ -9245,10 +9255,16 @@ return <>
       <button onClick={()=>setSideOpen(false)} style={{border:"none",background:"var(--surface)",boxShadow:"2px 2px 5px var(--nm-dark),-2px -2px 5px var(--nm-light)",borderRadius:9,color:"var(--text)",fontSize:16,cursor:"pointer",padding:"4px 8px",lineHeight:1}} className="sidebar-close-btn">{lbl("✕")}</button>
     </div>
     <div className="sidebar-scroll" style={{flex:1,overflowY:"auto",minHeight:0,display:"flex",flexDirection:"column",gap:2}}>
-    {NAV.map(n=><button key={n.id} onClick={()=>go(n.id)} style={view===n.id?{border:"none",borderRadius:11,padding:"9px 12px",cursor:"pointer",color:"var(--primary)",fontFamily:"'Manrope'",fontWeight:700,fontSize:12.5,display:"flex",alignItems:"center",gap:8,textAlign:"left",transition:"all .15s",background:"var(--surface)",boxShadow:"inset 4px 4px 9px var(--nm-dark),inset -4px -4px 9px var(--nm-light)"}:{border:"none",borderRadius:11,padding:"9px 12px",cursor:"pointer",color:"var(--text)",fontFamily:"'Manrope'",fontWeight:600,fontSize:12.5,display:"flex",alignItems:"center",gap:8,textAlign:"left",transition:"all .15s",background:"transparent"}}>
+    {NAV_GROUPS.flatMap(function(grp,gi){
+      var gItems=NAV.filter(function(n){return n.g===grp.g;});
+      if(!gItems.length)return [];
+      var hdr=<div key={"navh_"+grp.g} style={{fontSize:9.5,fontWeight:800,letterSpacing:"1.1px",textTransform:"uppercase",color:"var(--muted)",padding:gi===0?"2px 8px 5px":"12px 8px 5px",marginTop:gi===0?0:4,display:"flex",alignItems:"center",gap:7}}><span style={{width:6,height:6,borderRadius:"50%",background:grp.c,flexShrink:0}}/>{grp.t}</div>;
+      var btns=gItems.map(function(n){return <button key={n.id} onClick={()=>go(n.id)} style={view===n.id?{border:"none",borderRadius:11,padding:"9px 12px",cursor:"pointer",color:"var(--primary)",fontFamily:"'Manrope'",fontWeight:700,fontSize:12.5,display:"flex",alignItems:"center",gap:8,textAlign:"left",transition:"all .15s",background:"var(--surface)",boxShadow:"inset 4px 4px 9px var(--nm-dark),inset -4px -4px 9px var(--nm-light)"}:{border:"none",borderRadius:11,padding:"9px 12px",cursor:"pointer",color:"var(--text)",fontFamily:"'Manrope'",fontWeight:600,fontSize:12.5,display:"flex",alignItems:"center",gap:8,textAlign:"left",transition:"all .15s",background:"transparent"}}>
       <span style={{flex:1}}>{lbl(n.l)}</span>
       {n.b>0&&<span style={{background:G.red,color:"#fff",borderRadius:10,padding:"1px 6px",fontSize:9,fontWeight:700}}>{n.b}</span>}
-    </button>)}
+    </button>;});
+      return [hdr].concat(btns);
+    })}
     </div>
     <div style={{flexShrink:0,borderTop:"1px solid var(--border)",paddingTop:10,marginTop:6}}>
       <div style={{fontSize:10,color:"var(--muted)",marginBottom:4,paddingLeft:3}}>{user.name}</div>
