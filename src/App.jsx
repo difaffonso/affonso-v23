@@ -2902,7 +2902,7 @@ return(
 ))}
 </div>
 {!isDent&&<div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
-{Object.entries(SL).map(([k,l])=><button key={k} onClick={()=>chSt(a.id,k)} style={{border:"2px solid "+SC[k],background:a.status===k?SC[k]:SC_BG[k]||"var(--card)",color:a.status===k?"#fff":SC[k],borderRadius:20,padding:"5px 11px",fontSize:10,fontWeight:700,cursor:"pointer"}}>{(SC_ICON[k]||"")+" "+l}</button>)}
+{Object.entries(SL).map(([k,l])=><button key={k} onClick={()=>chSt(a.id,k)} style={{display:"inline-flex",alignItems:"center",gap:5,border:"2px solid "+SC[k],background:a.status===k?SC[k]:SC_BG[k]||"var(--card)",color:a.status===k?"#fff":SC[k],borderRadius:20,padding:"5px 11px",fontSize:10,fontWeight:700,cursor:"pointer"}}>{<><Icon n={SC_ICON[k]} s={11}/> {l}</>}</button>)}
 </div>}
 <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
 {!isDent&&p&&p.phone&&<Btn ch="📱 Confirmação" v="w" sm onClick={()=>wa(p.phone,"Olá, "+p.name+"! ✅ Consulta confirmada: "+fmt(a.date)+" às "+a.time+" - "+a.procedure+". Clínica Modelo 🦷")}/>}
